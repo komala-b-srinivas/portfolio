@@ -238,7 +238,7 @@ export default function HeroHUD({ scrollYProgress }: Props) {
             SYSTEM STATUS
           </p>
           <p style={{ fontSize: "12px", color: "var(--text-primary)", marginTop: "4px" }}>
-            OPEN TO OPPORTUNITIES
+            OPEN TO AI/ML ENGINEER ROLES
           </p>
         </div>
       </motion.div>

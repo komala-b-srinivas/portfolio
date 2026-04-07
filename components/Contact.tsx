@@ -166,7 +166,7 @@ export default function Contact() {
               marginTop: "16px",
             }}
           >
-            Based in New York, NY · Open to remote &amp; hybrid roles
+            Based in New York, NY · Open to remote, hybrid &amp; relocation
           </p>
         </motion.div>
 

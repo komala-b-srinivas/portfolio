@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 const skillGroups = [
   {
     category: "Programming",
-    skills: ["Python", "SQL", "R", "Git", "Jupyter Notebook"],
+    skills: ["Python", "SQL", "Git", "Jupyter Notebook"],
   },
   {
     category: "ML / Deep Learning",
