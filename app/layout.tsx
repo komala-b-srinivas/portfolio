@@ -23,7 +23,7 @@ export const metadata: Metadata = {
     title: "Komala Belur Srinivas — AI/ML Engineer",
     description:
       "AI/ML Engineer specializing in deep learning, multimodal systems, and production ML pipelines. M.S. CS @ Hofstra University. Open to full-time roles.",
-    url: "https://portfolio-git-main-komala-b-srinivas-projects.vercel.app",
+    url: "https://portfolio-f2c2oibdn-komala-b-srinivas-projects.vercel.app",
     siteName: "Komala Belur Srinivas",
     images: [
       {
