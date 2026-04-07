@@ -14,7 +14,7 @@ const projects = [
       number: "DE 20 2025 106 621",
       office: "Deutsches Patent- und Markenamt (DPMA), Munich",
       registered: "12 March 2026",
-      link: "https://register.dpma.de/DPMAregister/pat/register?AKZ=202025106621.1",
+      link: "https://register.dpma.de/DPMAregister/pat/register?AKZ=2020251066211&CURSOR=0",
     },
     description:
       "Autonomous rescue robot system for detecting living humans in disaster zones using multi-sensor fusion. Granted as a German utility patent (Gebrauchsmuster) by the Deutsches Patent- und Markenamt in March 2026.",
