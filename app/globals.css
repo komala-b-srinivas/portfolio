@@ -65,6 +65,19 @@ body {
   border-color: var(--border-accent);
 }
 
+.glass-panel {
+  background: rgba(13, 13, 31, 0.4);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+}
+
+.glass-panel:hover {
+  border: 1px solid rgba(0, 212, 255, 0.3);
+  background: rgba(13, 13, 31, 0.6);
+}
+
 @keyframes pulse-glow {
   0%, 100% { opacity: 0.4; }
   50% { opacity: 1; }

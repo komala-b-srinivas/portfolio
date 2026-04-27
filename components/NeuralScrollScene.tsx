@@ -2,7 +2,7 @@
 
 import { useRef } from "react";
 import { useScroll } from "framer-motion";
-import NeuralCanvas from "./NeuralCanvas";
+import ThreeCanvas from "./ThreeCanvas";
 import HeroHUD from "./HeroHUD";
 
 export default function NeuralScrollScene() {
@@ -28,8 +28,8 @@ export default function NeuralScrollScene() {
           background: "var(--bg)",
         }}
       >
-        {/* Animated neural network background */}
-        <NeuralCanvas scrollYProgress={scrollYProgress} />
+        {/* Animated 3D particle background */}
+        <ThreeCanvas />
 
         {/* HUD overlay */}
         <HeroHUD scrollYProgress={scrollYProgress} />
