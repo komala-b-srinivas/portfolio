@@ -150,12 +150,13 @@ export default function Projects() {
               transition={{ duration: 0.55, delay: i * 0.08 }}
             >
               <div
+                className="glass-panel"
                 style={{
                   padding: "36px 40px",
-                  border: `1px solid ${project.patent ? "rgba(245, 158, 11, 0.15)" : "var(--border)"}`,
-                  background: "var(--bg-card)",
+                  border: `1px solid ${project.patent ? "rgba(245, 158, 11, 0.25)" : "var(--border)"}`,
+                  borderRadius: "16px",
                   cursor: "default",
-                  transition: "border-color 0.25s, background 0.25s",
+                  transition: "all 0.3s ease",
                   position: "relative",
                   overflow: "hidden",
                 }}

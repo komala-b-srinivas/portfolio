@@ -122,11 +122,10 @@ export default function Skills() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-50px" }}
               transition={{ duration: 0.5, delay: i * 0.08 }}
+              className="glass-panel"
               style={{
                 padding: "28px",
-                border: "1px solid var(--border)",
-                background: "var(--bg-card)",
-                borderRadius: "2px",
+                borderRadius: "16px",
               }}
             >
               <p

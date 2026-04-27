@@ -128,14 +128,20 @@ export default function Experience() {
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true, margin: "-60px" }}
                 transition={{ duration: 0.5, delay: i * 0.1 }}
-                style={{ paddingLeft: "40px", position: "relative" }}
+                className="glass-panel"
+                style={{ 
+                  padding: "24px", 
+                  position: "relative",
+                  borderRadius: "16px",
+                  marginLeft: "40px",
+                }}
               >
                 {/* Timeline dot */}
                 <div
                   style={{
                     position: "absolute",
-                    left: "4px",
-                    top: "6px",
+                    left: "-30px", // Align with line
+                    top: "32px",
                     width: "13px",
                     height: "13px",
                     borderRadius: "50%",
