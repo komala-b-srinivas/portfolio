@@ -3,26 +3,22 @@
 import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { MessageSquare, X, Send, Bot, User } from "lucide-react";
-import { getChatbotResponse } from "@/lib/chatbotKnowledge";
-
-interface Message {
-  id: string;
-  sender: "ai" | "user";
-  text: string;
-}
+import { useChat } from "ai/react";
 
 export default function ChatbotWidget() {
   const [isOpen, setIsOpen] = useState(false);
-  const [messages, setMessages] = useState<Message[]>([
-    {
-      id: "1",
-      sender: "ai",
-      text: "Hi! I'm Komala's AI Assistant. Ask me anything about her skills, experience, or projects.",
-    },
-  ]);
-  const [inputValue, setInputValue] = useState("");
-  const [isTyping, setIsTyping] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+
+  const { messages, input, handleInputChange, handleSubmit, isLoading } = useChat({
+    api: '/api/chat',
+    initialMessages: [
+      {
+        id: "1",
+        role: "assistant",
+        content: "Hi! I'm Komala's AI Assistant. Ask me anything about her skills, experience, or projects.",
+      }
+    ]
+  });
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -30,24 +26,7 @@ export default function ChatbotWidget() {
 
   useEffect(() => {
     scrollToBottom();
-  }, [messages, isTyping]);
-
-  const handleSend = () => {
-    if (!inputValue.trim()) return;
-
-    const userMsg: Message = { id: Date.now().toString(), sender: "user", text: inputValue };
-    setMessages((prev) => [...prev, userMsg]);
-    setInputValue("");
-    setIsTyping(true);
-
-    // Simulate network delay
-    setTimeout(() => {
-      const responseText = getChatbotResponse(userMsg.text);
-      const aiMsg: Message = { id: (Date.now() + 1).toString(), sender: "ai", text: responseText };
-      setMessages((prev) => [...prev, aiMsg]);
-      setIsTyping(false);
-    }, 800 + Math.random() * 500);
-  };
+  }, [messages, isLoading]);
 
   return (
     <>
@@ -177,7 +156,7 @@ export default function ChatbotWidget() {
                     display: "flex",
                     gap: "12px",
                     alignItems: "flex-start",
-                    flexDirection: msg.sender === "user" ? "row-reverse" : "row",
+                    flexDirection: msg.role === "user" ? "row-reverse" : "row",
                   }}
                 >
                   <div
@@ -185,23 +164,23 @@ export default function ChatbotWidget() {
                       width: "32px",
                       height: "32px",
                       borderRadius: "50%",
-                      background: msg.sender === "ai" ? "rgba(0, 212, 255, 0.15)" : "rgba(124, 58, 237, 0.15)",
+                      background: msg.role !== "user" ? "rgba(0, 212, 255, 0.15)" : "rgba(124, 58, 237, 0.15)",
                       display: "flex",
                       alignItems: "center",
                       justifyContent: "center",
                       flexShrink: 0,
                     }}
                   >
-                    {msg.sender === "ai" ? <Bot size={16} color="#00d4ff" /> : <User size={16} color="#7c3aed" />}
+                    {msg.role !== "user" ? <Bot size={16} color="#00d4ff" /> : <User size={16} color="#7c3aed" />}
                   </div>
                   <div
                     style={{
-                      background: msg.sender === "ai" ? "rgba(255, 255, 255, 0.05)" : "rgba(124, 58, 237, 0.2)",
-                      border: msg.sender === "ai" ? "1px solid rgba(255, 255, 255, 0.1)" : "1px solid rgba(124, 58, 237, 0.4)",
+                      background: msg.role !== "user" ? "rgba(255, 255, 255, 0.05)" : "rgba(124, 58, 237, 0.2)",
+                      border: msg.role !== "user" ? "1px solid rgba(255, 255, 255, 0.1)" : "1px solid rgba(124, 58, 237, 0.4)",
                       padding: "12px 16px",
                       borderRadius: "12px",
-                      borderTopLeftRadius: msg.sender === "ai" ? "2px" : "12px",
-                      borderTopRightRadius: msg.sender === "user" ? "2px" : "12px",
+                      borderTopLeftRadius: msg.role !== "user" ? "2px" : "12px",
+                      borderTopRightRadius: msg.role === "user" ? "2px" : "12px",
                       fontSize: "14px",
                       lineHeight: 1.5,
                       color: "white",
@@ -209,11 +188,11 @@ export default function ChatbotWidget() {
                       whiteSpace: "pre-wrap",
                     }}
                   >
-                    {msg.text}
+                    {msg.content}
                   </div>
                 </div>
               ))}
-              {isTyping && (
+              {isLoading && messages[messages.length - 1].role === "user" && (
                 <div style={{ display: "flex", gap: "12px", alignItems: "center" }}>
                   <div
                     style={{
@@ -259,10 +238,7 @@ export default function ChatbotWidget() {
               }}
             >
               <form
-                onSubmit={(e) => {
-                  e.preventDefault();
-                  handleSend();
-                }}
+                onSubmit={handleSubmit}
                 style={{
                   display: "flex",
                   gap: "10px",
@@ -270,9 +246,10 @@ export default function ChatbotWidget() {
               >
                 <input
                   type="text"
-                  value={inputValue}
-                  onChange={(e) => setInputValue(e.target.value)}
+                  value={input}
+                  onChange={handleInputChange}
                   placeholder="Ask a question..."
+                  disabled={isLoading}
                   style={{
                     flex: 1,
                     background: "rgba(255, 255, 255, 0.05)",
@@ -286,9 +263,9 @@ export default function ChatbotWidget() {
                 />
                 <button
                   type="submit"
-                  disabled={!inputValue.trim()}
+                  disabled={!input.trim() || isLoading}
                   style={{
-                    background: inputValue.trim() ? "var(--accent-cyan)" : "rgba(255, 255, 255, 0.1)",
+                    background: input.trim() && !isLoading ? "var(--accent-cyan)" : "rgba(255, 255, 255, 0.1)",
                     border: "none",
                     borderRadius: "8px",
                     width: "42px",
@@ -296,8 +273,8 @@ export default function ChatbotWidget() {
                     display: "flex",
                     alignItems: "center",
                     justifyContent: "center",
-                    color: inputValue.trim() ? "#000" : "rgba(255, 255, 255, 0.3)",
-                    cursor: inputValue.trim() ? "pointer" : "default",
+                    color: input.trim() && !isLoading ? "#000" : "rgba(255, 255, 255, 0.3)",
+                    cursor: input.trim() && !isLoading ? "pointer" : "default",
                     transition: "all 0.2s",
                   }}
                 >
