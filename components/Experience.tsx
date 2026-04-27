@@ -4,6 +4,19 @@ import { motion } from "framer-motion";
 
 const jobs = [
   {
+    role: "AI Developer — Independent Contractor",
+    company: "Rimon Health",
+    location: "New York, NY",
+    period: "Apr 2026 – Present",
+    current: true,
+    bullets: [
+      "Building an end-to-end AI-powered report writing system for neuropsychological evaluations (OPWDD), reducing clinician report time from 2–3 hours to ~30 minutes per report across 38 reports/week",
+      "Designed a multimodal data pipeline integrating Groq Whisper (audio transcription), LLaMA Vision (OCR from score sheet photos), and LLaMA 3.3-70B (clinical narrative generation) to auto-populate all report sections",
+      "Implemented rule-based narrative engines for BASC-3 and Vineland-3 assessments matching Q-Global clinical output language exactly; built ADOS-2 auto-classifier with DSM-5 Criteria A/B/C walkthrough",
+      "Applied HIPAA-compliant PHI de-identification layer before all LLM inference; exported final reports as PDF and Word with signature blocks",
+    ],
+  },
+  {
     role: "Marketing & Program Support Intern",
     company: "Institute of Innovation & Entrepreneurship",
     location: "Hempstead, NY",

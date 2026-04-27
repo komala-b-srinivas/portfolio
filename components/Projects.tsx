@@ -5,6 +5,23 @@ import { motion } from "framer-motion";
 const projects = [
   {
     id: "01",
+    title: "Rimon Health AI Report Writer",
+    subtitle: "Clinical Document Automation System",
+    status: "CURRENT",
+    statusColor: "#00d4ff",
+    period: "Apr 2026 – Present",
+    patent: null,
+    description:
+      "End-to-end AI system that automates neuropsychological evaluation report writing for OPWDD assessments — reducing clinician report time from 2–3 hours to ~30 minutes. Built for Rimon Health's exact 4-test battery: WPPSI-IV, BASC-3, Vineland-3, and ADOS-2.",
+    tags: ["Python", "Streamlit", "Groq API", "Whisper", "LLaMA 3.3-70B", "LLaMA Vision", "OCR", "NLP", "HIPAA", "fpdf2", "python-docx"],
+    highlights: [
+      "Multimodal input pipeline: session audio → Whisper transcription → LLM extracts structured background fields; score sheet photo → Vision OCR → auto-fills all test score inputs; handwritten notes photo → clinical language conversion",
+      "Rule-based narrative engines for BASC-3 PRS (14 subscales, 4 composites) and Vineland-3 (ABC + 3 domains) matching Q-Global clinical output language exactly; ADOS-2 auto-classifier maps SA + RRB totals to Autism/Spectrum/Non-Spectrum per module thresholds with DSM-5 Criteria A/B/C walkthrough",
+      "HIPAA-compliant architecture: PHI de-identification layer before all LLM inference, PHI re-injection at final render only; full report assembled and exported as PDF and Word with evaluator signature block",
+    ],
+  },
+  {
+    id: "02",
     title: "Alive Human Detection During Disasters",
     subtitle: "Autonomous Rescue Robot System",
     status: "PATENTED",
@@ -26,7 +43,7 @@ const projects = [
     ],
   },
   {
-    id: "02",
+    id: "03",
     title: "EmPath",
     subtitle: "Multimodal Pain Detection System",
     status: "ONGOING",
@@ -44,7 +61,7 @@ const projects = [
     ],
   },
   {
-    id: "03",
+    id: "04",
     title: "ER Triage AI",
     subtitle: "AI-Assisted Touchless Triage System",
     status: "AUG 2025",
@@ -62,7 +79,7 @@ const projects = [
     ],
   },
   {
-    id: "04",
+    id: "05",
     title: "TradingML",
     subtitle: "Production ML System for Systematic Trading",
     status: "OCT 2025",
