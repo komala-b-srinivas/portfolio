@@ -12,7 +12,7 @@ const projects = [
     period: "Apr 2026 – Present",
     patent: null,
     description:
-      "End-to-end AI system that automates neuropsychological evaluation report writing for OPWDD assessments — reducing clinician report time from 2–3 hours to ~30 minutes. Built for Rimon Health's exact 4-test battery: WPPSI-IV, BASC-3, Vineland-3, and ADOS-2.",
+      "End-to-end AI system that automates neuropsychological evaluation report writing for OPWDD assessments , reducing clinician report time from 2–3 hours to ~30 minutes. Built for Rimon Health's exact 4-test battery: WPPSI-IV, BASC-3, Vineland-3, and ADOS-2.",
     tags: ["Python", "Streamlit", "Groq API", "Whisper", "LLaMA 3.3-70B", "LLaMA Vision", "OCR", "NLP", "HIPAA", "fpdf2", "python-docx"],
     highlights: [
       "Multimodal input pipeline: session audio → Whisper transcription → LLM extracts structured background fields; score sheet photo → Vision OCR → auto-fills all test score inputs; handwritten notes photo → clinical language conversion",
@@ -38,7 +38,7 @@ const projects = [
     tags: ["Raspberry Pi 4", "Arduino Uno", "Doppler Radar", "Ultrasonic Sensors", "Computer Vision", "Robotics"],
     highlights: [
       "Built autonomous rescue robot using Raspberry Pi 4 and Arduino Uno with multi-sensor integration",
-      "Implemented human and gas detection via Doppler radar, ultrasonic, and camera sensors — 83% accuracy",
+      "Implemented human and gas detection via Doppler radar, ultrasonic, and camera sensors (83% accuracy)",
       "Awarded German utility patent No. 20 2025 106 621 by DPMA, Munich (registered 12.03.2026)",
     ],
   },
@@ -51,11 +51,11 @@ const projects = [
     period: null,
     patent: null,
     description:
-      "Stacked ensemble multimodal system detecting pain intensity in non-verbal patients using biosignal and facial landmark fusion. Achieved 65.3% accuracy, AUC-ROC 0.719, F1 0.653 on BioVid dataset — outperforming Werner et al. (2014) multimodal baseline of 60.5% on a harder task.",
+      "Stacked ensemble multimodal system detecting pain intensity in non-verbal patients using biosignal and facial landmark fusion. Achieved 65.3% accuracy, AUC-ROC 0.719, F1 0.653 on BioVid dataset , outperforming Werner et al. (2014) multimodal baseline of 60.5% on a harder task.",
     tags: ["PyTorch", "Random Forest", "XGBoost", "MediaPipe", "SHAP", "MAML", "Streamlit", "Healthcare AI"],
     highlights: [
-      "Stacked ensemble fusion of Random Forest on 35 biosignal features (HRV, entropy, GSR) + 22 facial landmarks via MediaPipe FaceMesh — 65.3% accuracy, AUC-ROC 0.719, F1 0.653 (LOSO, 67 subjects)",
-      "Evaluated 20+ model configs across 6 classifiers and 4 fusion strategies; benchmarked against PainFormer (10.9M samples) and BIOT (NeurIPS 2023) — RF outperformed foundation models on limited medical data",
+      "Stacked ensemble fusion of Random Forest on 35 biosignal features (HRV, entropy, GSR) + 22 facial landmarks via MediaPipe FaceMesh; 65.3% accuracy, AUC-ROC 0.719, F1 0.653 (LOSO, 67 subjects)",
+      "Evaluated 20+ model configs across 6 classifiers and 4 fusion strategies; benchmarked against PainFormer (10.9M samples) and BIOT (NeurIPS 2023) , where RF outperformed foundation models on limited medical data",
       "Implemented MAML meta-learning, CORAL ordinal regression, and cross-modal attention fusion in PyTorch",
       "Deployed live Streamlit app with real-time prediction, SHAP plots, ROC curve, and per-subject accuracy heatmap; pre-generated 2,680 biosignal visualizations for cloud deployment",
     ],
@@ -72,7 +72,7 @@ const projects = [
       "Hybrid AI + rule-based clinical decision support system for emergency department triage. Achieved up to 64% accuracy and near 100% recall for critical cases using a human-in-the-loop design with mandatory nurse validation.",
     tags: ["XGBoost", "SHAP", "Streamlit", "Clinical ML", "Rule-Based AI", "Human-in-the-Loop"],
     highlights: [
-      "Built and compared Logistic Regression, Decision Tree, and XGBoost models — up to 64% accuracy and near 100% recall for critical cases",
+      "Built and compared Logistic Regression, Decision Tree, and XGBoost models (up to 64% accuracy) and near 100% recall for critical cases",
       "Engineered clinical features (Shock Index, Hypoxia, Fever flags) and safety-rule overrides (SBP < 90, SpO₂ < 90) to prevent under-triage",
       "Integrated SHAP explainability for clinician-interpretable predictions; built Streamlit interface with nurse override workflow",
       "Applied adversarial testing, bias monitoring, and drift detection under a clinical safety engineering framework",

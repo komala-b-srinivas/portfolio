@@ -60,9 +60,11 @@ export default function Contact() {
               marginBottom: "40px",
             }}
           >
-            I&apos;m actively looking for data science, ML engineering, and AI
-            research roles. If you&apos;re working on something that involves
-            turning data into real-world impact, I&apos;d love to connect.
+            I&apos;m actively pursuing full-time roles as an AI Automation Engineer,
+            AI Solutions Engineer, or AI Product Manager. If you&apos;re building
+            products where AI does real work: automating workflows, powering
+            clinical tools, or turning complex data into decisions, I&apos;d love
+            to connect.
           </p>
 
           <div style={{ display: "flex", gap: "16px", flexWrap: "wrap" }}>
@@ -200,7 +202,7 @@ export default function Contact() {
               letterSpacing: "0.1em",
             }}
           >
-            AI/ML ENGINEER · NEW YORK, NY
+            AI AUTOMATION ENGINEER · NEW YORK, NY
           </span>
         </div>
       </div>

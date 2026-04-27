@@ -7,14 +7,14 @@ interface Props {
 }
 
 export default function HeroHUD({ scrollYProgress }: Props) {
-  // Phase 1: 0% – 35% — Identity
+  // Phase 1: 0% – 35%: Identity
   const phase1Opacity = useTransform(scrollYProgress, [0, 0.05, 0.28, 0.38], [0, 1, 1, 0]);
   const phase1Y = useTransform(scrollYProgress, [0, 0.05], [20, 0]);
 
-  // Phase 2: 35% – 70% — Skills readout
+  // Phase 2: 35% – 70%: Skills readout
   const phase2Opacity = useTransform(scrollYProgress, [0.33, 0.42, 0.62, 0.72], [0, 1, 1, 0]);
 
-  // Phase 3: 70% – 100% — Call to action
+  // Phase 3: 70% – 100%: Call to action
   const phase3Opacity = useTransform(scrollYProgress, [0.68, 0.78, 0.95, 1], [0, 1, 1, 1]);
 
   // Frame counter
@@ -22,11 +22,11 @@ export default function HeroHUD({ scrollYProgress }: Props) {
   const progressLabel = useMotionTemplate`PROGRESS: ${frameNum}%`;
 
   const skills = [
-    { label: "Python · Scikit-learn · NumPy", value: 94 },
-    { label: "Deep Learning · CNN-LSTM · Attention", value: 88 },
-    { label: "Feature Engineering · SHAP · ROC-AUC", value: 85 },
-    { label: "Power BI · Streamlit · Matplotlib", value: 82 },
-    { label: "SQL · R · Git", value: 79 },
+    { label: "LLM Integration · Prompt Engineering · NLP", value: 94 },
+    { label: "AI Automation · Workflow Design", value: 92 },
+    { label: "Python · Streamlit · REST APIs", value: 90 },
+    { label: "Deep Learning · Multimodal AI", value: 86 },
+    { label: "HIPAA · Healthcare AI · Clinical NLP", value: 83 },
   ];
 
   return (
@@ -88,7 +88,7 @@ export default function HeroHUD({ scrollYProgress }: Props) {
             fontFamily: "var(--font-space-grotesk), monospace",
           }}
         >
-          AI/ML ENGINEER · NEW YORK, NY
+          AI AUTOMATION ENGINEER · NEW YORK, NY
         </p>
         <h1
           className="font-heading"
@@ -134,7 +134,7 @@ export default function HeroHUD({ scrollYProgress }: Props) {
             flexWrap: "wrap",
           }}
         >
-          {["M.S. CS · Hofstra University", "Multimodal AI", "Production ML"].map((tag) => (
+          {["M.S. CS · Hofstra University", "AI Automation", "Healthcare AI"].map((tag) => (
             <span
               key={tag}
               style={{
@@ -238,7 +238,7 @@ export default function HeroHUD({ scrollYProgress }: Props) {
             SYSTEM STATUS
           </p>
           <p style={{ fontSize: "12px", color: "var(--text-primary)", marginTop: "4px" }}>
-            OPEN TO AI/ML ENGINEER ROLES
+            OPEN TO: AI AUTOMATION · SOLUTIONS · PM ROLES
           </p>
         </div>
       </motion.div>

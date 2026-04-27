@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 
 const jobs = [
   {
-    role: "AI Developer — Independent Contractor",
+    role: "AI Automation Engineer",
     company: "Rimon Health",
     location: "New York, NY",
     period: "Apr 2026 – Present",

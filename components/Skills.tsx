@@ -4,8 +4,35 @@ import { motion } from "framer-motion";
 
 const skillGroups = [
   {
-    category: "Programming",
-    skills: ["Python", "SQL", "Git", "Jupyter Notebook"],
+    category: "AI Automation & LLMs",
+    skills: [
+      "LLM Integration",
+      "Prompt Engineering",
+      "Groq API",
+      "Whisper (Speech-to-Text)",
+      "Vision / OCR",
+      "NLP",
+      "Clinical NLP",
+      "Automated Report Generation",
+      "Rule-Based Narrative Engines",
+      "Multimodal Pipelines",
+    ],
+  },
+  {
+    category: "Healthcare AI & Compliance",
+    skills: [
+      "HIPAA Compliance",
+      "PHI De-identification",
+      "Clinical Document Automation",
+      "EHR Workflow Integration",
+      "Neuropsychological AI",
+      "Human-in-the-Loop AI",
+      "Clinical Decision Support",
+    ],
+  },
+  {
+    category: "Programming & Tools",
+    skills: ["Python", "SQL", "Git", "REST APIs", "Streamlit", "fpdf2", "python-docx", "Jupyter Notebook"],
   },
   {
     category: "ML / Deep Learning",
@@ -31,12 +58,11 @@ const skillGroups = [
       "Hyperparameter Tuning",
       "Confusion Matrix",
       "Walk-Forward Validation",
-      "Backtesting",
     ],
   },
   {
-    category: "Data Tools & Visualization",
-    skills: ["Pandas", "NumPy", "Scikit-learn", "Matplotlib", "Seaborn", "Streamlit", "Power BI"],
+    category: "Data & Visualization",
+    skills: ["Pandas", "NumPy", "Scikit-learn", "Matplotlib", "Seaborn", "Power BI"],
   },
 ];
 
