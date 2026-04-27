@@ -71,7 +71,8 @@ export default function Experience() {
       id="experience"
       style={{
         padding: "120px 0",
-        background: "linear-gradient(180deg, var(--bg) 0%, var(--bg-card) 100%)",
+        background: "var(--bg)",
+        position: "relative",
       }}
     >
       <div style={{ maxWidth: "1100px", margin: "0 auto", padding: "0 32px" }}>
@@ -80,26 +81,29 @@ export default function Experience() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-80px" }}
           transition={{ duration: 0.6 }}
-          style={{ marginBottom: "64px" }}
+          style={{ marginBottom: "64px", textAlign: "center" }}
         >
           <p
+            className="text-glow"
             style={{
-              fontSize: "11px",
-              letterSpacing: "0.22em",
+              fontSize: "12px",
+              letterSpacing: "0.4em",
               color: "var(--accent-cyan)",
-              marginBottom: "10px",
+              marginBottom: "16px",
+              fontFamily: "var(--font-outfit)",
+              fontWeight: 500,
             }}
           >
-            PROFESSIONAL HISTORY
+            CHRONOLOGICAL EVOLUTION
           </p>
           <h2
-            className="font-heading"
             style={{
-              fontSize: "clamp(28px, 4vw, 48px)",
+              fontSize: "clamp(32px, 5vw, 56px)",
               fontWeight: 700,
-              color: "var(--text-primary)",
+              color: "white",
               letterSpacing: "-0.02em",
               margin: 0,
+              fontFamily: "var(--font-outfit)",
             }}
           >
             Experience
@@ -111,12 +115,12 @@ export default function Experience() {
           <div
             style={{
               position: "absolute",
-              left: "10px",
+              left: "14px",
               top: 0,
               bottom: 0,
-              width: "1px",
-              background:
-                "linear-gradient(180deg, var(--accent-cyan) 0%, rgba(0, 212, 255, 0.1) 100%)",
+              width: "2px",
+              background: "linear-gradient(180deg, var(--accent-cyan) 0%, rgba(124, 58, 237, 0.2) 100%)",
+              opacity: 0.3,
             }}
           />
 
@@ -130,24 +134,25 @@ export default function Experience() {
                 transition={{ duration: 0.5, delay: i * 0.1 }}
                 className="glass-panel"
                 style={{ 
-                  padding: "24px", 
+                  padding: "32px", 
                   position: "relative",
-                  borderRadius: "16px",
-                  marginLeft: "40px",
+                  borderRadius: "20px",
+                  marginLeft: "48px",
                 }}
               >
                 {/* Timeline dot */}
                 <div
                   style={{
                     position: "absolute",
-                    left: "-30px", // Align with line
-                    top: "32px",
-                    width: "13px",
-                    height: "13px",
+                    left: "-42px",
+                    top: "38px",
+                    width: "16px",
+                    height: "16px",
                     borderRadius: "50%",
-                    border: `2px solid ${job.current ? "var(--accent-cyan)" : "rgba(0, 212, 255, 0.35)"}`,
-                    background: job.current ? "var(--accent-cyan)" : "var(--bg)",
-                    boxShadow: job.current ? "0 0 12px rgba(0, 212, 255, 0.6)" : "none",
+                    background: job.current ? "var(--accent-cyan)" : "rgba(255, 255, 255, 0.1)",
+                    border: `4px solid var(--bg)`,
+                    boxShadow: job.current ? "0 0 15px var(--accent-cyan)" : "none",
+                    zIndex: 2,
                   }}
                 />
 
@@ -157,53 +162,56 @@ export default function Experience() {
                     justifyContent: "space-between",
                     alignItems: "flex-start",
                     flexWrap: "wrap",
-                    gap: "8px",
-                    marginBottom: "8px",
+                    gap: "12px",
+                    marginBottom: "16px",
                   }}
                 >
                   <div>
                     <h3
-                      className="font-heading"
                       style={{
-                        fontSize: "18px",
+                        fontSize: "20px",
                         fontWeight: 600,
-                        color: "var(--text-primary)",
-                        margin: "0 0 4px",
+                        color: "white",
+                        margin: "0 0 6px",
+                        fontFamily: "var(--font-outfit)",
                       }}
                     >
                       {job.role}
                     </h3>
                     <p
                       style={{
-                        fontSize: "13px",
+                        fontSize: "14px",
                         color: "var(--accent-cyan)",
                         margin: 0,
-                        opacity: 0.8,
+                        fontWeight: 500,
+                        fontFamily: "var(--font-outfit)",
                       }}
                     >
-                      {job.company} · {job.location}
+                      {job.company} <span style={{ color: "rgba(255,255,255,0.3)", margin: "0 8px" }}>|</span> {job.location}
                     </p>
                   </div>
-                  <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+                  <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
                     {job.current && (
                       <span
                         style={{
                           fontSize: "10px",
-                          letterSpacing: "0.12em",
+                          letterSpacing: "0.15em",
                           color: "var(--accent-cyan)",
                           border: "1px solid var(--accent-cyan)",
-                          padding: "3px 8px",
-                          borderRadius: "2px",
+                          padding: "4px 10px",
+                          borderRadius: "100px",
+                          fontWeight: 600,
                         }}
                       >
-                        CURRENT
+                        LIVE
                       </span>
                     )}
                     <span
                       style={{
-                        fontSize: "12px",
-                        color: "var(--text-muted)",
+                        fontSize: "13px",
+                        color: "rgba(255, 255, 255, 0.4)",
                         whiteSpace: "nowrap",
+                        fontFamily: "var(--font-outfit)",
                       }}
                     >
                       {job.period}
@@ -216,22 +224,23 @@ export default function Experience() {
                     <li
                       key={idx}
                       style={{
-                        fontSize: "13px",
-                        color: "var(--text-secondary)",
-                        paddingLeft: "16px",
+                        fontSize: "14px",
+                        color: "rgba(255, 255, 255, 0.6)",
+                        paddingLeft: "20px",
                         position: "relative",
-                        marginBottom: "6px",
-                        lineHeight: 1.65,
+                        marginBottom: "10px",
+                        lineHeight: 1.6,
                       }}
                     >
                       <span
                         style={{
                           position: "absolute",
                           left: 0,
-                          color: "rgba(0, 212, 255, 0.5)",
+                          color: "var(--accent-cyan)",
+                          opacity: 0.4,
                         }}
                       >
-                        ›
+                        ▹
                       </span>
                       {b}
                     </li>

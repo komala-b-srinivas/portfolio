@@ -1,5 +1,6 @@
 import Navbar from "@/components/Navbar";
 import NeuralScrollScene from "@/components/NeuralScrollScene";
+import NeuralConnectors from "@/components/NeuralConnectors";
 import Skills from "@/components/Skills";
 import Projects from "@/components/Projects";
 import Experience from "@/components/Experience";
@@ -10,6 +11,7 @@ export default function Home() {
   return (
     <main style={{ background: "var(--bg)" }}>
       <Navbar />
+      <NeuralConnectors />
 
       {/* Scroll-driven neural network hero — 500vh */}
       <NeuralScrollScene />

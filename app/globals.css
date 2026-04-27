@@ -1,55 +1,57 @@
 @import "tailwindcss";
 
 :root {
-  --bg: #05050f;
-  --bg-card: #0d0d1f;
+  --bg: #030308;
+  --bg-card: #080812;
   --accent-cyan: #00d4ff;
   --accent-purple: #7c3aed;
-  --accent-glow: rgba(0, 212, 255, 0.12);
-  --text-primary: #e2e8f0;
-  --text-secondary: #94a3b8;
-  --text-muted: #4a5568;
-  --border: rgba(255, 255, 255, 0.07);
-  --border-accent: rgba(0, 212, 255, 0.2);
+  --accent-glow: rgba(0, 212, 255, 0.15);
+  --text-primary: #ffffff;
+  --text-secondary: rgba(255, 255, 255, 0.6);
+  --text-muted: rgba(255, 255, 255, 0.3);
+  --border: rgba(255, 255, 255, 0.05);
+  --border-accent: rgba(0, 212, 255, 0.3);
+  --font-outfit: 'Outfit', sans-serif;
 }
 
 @theme inline {
   --color-background: var(--bg);
   --color-foreground: var(--text-primary);
-  --font-heading: var(--font-space-grotesk);
-  --font-body: var(--font-inter);
+  --font-heading: var(--font-outfit);
+  --font-body: var(--font-outfit);
 }
 
 html {
   scroll-behavior: smooth;
+  cursor: default;
 }
 
 body {
   background: var(--bg);
   color: var(--text-primary);
-  font-family: var(--font-inter), system-ui, sans-serif;
+  font-family: var(--font-outfit), system-ui, sans-serif;
   overflow-x: hidden;
 }
 
 ::selection {
-  background: rgba(0, 212, 255, 0.25);
-  color: #fff;
+  background: var(--accent-cyan);
+  color: #000;
 }
 
 ::-webkit-scrollbar {
-  width: 5px;
+  width: 4px;
 }
 ::-webkit-scrollbar-track {
   background: var(--bg);
 }
 ::-webkit-scrollbar-thumb {
-  background: rgba(0, 212, 255, 0.25);
-  border-radius: 3px;
+  background: var(--border-accent);
+  border-radius: 10px;
 }
 
 /* Utility classes */
 .font-heading {
-  font-family: var(--font-space-grotesk), system-ui, sans-serif;
+  font-family: var(--font-outfit), system-ui, sans-serif;
 }
 
 .glow-cyan {
@@ -61,21 +63,45 @@ body {
   background: var(--bg-card);
 }
 
-.card-border:hover {
-  border-color: var(--border-accent);
+.glass-panel {
+  background: rgba(255, 255, 255, 0.02);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  position: relative;
+  overflow: hidden;
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.glass-panel {
-  background: rgba(13, 13, 31, 0.4);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+.glass-panel::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    rgba(18, 16, 16, 0) 50%,
+    rgba(0, 0, 0, 0.1) 50%
+  );
+  background-size: 100% 4px;
+  pointer-events: none;
+  opacity: 0.1;
+  z-index: 1;
 }
 
 .glass-panel:hover {
-  border: 1px solid rgba(0, 212, 255, 0.3);
-  background: rgba(13, 13, 31, 0.6);
+  border-color: rgba(0, 212, 255, 0.3);
+  background: rgba(255, 255, 255, 0.04);
+  box-shadow: 0 0 40px rgba(0, 212, 255, 0.1);
+  transform: translateY(-2px);
+}
+
+.text-glow {
+  text-shadow: 0 0 15px rgba(0, 212, 255, 0.4);
+}
+
+.neural-line {
+  stroke-dasharray: 1000;
+  stroke-dashoffset: 1000;
+  filter: drop-shadow(0 0 5px var(--accent-cyan));
 }
 
 @keyframes pulse-glow {

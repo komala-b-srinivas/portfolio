@@ -104,6 +104,7 @@ export default function Projects() {
       style={{
         padding: "120px 0",
         background: "var(--bg)",
+        position: "relative",
       }}
     >
       <div style={{ maxWidth: "1100px", margin: "0 auto", padding: "0 32px" }}>
@@ -113,34 +114,37 @@ export default function Projects() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-80px" }}
           transition={{ duration: 0.6 }}
-          style={{ marginBottom: "64px" }}
+          style={{ marginBottom: "64px", textAlign: "center" }}
         >
           <p
+            className="text-glow"
             style={{
-              fontSize: "11px",
-              letterSpacing: "0.22em",
+              fontSize: "12px",
+              letterSpacing: "0.4em",
               color: "var(--accent-cyan)",
-              marginBottom: "10px",
+              marginBottom: "16px",
+              fontFamily: "var(--font-outfit)",
+              fontWeight: 500,
             }}
           >
-            SELECTED WORK
+            SELECTED ARCHITECTURES
           </p>
           <h2
-            className="font-heading"
             style={{
-              fontSize: "clamp(28px, 4vw, 48px)",
+              fontSize: "clamp(32px, 5vw, 56px)",
               fontWeight: 700,
-              color: "var(--text-primary)",
+              color: "white",
               letterSpacing: "-0.02em",
               margin: 0,
+              fontFamily: "var(--font-outfit)",
             }}
           >
-            Projects &amp; Patents
+            Projects & Patents
           </h2>
         </motion.div>
 
         {/* Project cards */}
-        <div style={{ display: "flex", flexDirection: "column", gap: "2px" }}>
+        <div style={{ display: "flex", flexDirection: "column", gap: "32px" }}>
           {projects.map((project, i) => (
             <motion.div
               key={project.id}
@@ -152,53 +156,25 @@ export default function Projects() {
               <div
                 className="glass-panel"
                 style={{
-                  padding: "36px 40px",
-                  border: `1px solid ${project.patent ? "rgba(245, 158, 11, 0.25)" : "var(--border)"}`,
-                  borderRadius: "16px",
+                  padding: "40px",
+                  borderRadius: "24px",
                   cursor: "default",
-                  transition: "all 0.3s ease",
                   position: "relative",
                   overflow: "hidden",
                 }}
-                onMouseEnter={(e) => {
-                  (e.currentTarget as HTMLDivElement).style.borderColor = project.patent
-                    ? "rgba(245, 158, 11, 0.35)"
-                    : "rgba(0, 212, 255, 0.2)";
-                  (e.currentTarget as HTMLDivElement).style.background = "rgba(13, 13, 31, 0.9)";
-                }}
-                onMouseLeave={(e) => {
-                  (e.currentTarget as HTMLDivElement).style.borderColor = project.patent
-                    ? "rgba(245, 158, 11, 0.15)"
-                    : "var(--border)";
-                  (e.currentTarget as HTMLDivElement).style.background = "var(--bg-card)";
-                }}
               >
-                {/* Patent top accent bar */}
-                {project.patent && (
-                  <div
-                    style={{
-                      position: "absolute",
-                      top: 0,
-                      left: 0,
-                      right: 0,
-                      height: "2px",
-                      background: "linear-gradient(90deg, #f59e0b, #fbbf24)",
-                    }}
-                  />
-                )}
-
                 {/* Number accent */}
                 <span
-                  className="font-heading"
                   style={{
                     position: "absolute",
-                    top: "20px",
-                    right: "32px",
-                    fontSize: "64px",
+                    top: "32px",
+                    right: "40px",
+                    fontSize: "72px",
                     fontWeight: 700,
-                    color: project.patent ? "rgba(245, 158, 11, 0.05)" : "rgba(0, 212, 255, 0.04)",
+                    color: project.patent ? "rgba(245, 158, 11, 0.03)" : "rgba(0, 242, 255, 0.03)",
                     lineHeight: 1,
                     userSelect: "none",
+                    fontFamily: "var(--font-outfit)",
                   }}
                 >
                   {project.id}
@@ -210,19 +186,19 @@ export default function Projects() {
                     style={{
                       display: "flex",
                       alignItems: "center",
-                      gap: "12px",
-                      marginBottom: "6px",
+                      gap: "16px",
+                      marginBottom: "12px",
                       flexWrap: "wrap",
                     }}
                   >
                     <h3
-                      className="font-heading"
                       style={{
-                        fontSize: "22px",
+                        fontSize: "28px",
                         fontWeight: 600,
-                        color: "var(--text-primary)",
+                        color: "white",
                         margin: 0,
                         letterSpacing: "-0.01em",
+                        fontFamily: "var(--font-outfit)",
                       }}
                     >
                       {project.title}
@@ -230,30 +206,34 @@ export default function Projects() {
                     <span
                       style={{
                         fontSize: "10px",
-                        letterSpacing: "0.14em",
+                        letterSpacing: "0.15em",
                         color: project.statusColor,
                         border: `1px solid ${project.statusColor}`,
-                        padding: "3px 8px",
-                        borderRadius: "2px",
+                        padding: "4px 10px",
+                        borderRadius: "100px",
                         whiteSpace: "nowrap",
+                        fontWeight: 600,
                       }}
                     >
                       {project.status}
                     </span>
                     {project.period && (
-                      <span style={{ fontSize: "11px", color: "var(--text-muted)" }}>
+                      <span style={{ fontSize: "12px", color: "rgba(255, 255, 255, 0.4)", fontFamily: "var(--font-outfit)" }}>
                         {project.period}
                       </span>
                     )}
                   </div>
 
                   <p
+                    className="text-glow"
                     style={{
-                      fontSize: "13px",
+                      fontSize: "14px",
                       color: project.patent ? "#f59e0b" : "var(--accent-cyan)",
-                      marginBottom: "14px",
-                      letterSpacing: "0.04em",
-                      opacity: project.patent ? 0.85 : 1,
+                      marginBottom: "20px",
+                      letterSpacing: "0.1em",
+                      fontWeight: 500,
+                      textTransform: "uppercase",
+                      fontFamily: "var(--font-outfit)",
                     }}
                   >
                     {project.subtitle}
@@ -261,11 +241,12 @@ export default function Projects() {
 
                   <p
                     style={{
-                      fontSize: "14px",
-                      color: "var(--text-secondary)",
-                      lineHeight: 1.7,
-                      marginBottom: "20px",
-                      maxWidth: "680px",
+                      fontSize: "16px",
+                      color: "rgba(255, 255, 255, 0.7)",
+                      lineHeight: 1.6,
+                      marginBottom: "24px",
+                      maxWidth: "750px",
+                      fontWeight: 300,
                     }}
                   >
                     {project.description}
@@ -275,54 +256,58 @@ export default function Projects() {
                   {project.patent && (
                     <div
                       style={{
-                        marginBottom: "20px",
-                        padding: "14px 18px",
-                        border: "1px solid rgba(245, 158, 11, 0.2)",
-                        borderRadius: "2px",
-                        background: "rgba(245, 158, 11, 0.04)",
+                        marginBottom: "24px",
+                        padding: "20px",
+                        border: "1px solid rgba(245, 158, 11, 0.1)",
+                        borderRadius: "16px",
+                        background: "rgba(245, 158, 11, 0.03)",
                         display: "inline-flex",
                         flexDirection: "column",
-                        gap: "5px",
+                        gap: "8px",
+                        width: "100%",
+                        maxWidth: "500px",
                       }}
                     >
-                      <span style={{ fontSize: "10px", letterSpacing: "0.15em", color: "#f59e0b" }}>
-                        GERMAN UTILITY PATENT
+                      <span style={{ fontSize: "11px", letterSpacing: "0.2em", color: "#f59e0b", fontWeight: 600 }}>
+                        DEUTSCHES PATENT- UND MARKENAMT
                       </span>
-                      <span style={{ fontSize: "13px", color: "var(--text-primary)", fontWeight: 500 }}>
+                      <span style={{ fontSize: "15px", color: "white", fontWeight: 500, fontFamily: "var(--font-outfit)" }}>
                         {project.patent.number}
                       </span>
-                      <span style={{ fontSize: "12px", color: "var(--text-secondary)" }}>
-                        {project.patent.office} · Registered {project.patent.registered}
+                      <span style={{ fontSize: "13px", color: "rgba(255, 255, 255, 0.5)" }}>
+                        Registered {project.patent.registered} · Munich, Germany
                       </span>
                       <a
                         href={project.patent.link}
                         target="_blank"
                         rel="noopener noreferrer"
                         style={{
-                          fontSize: "11px",
+                          fontSize: "12px",
                           color: "#f59e0b",
                           textDecoration: "none",
-                          letterSpacing: "0.08em",
-                          marginTop: "2px",
+                          fontWeight: 500,
+                          marginTop: "4px",
+                          display: "flex",
+                          alignItems: "center",
+                          gap: "4px",
                         }}
-                        onClick={(e) => e.stopPropagation()}
                       >
-                        View DPMA Register →
+                        View Legal Register ↗
                       </a>
                     </div>
                   )}
 
                   {/* Highlights */}
-                  <ul style={{ margin: "0 0 20px", padding: 0, listStyle: "none" }}>
+                  <ul style={{ margin: "0 0 24px", padding: 0, listStyle: "none" }}>
                     {project.highlights.map((h, idx) => (
                       <li
                         key={idx}
                         style={{
-                          fontSize: "13px",
-                          color: "var(--text-secondary)",
-                          paddingLeft: "16px",
+                          fontSize: "14px",
+                          color: "rgba(255, 255, 255, 0.6)",
+                          paddingLeft: "20px",
                           position: "relative",
-                          marginBottom: "6px",
+                          marginBottom: "10px",
                           lineHeight: 1.6,
                         }}
                       >
@@ -331,9 +316,10 @@ export default function Projects() {
                             position: "absolute",
                             left: 0,
                             color: project.patent ? "#f59e0b" : "var(--accent-cyan)",
+                            opacity: 0.6,
                           }}
                         >
-                          ›
+                          ●
                         </span>
                         {h}
                       </li>
@@ -341,17 +327,18 @@ export default function Projects() {
                   </ul>
 
                   {/* Tags */}
-                  <div style={{ display: "flex", flexWrap: "wrap", gap: "8px" }}>
+                  <div style={{ display: "flex", flexWrap: "wrap", gap: "10px" }}>
                     {project.tags.map((tag) => (
                       <span
                         key={tag}
                         style={{
-                          fontSize: "11px",
-                          letterSpacing: "0.06em",
-                          color: "var(--text-muted)",
-                          border: "1px solid var(--border)",
-                          padding: "4px 10px",
-                          borderRadius: "2px",
+                          fontSize: "12px",
+                          color: "rgba(255, 255, 255, 0.5)",
+                          background: "rgba(255, 255, 255, 0.03)",
+                          border: "1px solid rgba(255, 255, 255, 0.05)",
+                          padding: "6px 12px",
+                          borderRadius: "8px",
+                          fontFamily: "var(--font-outfit)",
                         }}
                       >
                         {tag}

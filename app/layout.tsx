@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Space_Grotesk, Inter } from "next/font/google";
+import { Space_Grotesk, Inter, Outfit } from "next/font/google";
 import ChatbotWidget from "@/components/ChatbotWidget";
 import "./globals.css";
 
@@ -13,6 +13,12 @@ const inter = Inter({
   variable: "--font-inter",
   subsets: ["latin"],
   weight: ["300", "400", "500", "600"],
+});
+
+const outfit = Outfit({
+  variable: "--font-outfit",
+  subsets: ["latin"],
+  weight: ["300", "400", "500", "600", "700"],
 });
 
 export const metadata: Metadata = {
@@ -53,7 +59,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${spaceGrotesk.variable} ${inter.variable}`}
+      className={`${spaceGrotesk.variable} ${inter.variable} ${outfit.variable}`}
     >
       <body className="antialiased">
         {children}

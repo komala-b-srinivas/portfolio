@@ -87,28 +87,39 @@ export default function ChatbotWidget() {
             initial={{ scale: 0, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             exit={{ scale: 0, opacity: 0 }}
-            whileHover={{ scale: 1.1 }}
+            whileHover={{ scale: 1.1, boxShadow: "0 0 20px rgba(0, 242, 255, 0.6)" }}
             whileTap={{ scale: 0.9 }}
             onClick={() => setIsOpen(true)}
             style={{
               position: "fixed",
-              bottom: "24px",
-              right: "24px",
+              bottom: "32px",
+              right: "32px",
               zIndex: 100,
-              width: "56px",
-              height: "56px",
+              width: "64px",
+              height: "64px",
               borderRadius: "50%",
-              background: "linear-gradient(135deg, #00d4ff, #7c3aed)",
-              border: "none",
+              background: "rgba(0, 0, 0, 0.8)",
+              border: "1px solid rgba(0, 242, 255, 0.3)",
               color: "white",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
-              boxShadow: "0 8px 32px rgba(0, 212, 255, 0.4)",
+              boxShadow: "0 8px 32px rgba(0, 0, 0, 0.5)",
               cursor: "pointer",
+              backdropFilter: "blur(12px)",
             }}
           >
-            <MessageSquare size={24} />
+            <div 
+              style={{
+                position: "absolute",
+                inset: "-2px",
+                borderRadius: "50%",
+                background: "linear-gradient(135deg, var(--accent-cyan), var(--accent-purple))",
+                opacity: 0.4,
+                zIndex: -1,
+              }}
+            />
+            <MessageSquare size={28} className="text-glow" style={{ color: "var(--accent-cyan)" }} />
           </motion.button>
         )}
       </AnimatePresence>
@@ -117,61 +128,62 @@ export default function ChatbotWidget() {
       <AnimatePresence>
         {isOpen && (
           <motion.div
-            initial={{ opacity: 0, y: 20, scale: 0.9 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: 20, scale: 0.9 }}
+            initial={{ opacity: 0, y: 20, scale: 0.9, filter: "blur(10px)" }}
+            animate={{ opacity: 1, y: 0, scale: 1, filter: "blur(0px)" }}
+            exit={{ opacity: 0, y: 20, scale: 0.9, filter: "blur(10px)" }}
             transition={{ type: "spring", stiffness: 300, damping: 25 }}
             style={{
               position: "fixed",
-              bottom: "24px",
-              right: "24px",
+              bottom: "32px",
+              right: "32px",
               zIndex: 100,
-              width: "350px",
-              height: "500px",
-              maxWidth: "calc(100vw - 48px)",
-              maxHeight: "calc(100vh - 48px)",
-              background: "rgba(13, 13, 31, 0.85)",
-              backdropFilter: "blur(16px)",
-              WebkitBackdropFilter: "blur(16px)",
-              border: "1px solid rgba(0, 212, 255, 0.2)",
-              borderRadius: "16px",
+              width: "400px",
+              height: "600px",
+              maxWidth: "calc(100vw - 64px)",
+              maxHeight: "calc(100vh - 64px)",
+              background: "rgba(10, 10, 15, 0.8)",
+              backdropFilter: "blur(24px)",
+              WebkitBackdropFilter: "blur(24px)",
+              border: "1px solid rgba(255, 255, 255, 0.1)",
+              borderRadius: "24px",
               display: "flex",
               flexDirection: "column",
-              boxShadow: "0 12px 48px rgba(0, 0, 0, 0.5)",
+              boxShadow: "0 24px 64px rgba(0, 0, 0, 0.8)",
               overflow: "hidden",
             }}
           >
             {/* Header */}
             <div
               style={{
-                padding: "16px 20px",
-                borderBottom: "1px solid rgba(255, 255, 255, 0.1)",
+                padding: "24px",
+                borderBottom: "1px solid rgba(255, 255, 255, 0.05)",
                 display: "flex",
                 justifyContent: "space-between",
                 alignItems: "center",
                 background: "rgba(0, 0, 0, 0.2)",
               }}
             >
-              <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+              <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
                 <div
                   style={{
-                    width: "8px",
-                    height: "8px",
+                    width: "10px",
+                    height: "10px",
                     borderRadius: "50%",
-                    background: "#00d4ff",
-                    boxShadow: "0 0 8px #00d4ff",
+                    background: "var(--accent-cyan)",
+                    boxShadow: "0 0 12px var(--accent-cyan)",
                   }}
                 />
                 <span
                   style={{
                     fontSize: "14px",
-                    fontWeight: 600,
+                    fontWeight: 700,
                     color: "white",
-                    fontFamily: "var(--font-space-grotesk)",
-                    letterSpacing: "0.05em",
+                    fontFamily: "var(--font-outfit)",
+                    letterSpacing: "0.15em",
+                    textTransform: "uppercase",
                   }}
                 >
-                  AI ASSISTANT
+                  Neural Assistant
                 </span>
               </div>
               <button
@@ -179,10 +191,13 @@ export default function ChatbotWidget() {
                 style={{
                   background: "transparent",
                   border: "none",
-                  color: "rgba(255, 255, 255, 0.6)",
+                  color: "rgba(255, 255, 255, 0.4)",
                   cursor: "pointer",
                   display: "flex",
+                  transition: "color 0.2s",
                 }}
+                onMouseEnter={(e) => (e.currentTarget.style.color = "white")}
+                onMouseLeave={(e) => (e.currentTarget.style.color = "rgba(255, 255, 255, 0.4)")}
               >
                 <X size={20} />
               </button>
@@ -193,10 +208,10 @@ export default function ChatbotWidget() {
               style={{
                 flex: 1,
                 overflowY: "auto",
-                padding: "20px",
+                padding: "24px",
                 display: "flex",
                 flexDirection: "column",
-                gap: "16px",
+                gap: "20px",
               }}
             >
               {messages.map((msg) => (
@@ -204,38 +219,40 @@ export default function ChatbotWidget() {
                   key={msg.id}
                   style={{
                     display: "flex",
-                    gap: "12px",
+                    gap: "14px",
                     alignItems: "flex-start",
                     flexDirection: msg.role === "user" ? "row-reverse" : "row",
                   }}
                 >
                   <div
                     style={{
-                      width: "32px",
-                      height: "32px",
-                      borderRadius: "50%",
-                      background: msg.role !== "user" ? "rgba(0, 212, 255, 0.15)" : "rgba(124, 58, 237, 0.15)",
+                      width: "36px",
+                      height: "36px",
+                      borderRadius: "12px",
+                      background: msg.role !== "user" ? "rgba(0, 242, 255, 0.1)" : "rgba(124, 58, 237, 0.1)",
+                      border: `1px solid ${msg.role !== "user" ? "rgba(0, 242, 255, 0.2)" : "rgba(124, 58, 237, 0.2)"}`,
                       display: "flex",
                       alignItems: "center",
                       justifyContent: "center",
                       flexShrink: 0,
                     }}
                   >
-                    {msg.role !== "user" ? <Bot size={16} color="#00d4ff" /> : <User size={16} color="#7c3aed" />}
+                    {msg.role !== "user" ? <Bot size={18} color="var(--accent-cyan)" /> : <User size={18} color="var(--accent-purple)" />}
                   </div>
                   <div
+                    className="glass-panel"
                     style={{
-                      background: msg.role !== "user" ? "rgba(255, 255, 255, 0.05)" : "rgba(124, 58, 237, 0.2)",
-                      border: msg.role !== "user" ? "1px solid rgba(255, 255, 255, 0.1)" : "1px solid rgba(124, 58, 237, 0.4)",
-                      padding: "12px 16px",
-                      borderRadius: "12px",
-                      borderTopLeftRadius: msg.role !== "user" ? "2px" : "12px",
-                      borderTopRightRadius: msg.role === "user" ? "2px" : "12px",
-                      fontSize: "14px",
-                      lineHeight: 1.5,
-                      color: "white",
-                      maxWidth: "85%",
+                      padding: "16px 20px",
+                      borderRadius: "18px",
+                      borderTopLeftRadius: msg.role !== "user" ? "4px" : "18px",
+                      borderTopRightRadius: msg.role === "user" ? "4px" : "18px",
+                      fontSize: "15px",
+                      lineHeight: 1.6,
+                      color: "rgba(255, 255, 255, 0.8)",
+                      maxWidth: "80%",
                       whiteSpace: "pre-wrap",
+                      fontFamily: "var(--font-outfit)",
+                      fontWeight: 300,
                     }}
                   >
                     {msg.content}
@@ -243,33 +260,33 @@ export default function ChatbotWidget() {
                 </div>
               ))}
               {isLoading && (
-                <div style={{ display: "flex", gap: "12px", alignItems: "center" }}>
+                <div style={{ display: "flex", gap: "14px", alignItems: "center" }}>
                   <div
                     style={{
-                      width: "32px",
-                      height: "32px",
-                      borderRadius: "50%",
-                      background: "rgba(0, 212, 255, 0.15)",
+                      width: "36px",
+                      height: "36px",
+                      borderRadius: "12px",
+                      background: "rgba(0, 242, 255, 0.1)",
+                      border: "1px solid rgba(0, 242, 255, 0.2)",
                       display: "flex",
                       alignItems: "center",
                       justifyContent: "center",
                     }}
                   >
-                    <Bot size={16} color="#00d4ff" />
+                    <Bot size={18} color="var(--accent-cyan)" />
                   </div>
                   <div
+                    className="glass-panel"
                     style={{
-                      background: "rgba(255, 255, 255, 0.05)",
-                      border: "1px solid rgba(255, 255, 255, 0.1)",
-                      padding: "12px 16px",
-                      borderRadius: "12px",
-                      borderTopLeftRadius: "2px",
+                      padding: "16px 20px",
+                      borderRadius: "18px",
+                      borderTopLeftRadius: "4px",
                     }}
                   >
                     <motion.div
                       animate={{ opacity: [0.3, 1, 0.3] }}
                       transition={{ duration: 1.5, repeat: Infinity }}
-                      style={{ fontSize: "20px", lineHeight: 0.5, color: "#00d4ff" }}
+                      style={{ fontSize: "24px", lineHeight: 0.5, color: "var(--accent-cyan)" }}
                     >
                       ...
                     </motion.div>
@@ -282,53 +299,63 @@ export default function ChatbotWidget() {
             {/* Input Area */}
             <div
               style={{
-                padding: "16px",
-                borderTop: "1px solid rgba(255, 255, 255, 0.1)",
-                background: "rgba(0, 0, 0, 0.2)",
+                padding: "24px",
+                borderTop: "1px solid rgba(255, 255, 255, 0.05)",
+                background: "rgba(0, 0, 0, 0.3)",
               }}
             >
               <form
                 onSubmit={handleSubmit}
                 style={{
                   display: "flex",
-                  gap: "10px",
+                  gap: "12px",
                 }}
               >
                 <input
                   type="text"
                   value={inputValue}
                   onChange={(e) => setInputValue(e.target.value)}
-                  placeholder="Ask a question..."
+                  placeholder="Query the system..."
                   disabled={isLoading}
                   style={{
                     flex: 1,
-                    background: "rgba(255, 255, 255, 0.05)",
+                    background: "rgba(255, 255, 255, 0.03)",
                     border: "1px solid rgba(255, 255, 255, 0.1)",
-                    borderRadius: "8px",
-                    padding: "10px 14px",
+                    borderRadius: "14px",
+                    padding: "14px 20px",
                     color: "white",
-                    fontSize: "14px",
+                    fontSize: "15px",
                     outline: "none",
+                    fontFamily: "var(--font-outfit)",
+                    transition: "border-color 0.2s",
                   }}
+                  onFocus={(e) => (e.currentTarget.style.borderColor = "var(--accent-cyan)")}
+                  onBlur={(e) => (e.currentTarget.style.borderColor = "rgba(255, 255, 255, 0.1)")}
                 />
                 <button
                   type="submit"
                   disabled={!inputValue.trim() || isLoading}
                   style={{
-                    background: inputValue.trim() && !isLoading ? "var(--accent-cyan)" : "rgba(255, 255, 255, 0.1)",
+                    background: inputValue.trim() && !isLoading ? "white" : "rgba(255, 255, 255, 0.05)",
                     border: "none",
-                    borderRadius: "8px",
-                    width: "42px",
-                    height: "42px",
+                    borderRadius: "14px",
+                    width: "52px",
+                    height: "52px",
                     display: "flex",
                     alignItems: "center",
                     justifyContent: "center",
-                    color: inputValue.trim() && !isLoading ? "#000" : "rgba(255, 255, 255, 0.3)",
+                    color: inputValue.trim() && !isLoading ? "black" : "rgba(255, 255, 255, 0.2)",
                     cursor: inputValue.trim() && !isLoading ? "pointer" : "default",
-                    transition: "all 0.2s",
+                    transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
+                  }}
+                  onMouseEnter={(e) => {
+                    if (inputValue.trim() && !isLoading) e.currentTarget.style.transform = "scale(1.05)";
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.transform = "scale(1)";
                   }}
                 >
-                  <Send size={18} />
+                  <Send size={22} />
                 </button>
               </form>
             </div>

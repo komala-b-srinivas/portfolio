@@ -1,33 +1,30 @@
 "use client";
 
 import { MotionValue, motion, useTransform, useMotionTemplate } from "framer-motion";
+import Image from "next/image";
 
 interface Props {
   scrollYProgress: MotionValue<number>;
 }
 
 export default function HeroHUD({ scrollYProgress }: Props) {
-  // Phase 1: 0% – 35%: Identity
-  const phase1Opacity = useTransform(scrollYProgress, [0, 0.05, 0.28, 0.38], [0, 1, 1, 0]);
-  const phase1Y = useTransform(scrollYProgress, [0, 0.05], [20, 0]);
+  // Phase 1: 0% – 35%: Identity & Visual Synthesis
+  const phase1Opacity = useTransform(scrollYProgress, [0, 0.05, 0.32, 0.42], [0, 1, 1, 0]);
+  const phase1Scale = useTransform(scrollYProgress, [0, 0.1], [1.1, 1]);
+  const phase1Blur = useTransform(scrollYProgress, [0, 0.1], ["10px", "0px"]);
+  const phase1Y = useTransform(scrollYProgress, [0, 0.4], [0, -50]); // Parallax
 
   // Phase 2: 35% – 70%: Skills readout
-  const phase2Opacity = useTransform(scrollYProgress, [0.33, 0.42, 0.62, 0.72], [0, 1, 1, 0]);
+  const phase2Opacity = useTransform(scrollYProgress, [0.38, 0.48, 0.65, 0.75], [0, 1, 1, 0]);
+  const phase2Scale = useTransform(scrollYProgress, [0.38, 0.48], [0.95, 1]);
 
   // Phase 3: 70% – 100%: Call to action
-  const phase3Opacity = useTransform(scrollYProgress, [0.68, 0.78, 0.95, 1], [0, 1, 1, 1]);
+  const phase3Opacity = useTransform(scrollYProgress, [0.7, 0.8, 0.95, 1], [0, 1, 1, 1]);
+  const phase3Y = useTransform(scrollYProgress, [0.7, 0.8], [20, 0]);
 
   // Frame counter
   const frameNum = useTransform(scrollYProgress, (v) => Math.round(v * 100));
-  const progressLabel = useMotionTemplate`PROGRESS: ${frameNum}%`;
-
-  const skills = [
-    { label: "LLM Integration · Prompt Engineering · NLP", value: 94 },
-    { label: "AI Automation · Workflow Design", value: 92 },
-    { label: "Python · Streamlit · REST APIs", value: 90 },
-    { label: "Deep Learning · Multimodal AI", value: 86 },
-    { label: "HIPAA · Healthcare AI · Clinical NLP", value: 83 },
-  ];
+  const progressLabel = useMotionTemplate`SYNC: ${frameNum}%`;
 
   return (
     <div
@@ -39,30 +36,75 @@ export default function HeroHUD({ scrollYProgress }: Props) {
         overflow: "hidden",
       }}
     >
-      {/* Corner HUD elements */}
+      {/* ────── BACKGROUND VISUAL SYNTHESIS ────── */}
+      <motion.div
+        style={{
+          position: "absolute",
+          inset: 0,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          opacity: phase1Opacity,
+          scale: phase1Scale,
+          y: phase1Y,
+          filter: `blur(${phase1Blur})`,
+        }}
+      >
+        <div style={{ position: "relative", width: "100%", height: "100%" }}>
+          <Image
+            src="/hero-synthesis.png"
+            alt="AI Human Synthesis"
+            fill
+            style={{ objectFit: "cover", opacity: 0.7 }}
+            priority
+          />
+          {/* Energy Pulse Overlay */}
+          <motion.div
+            animate={{ 
+              opacity: [0.2, 0.6, 0.2],
+              scale: [1, 1.1, 1],
+              filter: ["hue-rotate(0deg)", "hue-rotate(30deg)", "hue-rotate(0deg)"]
+            }}
+            transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+            style={{
+              position: "absolute",
+              inset: 0,
+              background: "radial-gradient(circle at 50% 50%, rgba(0, 242, 255, 0.2) 0%, transparent 70%)",
+            }}
+          />
+        </div>
+      </motion.div>
+
+      {/* Header Info */}
       <div
         style={{
           position: "absolute",
           top: 80,
-          left: 32,
-          fontSize: "10px",
-          letterSpacing: "0.15em",
-          color: "rgba(0, 212, 255, 0.4)",
-          fontFamily: "var(--font-space-grotesk), monospace",
+          left: 40,
+          display: "flex",
+          flexDirection: "column",
+          gap: "4px",
         }}
       >
-        NEURAL_NET.INIT
+        <span style={{ fontSize: "10px", letterSpacing: "0.2em", color: "var(--accent-cyan)", opacity: 0.6, fontFamily: "var(--font-outfit)", fontWeight: 600 }}>
+          SYSTEM.CORE: NEURAL_BRIDGE
+        </span>
+        <span style={{ fontSize: "12px", letterSpacing: "0.1em", color: "white", fontWeight: 300, fontFamily: "var(--font-outfit)" }}>
+          STATUS: OPTIMIZED
+        </span>
       </div>
+
       <motion.div
         style={{
           position: "absolute",
           top: 80,
-          right: 32,
-          fontSize: "10px",
-          letterSpacing: "0.15em",
-          color: "rgba(0, 212, 255, 0.4)",
-          fontFamily: "var(--font-space-grotesk), monospace",
+          right: 40,
+          fontSize: "12px",
+          letterSpacing: "0.2em",
+          color: "var(--accent-cyan)",
+          fontFamily: "var(--font-outfit)",
           opacity: phase1Opacity,
+          fontWeight: 600,
         }}
       >
         <motion.span>{progressLabel}</motion.span>
@@ -72,296 +114,220 @@ export default function HeroHUD({ scrollYProgress }: Props) {
       <motion.div
         style={{
           position: "absolute",
-          bottom: "12%",
-          left: "8%",
-          right: "8%",
+          top: "55%",
+          left: "50%",
+          transform: "translate(-50%, -50%)",
+          textAlign: "center",
+          width: "100%",
+          padding: "0 20px",
           opacity: phase1Opacity,
-          y: phase1Y,
         }}
       >
-        <p
+        <motion.p
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.2 }}
+          className="text-glow"
           style={{
-            fontSize: "11px",
-            letterSpacing: "0.25em",
+            fontSize: "13px",
+            letterSpacing: "0.5em",
             color: "var(--accent-cyan)",
-            marginBottom: "12px",
-            fontFamily: "var(--font-space-grotesk), monospace",
+            marginBottom: "24px",
+            fontFamily: "var(--font-outfit)",
+            textTransform: "uppercase",
+            fontWeight: 600,
           }}
         >
-          AI AUTOMATION ENGINEER · NEW YORK, NY
-        </p>
+          Neural Synthesis Engineering
+        </motion.p>
         <h1
-          className="font-heading"
           style={{
-            fontSize: "clamp(36px, 7vw, 88px)",
-            fontWeight: 700,
-            lineHeight: 1.0,
-            color: "#e2e8f0",
-            letterSpacing: "-0.02em",
-            margin: "0 0 16px",
+            fontSize: "clamp(48px, 11vw, 130px)",
+            fontWeight: 800,
+            lineHeight: 0.85,
+            color: "#fff",
+            letterSpacing: "-0.05em",
+            margin: "0 0 32px",
+            fontFamily: "var(--font-outfit)",
+            textShadow: "0 0 60px rgba(0, 242, 255, 0.4)",
           }}
         >
-          Komala
+          KOMALA
           <br />
           <span
             style={{
-              WebkitTextStroke: "1px rgba(0, 212, 255, 0.6)",
               color: "transparent",
+              WebkitTextStroke: "1.5px rgba(255, 255, 255, 0.3)",
             }}
           >
-            Belur Srinivas
+            BELUR SRINIVAS
           </span>
         </h1>
         <p
           style={{
-            fontSize: "clamp(14px, 1.8vw, 18px)",
-            color: "var(--text-secondary)",
-            maxWidth: "480px",
+            fontSize: "clamp(18px, 2.5vw, 24px)",
+            color: "rgba(255, 255, 255, 0.7)",
+            maxWidth: "700px",
+            margin: "0 auto",
             lineHeight: 1.6,
-            fontWeight: 400,
+            fontWeight: 300,
+            fontFamily: "var(--font-outfit)",
           }}
         >
-          Building intelligent systems that transform raw data into
-          trustworthy, deployable AI.
+          Bridging the divide between organic intuition and machine precision 
+          through <span className="text-glow" style={{ color: "var(--accent-cyan)", fontWeight: 500 }}>visionary AI automation.</span>
         </p>
-
-        {/* Bottom tag row */}
-        <div
-          style={{
-            display: "flex",
-            gap: "24px",
-            marginTop: "28px",
-            flexWrap: "wrap",
-          }}
-        >
-          {["M.S. CS · Hofstra University", "AI Automation", "Healthcare AI"].map((tag) => (
-            <span
-              key={tag}
-              style={{
-                fontSize: "11px",
-                letterSpacing: "0.12em",
-                color: "rgba(0, 212, 255, 0.55)",
-                borderLeft: "2px solid rgba(0, 212, 255, 0.3)",
-                paddingLeft: "10px",
-              }}
-            >
-              {tag}
-            </span>
-          ))}
-        </div>
       </motion.div>
 
-      {/* ────── PHASE 2: Skills readout ────── */}
+      {/* ────── PHASE 2: Capability Matrix ────── */}
       <motion.div
         style={{
           position: "absolute",
           top: "50%",
-          right: "6%",
-          transform: "translateY(-50%)",
+          left: "50%",
+          transform: "translate(-50%, -50%)",
           opacity: phase2Opacity,
-          width: "min(320px, 38vw)",
+          scale: phase2Scale,
+          width: "min(600px, 90vw)",
+          display: "grid",
+          gridTemplateColumns: "repeat(auto-fit, minmax(250px, 1fr))",
+          gap: "40px",
         }}
       >
-        <p
-          style={{
-            fontSize: "10px",
-            letterSpacing: "0.2em",
-            color: "rgba(0, 212, 255, 0.5)",
-            marginBottom: "20px",
-          }}
-        >
-          CAPABILITY MATRIX
-        </p>
-        <div style={{ display: "flex", flexDirection: "column", gap: "14px" }}>
-          {skills.map((skill) => (
-            <div key={skill.label}>
-              <div
-                style={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  marginBottom: "5px",
-                }}
-              >
-                <span
-                  style={{
-                    fontSize: "11px",
-                    color: "var(--text-secondary)",
-                    letterSpacing: "0.04em",
-                  }}
-                >
-                  {skill.label}
-                </span>
-                <span
-                  style={{
-                    fontSize: "11px",
-                    color: "var(--accent-cyan)",
-                    fontFamily: "monospace",
-                  }}
-                >
-                  {skill.value}
-                </span>
-              </div>
-              <div
-                style={{
-                  height: "2px",
-                  background: "rgba(255,255,255,0.06)",
-                  borderRadius: "1px",
-                  overflow: "hidden",
-                }}
-              >
-                <motion.div
-                  initial={{ width: 0 }}
-                  whileInView={{ width: `${skill.value}%` }}
-                  transition={{ duration: 1.2, ease: "easeOut", delay: 0.1 }}
-                  viewport={{ once: false }}
-                  style={{
-                    height: "100%",
-                    background: `linear-gradient(90deg, var(--accent-cyan), var(--accent-purple))`,
-                    borderRadius: "1px",
-                  }}
-                />
-              </div>
-            </div>
-          ))}
+        <div style={{ textAlign: "center", gridColumn: "1 / -1" }}>
+          <h2 style={{ fontSize: "28px", fontWeight: 700, color: "white", marginBottom: "12px", fontFamily: "var(--font-outfit)" }}>
+            Capability Matrix
+          </h2>
+          <div style={{ width: "60px", height: "2px", background: "var(--accent-cyan)", margin: "0 auto 40px" }} />
         </div>
 
-        {/* Status line */}
-        <div
-          style={{
-            marginTop: "24px",
-            padding: "10px 14px",
-            border: "1px solid rgba(0, 212, 255, 0.15)",
-            borderRadius: "2px",
-          }}
-        >
-          <p style={{ fontSize: "10px", color: "rgba(0, 212, 255, 0.6)", letterSpacing: "0.12em" }}>
-            SYSTEM STATUS
-          </p>
-          <p style={{ fontSize: "12px", color: "var(--text-primary)", marginTop: "4px" }}>
-            OPEN TO: AI AUTOMATION · SOLUTIONS · PM ROLES
-          </p>
-        </div>
+        {[
+          { label: "Clinical NLP & Healthcare AI", value: "85%", desc: "HIPAA Compliant systems" },
+          { label: "Multimodal Systems", value: "92%", desc: "Audio, Vision, and Text" },
+          { label: "AI Production Pipelines", value: "88%", desc: "Scalable automation" },
+          { label: "LLM Orchestration", value: "95%", desc: "Llama 3, GPT-4, Groq" },
+        ].map((item, i) => (
+          <motion.div
+            key={item.label}
+            className="glass-panel"
+            style={{ padding: "32px", borderRadius: "20px", textAlign: "left", position: "relative", overflow: "hidden" }}
+          >
+            <div style={{ fontSize: "11px", color: "var(--accent-cyan)", marginBottom: "12px", letterSpacing: "0.2em", fontWeight: 600 }}>
+              MODULE_{i + 1}
+            </div>
+            <div style={{ fontSize: "20px", fontWeight: 600, color: "white", marginBottom: "6px", fontFamily: "var(--font-outfit)" }}>
+              {item.label}
+            </div>
+            <div style={{ fontSize: "14px", color: "rgba(255, 255, 255, 0.4)", marginBottom: "20px" }}>
+              {item.desc}
+            </div>
+            <div style={{ height: "2px", background: "rgba(255, 255, 255, 0.05)", width: "100%", borderRadius: "100px", overflow: "hidden" }}>
+              <motion.div 
+                initial={{ width: 0 }}
+                whileInView={{ width: item.value }}
+                transition={{ duration: 1.5, delay: 0.5, ease: "easeOut" }}
+                style={{ height: "100%", background: "linear-gradient(90deg, var(--accent-cyan), var(--accent-purple))" }}
+              />
+            </div>
+          </motion.div>
+        ))}
       </motion.div>
 
       {/* ────── PHASE 3: Final CTA ────── */}
       <motion.div
         style={{
           position: "absolute",
-          bottom: "10%",
+          top: "50%",
           left: "50%",
-          transform: "translateX(-50%)",
+          transform: "translate(-50%, -50%)",
           textAlign: "center",
           opacity: phase3Opacity,
+          y: phase3Y,
           pointerEvents: "auto",
-          whiteSpace: "nowrap",
         }}
       >
-        <p
+        <p className="text-glow" style={{ fontSize: "14px", letterSpacing: "0.6em", color: "var(--accent-cyan)", marginBottom: "24px", fontFamily: "var(--font-outfit)", fontWeight: 600 }}>
+          MISSION_READY
+        </p>
+        <h2
           style={{
-            fontSize: "11px",
-            letterSpacing: "0.25em",
-            color: "rgba(0, 212, 255, 0.6)",
-            marginBottom: "12px",
+            fontSize: "clamp(32px, 6vw, 72px)",
+            fontWeight: 800,
+            color: "white",
+            marginBottom: "48px",
+            fontFamily: "var(--font-outfit)",
+            lineHeight: 1.0,
+            letterSpacing: "-0.02em",
           }}
         >
-          NETWORK FULLY ACTIVATED
-        </p>
-        <p
-          className="font-heading"
-          style={{
-            fontSize: "clamp(18px, 3vw, 32px)",
-            fontWeight: 600,
-            color: "#e2e8f0",
-            marginBottom: "28px",
-            letterSpacing: "-0.01em",
-          }}
-        >
-          Ready to build what&apos;s next.
-        </p>
-        <div style={{ display: "flex", gap: "16px", justifyContent: "center", flexWrap: "wrap" }}>
+          Let&apos;s engineer the
+          <br />
+          <span style={{ color: "transparent", WebkitTextStroke: "1px rgba(0, 242, 255, 0.5)", textShadow: "0 0 30px rgba(0, 242, 255, 0.2)" }}>future of intelligence.</span>
+        </h2>
+        
+        <div style={{ display: "flex", gap: "24px", justifyContent: "center", flexWrap: "wrap" }}>
           <a
             href="#projects"
             style={{
-              fontSize: "12px",
-              letterSpacing: "0.12em",
-              color: "var(--bg)",
-              backgroundColor: "var(--accent-cyan)",
-              padding: "12px 28px",
-              borderRadius: "2px",
-              textDecoration: "none",
+              padding: "18px 48px",
+              background: "white",
+              color: "black",
+              borderRadius: "100px",
               fontWeight: 600,
+              fontSize: "15px",
+              textDecoration: "none",
+              fontFamily: "var(--font-outfit)",
+              transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
+            }}
+            onMouseOver={(e) => {
+              e.currentTarget.style.transform = "translateY(-5px)";
+              e.currentTarget.style.boxShadow = "0 10px 30px rgba(255, 255, 255, 0.2)";
+            }}
+            onMouseOut={(e) => {
+              e.currentTarget.style.transform = "translateY(0)";
+              e.currentTarget.style.boxShadow = "none";
             }}
           >
-            VIEW PROJECTS
+            Explore Systems
           </a>
           <a
             href="mailto:komalsrinivas20@gmail.com"
             style={{
-              fontSize: "12px",
-              letterSpacing: "0.12em",
-              color: "var(--accent-cyan)",
-              border: "1px solid rgba(0, 212, 255, 0.35)",
-              padding: "12px 28px",
-              borderRadius: "2px",
+              padding: "18px 48px",
+              border: "1px solid rgba(255, 255, 255, 0.2)",
+              color: "white",
+              borderRadius: "100px",
+              fontWeight: 500,
+              fontSize: "15px",
               textDecoration: "none",
-              fontWeight: 600,
+              fontFamily: "var(--font-outfit)",
+              transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
+            }}
+            onMouseOver={(e) => {
+              e.currentTarget.style.background = "rgba(255, 255, 255, 0.05)";
+              e.currentTarget.style.borderColor = "white";
+            }}
+            onMouseOut={(e) => {
+              e.currentTarget.style.background = "transparent";
+              e.currentTarget.style.borderColor = "rgba(255, 255, 255, 0.2)";
             }}
           >
-            GET IN TOUCH
-          </a>
-          <a
-            href="https://github.com/komala-b-srinivas"
-            target="_blank"
-            rel="noopener noreferrer"
-            title="GitHub"
-            style={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              color: "var(--accent-cyan)",
-              border: "1px solid rgba(0, 212, 255, 0.35)",
-              padding: "12px 16px",
-              borderRadius: "2px",
-              textDecoration: "none",
-            }}
-          >
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0112 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/>
-            </svg>
-          </a>
-          <a
-            href="https://www.linkedin.com/in/komal-b-srinivas/"
-            target="_blank"
-            rel="noopener noreferrer"
-            title="LinkedIn"
-            style={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              color: "var(--accent-cyan)",
-              border: "1px solid rgba(0, 212, 255, 0.35)",
-              padding: "12px 16px",
-              borderRadius: "2px",
-              textDecoration: "none",
-            }}
-          >
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
-            </svg>
+            Initiate Contact
           </a>
         </div>
       </motion.div>
 
-      {/* Scan line effect */}
+      {/* Vignette Overlay */}
       <div
         style={{
           position: "absolute",
           inset: 0,
-          background:
-            "repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(0, 212, 255, 0.01) 3px, rgba(0, 212, 255, 0.01) 4px)",
+          background: "radial-gradient(circle at center, transparent 20%, rgba(0,0,0,0.9) 100%)",
+          opacity: 0.9,
           pointerEvents: "none",
         }}
       />
     </div>
   );
 }
+
