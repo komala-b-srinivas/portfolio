@@ -1,12 +1,12 @@
 import { openai } from '@ai-sdk/openai';
-import { streamText } from 'ai';
+import { generateText } from 'ai';
 
 export const maxDuration = 30;
 
 export async function POST(req: Request) {
   const { messages } = await req.json();
 
-  const result = streamText({
+  const result = await generateText({
     model: openai('gpt-4o-mini'),
     system: `You are Komala's AI Assistant on her portfolio website.
     You must answer questions as her helpful assistant. Keep answers concise, professional, and friendly.
@@ -35,5 +35,5 @@ export async function POST(req: Request) {
     messages,
   });
 
-  return result.toDataStreamResponse();
+  return Response.json({ text: result.text });
 }

@@ -3,22 +3,26 @@
 import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { MessageSquare, X, Send, Bot, User } from "lucide-react";
-import { useChat } from "@ai-sdk/react";
+
+type Message = {
+  id: string;
+  role: "user" | "assistant";
+  content: string;
+};
 
 export default function ChatbotWidget() {
   const [isOpen, setIsOpen] = useState(false);
+  const [inputValue, setInputValue] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
-  const { messages, input, handleInputChange, handleSubmit, isLoading } = useChat({
-    api: '/api/chat',
-    initialMessages: [
-      {
-        id: "1",
-        role: "assistant",
-        content: "Hi! I'm Komala's AI Assistant. Ask me anything about her skills, experience, or projects.",
-      }
-    ]
-  });
+  const [messages, setMessages] = useState<Message[]>([
+    {
+      id: "1",
+      role: "assistant",
+      content: "Hi! I'm Komala's AI Assistant. Ask me anything about her skills, experience, or projects.",
+    }
+  ]);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -27,6 +31,52 @@ export default function ChatbotWidget() {
   useEffect(() => {
     scrollToBottom();
   }, [messages, isLoading]);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!inputValue.trim() || isLoading) return;
+
+    const userMessage: Message = {
+      id: Date.now().toString(),
+      role: "user",
+      content: inputValue,
+    };
+
+    const newMessages = [...messages, userMessage];
+    setMessages(newMessages);
+    setInputValue("");
+    setIsLoading(true);
+
+    try {
+      const res = await fetch("/api/chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ messages: newMessages }),
+      });
+
+      if (!res.ok) throw new Error("Network response was not ok");
+
+      const data = await res.json();
+      
+      const assistantMessage: Message = {
+        id: (Date.now() + 1).toString(),
+        role: "assistant",
+        content: data.text,
+      };
+
+      setMessages((prev) => [...prev, assistantMessage]);
+    } catch (error) {
+      console.error("Failed to fetch chat:", error);
+      const errorMessage: Message = {
+        id: (Date.now() + 1).toString(),
+        role: "assistant",
+        content: "Sorry, I'm having trouble connecting right now. Please try again later!",
+      };
+      setMessages((prev) => [...prev, errorMessage]);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   return (
     <>
@@ -192,7 +242,7 @@ export default function ChatbotWidget() {
                   </div>
                 </div>
               ))}
-              {isLoading && messages[messages.length - 1].role === "user" && (
+              {isLoading && (
                 <div style={{ display: "flex", gap: "12px", alignItems: "center" }}>
                   <div
                     style={{
@@ -246,8 +296,8 @@ export default function ChatbotWidget() {
               >
                 <input
                   type="text"
-                  value={input}
-                  onChange={handleInputChange}
+                  value={inputValue}
+                  onChange={(e) => setInputValue(e.target.value)}
                   placeholder="Ask a question..."
                   disabled={isLoading}
                   style={{
@@ -263,9 +313,9 @@ export default function ChatbotWidget() {
                 />
                 <button
                   type="submit"
-                  disabled={!input.trim() || isLoading}
+                  disabled={!inputValue.trim() || isLoading}
                   style={{
-                    background: input.trim() && !isLoading ? "var(--accent-cyan)" : "rgba(255, 255, 255, 0.1)",
+                    background: inputValue.trim() && !isLoading ? "var(--accent-cyan)" : "rgba(255, 255, 255, 0.1)",
                     border: "none",
                     borderRadius: "8px",
                     width: "42px",
@@ -273,8 +323,8 @@ export default function ChatbotWidget() {
                     display: "flex",
                     alignItems: "center",
                     justifyContent: "center",
-                    color: input.trim() && !isLoading ? "#000" : "rgba(255, 255, 255, 0.3)",
-                    cursor: input.trim() && !isLoading ? "pointer" : "default",
+                    color: inputValue.trim() && !isLoading ? "#000" : "rgba(255, 255, 255, 0.3)",
+                    cursor: inputValue.trim() && !isLoading ? "pointer" : "default",
                     transition: "all 0.2s",
                   }}
                 >
