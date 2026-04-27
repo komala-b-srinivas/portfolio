@@ -16,7 +16,7 @@ export default function NeuralScrollScene() {
   return (
     <section
       ref={containerRef}
-      style={{ height: "500vh", position: "relative" }}
+      style={{ height: "120vh", position: "relative" }}
     >
       <div
         style={{

@@ -54,9 +54,11 @@ export default function ChatbotWidget() {
         body: JSON.stringify({ messages: newMessages }),
       });
 
-      if (!res.ok) throw new Error("Network response was not ok");
-
       const data = await res.json();
+
+      if (!res.ok) {
+        throw new Error(data.text || "Network response was not ok");
+      }
       
       const assistantMessage: Message = {
         id: (Date.now() + 1).toString(),
@@ -65,12 +67,12 @@ export default function ChatbotWidget() {
       };
 
       setMessages((prev) => [...prev, assistantMessage]);
-    } catch (error) {
+    } catch (error: any) {
       console.error("Failed to fetch chat:", error);
       const errorMessage: Message = {
         id: (Date.now() + 1).toString(),
         role: "assistant",
-        content: "Sorry, I'm having trouble connecting right now. Please try again later!",
+        content: error.message || "Sorry, I'm having trouble connecting right now. Please try again later!",
       };
       setMessages((prev) => [...prev, errorMessage]);
     } finally {
