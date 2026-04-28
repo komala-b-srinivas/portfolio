@@ -20,7 +20,7 @@ export default function ChatbotWidget() {
     {
       id: "1",
       role: "assistant",
-      content: "Hi! I'm Komala's AI Assistant. Ask me anything about her skills, experience, or projects.",
+      content: "Hi! I'm Jarvis, Komala's Assistant. Ask me anything about her skills, experience, or projects.",
     }
   ]);
 
@@ -185,7 +185,7 @@ export default function ChatbotWidget() {
                     textTransform: "uppercase",
                   }}
                 >
-                  Neural Assistant
+                  Jarvis
                 </span>
               </div>
               <button

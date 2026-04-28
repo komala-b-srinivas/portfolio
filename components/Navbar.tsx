@@ -42,16 +42,12 @@ export default function Navbar() {
         style={{
           fontSize: "18px",
           fontWeight: 700,
-          letterSpacing: "0.05em",
+          letterSpacing: "0.1em",
           color: "white",
           fontFamily: "var(--font-outfit)",
-          display: "flex",
-          alignItems: "center",
-          gap: "8px",
         }}
       >
-        <span className="text-glow" style={{ color: "var(--accent-cyan)" }}>NEURAL</span>
-        <span style={{ opacity: 0.5 }}>SYNTHESIS</span>
+        KOMALA
       </div>
 
       {/* Nav links */}

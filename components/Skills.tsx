@@ -107,7 +107,7 @@ export default function Skills() {
               fontFamily: "var(--font-outfit)",
             }}
           >
-            Neural Stack
+            Technical Stack
           </h2>
         </motion.div>
 
