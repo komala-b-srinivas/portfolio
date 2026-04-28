@@ -113,6 +113,12 @@ body {
   border-radius: 10px;
 }
 
+/* Pulse animation for card neural dots */
+@keyframes nodePulse {
+  0%, 100% { opacity: 0.3; transform: scale(0.8); }
+  50%       { opacity: 1.0; transform: scale(1.3); }
+}
+
 /* HEX clip-path helper */
 .hex-icon {
   clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);

@@ -3,18 +3,18 @@
 import { useRef, useEffect } from "react";
 import { motion } from "framer-motion";
 
-// ── Premium isometric cube canvas for project cards ───────────────────────────
+// ── Static isometric cube canvas — drawn ONCE, no animation loop ─────────────
+// Animated nodes handled via CSS (zero canvas overhead)
 function MiniCubeCanvas({ color1, color2 }: { color1: string; color2: string }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    const ctx = canvas.getContext("2d")!;
+    const ctx = canvas.getContext("2d") as CanvasRenderingContext2D;
     if (!ctx) return;
 
-    const dpr = window.devicePixelRatio || 1;
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
     const W = canvas.offsetWidth;
     const H = canvas.offsetHeight;
     canvas.width = W * dpr;
@@ -22,22 +22,16 @@ function MiniCubeCanvas({ color1, color2 }: { color1: string; color2: string }) 
     ctx.scale(dpr, dpr);
 
     const cx = W / 2;
-    const cy = H * 0.54;
-    // Tile size — bigger for more visible cubes
-    const TW = W * 0.155; // horizontal half-width
-    const TH = TW * 0.5;  // vertical half-height (2:1 iso ratio)
-    const TZ = TW * 0.92; // vertical step per z-level
+    const cy = H * 0.55;
+    const TW = W * 0.14;
+    const TH = TW * 0.5;
+    const TZ = TW * 0.9;
 
-    // Isometric projection: grid (gx, gy) → screen (x, y) at elevation gz
     function g2s(gx: number, gy: number, gz: number): [number, number] {
-      return [
-        cx + (gx - gy) * TW,
-        cy + (gx + gy) * TH - gz * TZ,
-      ];
+      return [cx + (gx - gy) * TW, cy + (gx + gy) * TH - gz * TZ];
     }
 
-    // Draw a filled polygon face
-    function poly(pts: [number,number][], fill: string, stroke: string, sw: number, ga: number) {
+    function face(pts: [number,number][], fill: string, stroke: string, sw: number, ga: number) {
       ctx.save();
       ctx.globalAlpha = ga;
       ctx.beginPath();
@@ -49,159 +43,104 @@ function MiniCubeCanvas({ color1, color2 }: { color1: string; color2: string }) 
       if (sw > 0) {
         ctx.strokeStyle = stroke;
         ctx.lineWidth = sw;
-        ctx.shadowColor = stroke;
-        ctx.shadowBlur = 6;
         ctx.stroke();
-        ctx.shadowBlur = 0;
       }
       ctx.restore();
     }
 
-    // Draw a single isometric cube at (gx, gy, gz)
     function drawCube(gx: number, gy: number, gz: number, accent: string, bright: boolean) {
-      // 8 corners: (x, y) combinations for top and bottom faces
-      const [TLt, TRt, BRt, BLt] = [
-        g2s(gx,   gy,   gz+1),
-        g2s(gx+1, gy,   gz+1),
-        g2s(gx+1, gy+1, gz+1),
-        g2s(gx,   gy+1, gz+1),
-      ];
-      const [TRb, BRb, BLb] = [
-        g2s(gx+1, gy,   gz),
-        g2s(gx+1, gy+1, gz),
-        g2s(gx,   gy+1, gz),
-      ];
-
-      const opacity = bright ? 0.8 : 0.55;
-      const edgeOpacity = bright ? 1.0 : 0.55;
-      const edgeWidth = bright ? 1.2 : 0.8;
-
-      // Top face — brightest
-      poly([TLt,TRt,BRt,BLt], "rgba(10,10,30,0.92)", accent, edgeWidth, opacity);
-      // Right face — medium
-      poly([TRt,BRt,BRb,TRb], "rgba(6,6,18,0.95)", accent, edgeWidth * 0.7, edgeOpacity * 0.7);
-      // Left face — darkest
-      poly([BRt,BLt,BLb,BRb], "rgba(4,4,14,0.97)", accent, edgeWidth * 0.5, edgeOpacity * 0.45);
+      const TLt = g2s(gx,   gy,   gz+1);
+      const TRt = g2s(gx+1, gy,   gz+1);
+      const BRt = g2s(gx+1, gy+1, gz+1);
+      const BLt = g2s(gx,   gy+1, gz+1);
+      const TRb = g2s(gx+1, gy,   gz);
+      const BRb = g2s(gx+1, gy+1, gz);
+      const BLb = g2s(gx,   gy+1, gz);
+      const ew = bright ? 1.1 : 0.7;
+      const ea = bright ? 0.9 : 0.5;
+      face([TLt,TRt,BRt,BLt], "rgba(10,10,30,0.93)", accent, ew, ea);
+      face([TRt,BRt,BRb,TRb], "rgba(6,6,18,0.95)",   accent, ew*0.7, ea*0.65);
+      face([BRt,BLt,BLb,BRb], "rgba(4,4,14,0.97)",   accent, ew*0.4, ea*0.38);
     }
 
-    // Cube layout: (gx, gy, gz, isBright)
-    const cubes: [number, number, number, boolean][] = [
-      // Base layer
-      [-1, 0, 0, false], [0, 0, 0, false], [1, 0, 0, false],
-      [-1, 1, 0, false], [0, 1, 0, false], [1, 1, 0, false],
-      [-1, 2, 0, false], [0, 2, 0, false],
-      // Second layer
-      [-1, 0, 1, false], [0, 0, 1, false],
-      [-1, 1, 1, true],  [0, 1, 1, false],
-      // Third layer
-      [-1, 0, 2, false],
-      [-1, 1, 2, true],
-      // Top lone cube
-      [-1, 0, 3, true],
+    // --- Background ---
+    const bg = ctx.createRadialGradient(cx, cy*0.7, 0, cx, H*0.5, H);
+    bg.addColorStop(0, "rgba(8,8,24,1)");
+    bg.addColorStop(1, "rgba(3,3,10,1)");
+    ctx.fillStyle = bg;
+    ctx.fillRect(0, 0, W, H);
+
+    // --- Base glow ---
+    const pg = ctx.createRadialGradient(cx, H*0.85, 0, cx, H*0.85, W*0.5);
+    pg.addColorStop(0, `${color1}28`);
+    pg.addColorStop(1, "transparent");
+    ctx.fillStyle = pg;
+    ctx.fillRect(0, 0, W, H);
+
+    // --- Cubes (painter's order) ---
+    const cubes: [number,number,number,boolean][] = [
+      [-1,2,0,false],[0,2,0,false],
+      [-1,1,0,false],[0,1,0,false],[1,1,0,false],
+      [-1,0,0,false],[0,0,0,false],[1,0,0,false],
+      [-1,0,1,false],[0,0,1,false],
+      [-1,1,1,true], [0,1,1,false],
+      [-1,0,2,true],
+      [-1,1,2,true],
+      [-1,0,3,true],
     ];
-
-    // Neural nodes — positioned in image space
-    const nodeCount = 28;
-    const nodes: { x: number; y: number; phase: number; big: boolean }[] = [];
-    for (let i = 0; i < nodeCount; i++) {
-      nodes.push({
-        x: W * 0.06 + Math.random() * W * 0.88,
-        y: H * 0.06 + Math.random() * H * 0.88,
-        phase: Math.random() * Math.PI * 2,
-        big: i < 6,
-      });
+    const sorted = [...cubes].sort((a,b) => (a[0]+a[1])-(b[0]+b[1]));
+    for (const [gx,gy,gz,bright] of sorted) {
+      drawCube(gx, gy, gz, bright ? color1 : color2, bright);
     }
 
-    // Draw a glowing node (fake bloom: 3 layers)
-    function drawNode(x: number, y: number, r: number, col: string, alpha: number) {
-      ctx.save();
-      // Outer bloom
-      ctx.globalAlpha = alpha * 0.12;
-      ctx.shadowColor = col; ctx.shadowBlur = 0;
-      ctx.beginPath(); ctx.arc(x, y, r * 5, 0, Math.PI * 2);
-      ctx.fillStyle = col; ctx.fill();
-      // Mid bloom
-      ctx.globalAlpha = alpha * 0.28;
-      ctx.beginPath(); ctx.arc(x, y, r * 2.5, 0, Math.PI * 2);
-      ctx.fillStyle = col; ctx.fill();
-      // Core
-      ctx.globalAlpha = alpha;
-      ctx.shadowColor = col; ctx.shadowBlur = r * 8;
-      ctx.beginPath(); ctx.arc(x, y, r, 0, Math.PI * 2);
-      ctx.fillStyle = col; ctx.fill();
-      ctx.restore();
+    // --- Static neural edges (pre-seeded, no random in draw) ---
+    const seed = color1.charCodeAt(1); // deterministic per card
+    const nNodes = 18;
+    const nodeData: [number,number][] = [];
+    for (let i = 0; i < nNodes; i++) {
+      // deterministic positions using simple hash
+      const h = (seed * 37 + i * 73 + i * i * 13) % 10000;
+      nodeData.push([W * 0.08 + (h % 84) / 100 * W * 0.84,
+                     H * 0.08 + ((h * 17) % 84) / 100 * H * 0.84]);
     }
 
-    let frame: number;
-    let t = 0;
-
-    function draw() {
-      ctx.clearRect(0, 0, W, H);
-
-      // === Background ===
-      const bg = ctx.createRadialGradient(cx, cy * 0.8, 0, cx, H * 0.5, H);
-      bg.addColorStop(0, "rgba(8,8,24,1)");
-      bg.addColorStop(0.5, "rgba(5,5,16,1)");
-      bg.addColorStop(1, "rgba(3,3,10,1)");
-      ctx.fillStyle = bg;
-      ctx.fillRect(0, 0, W, H);
-
-      // === Base platform glow ===
-      const platY = cy + TH * 3;
-      const platGrad = ctx.createRadialGradient(cx, platY, 0, cx, platY, W * 0.55);
-      platGrad.addColorStop(0, `${color1}30`);
-      platGrad.addColorStop(0.5, `${color1}10`);
-      platGrad.addColorStop(1, "transparent");
-      ctx.fillStyle = platGrad;
-      ctx.fillRect(0, 0, W, H);
-
-      // === Cubes (back to front — painter's algorithm) ===
-      // Sort by gx+gy (front cubes drawn last)
-      const sorted = [...cubes].sort((a, b) => (a[0]+a[1]) - (b[0]+b[1]));
-      for (const [gx, gy, gz, bright] of sorted) {
-        drawCube(gx, gy, gz, bright ? color1 : color2, bright);
-      }
-
-      // === Neural edges ===
-      ctx.save();
-      for (let i = 0; i < nodes.length; i++) {
-        for (let j = i + 1; j < nodes.length; j++) {
-          const dx = nodes[i].x - nodes[j].x;
-          const dy = nodes[i].y - nodes[j].y;
-          const dist = Math.hypot(dx, dy);
-          const maxDist = W * 0.42;
-          if (dist < maxDist) {
-            const alpha = (1 - dist / maxDist) * 0.35;
-            const pulse = 0.7 + 0.3 * Math.sin(t * 0.8 + nodes[i].phase);
-            ctx.globalAlpha = alpha * pulse;
-            ctx.strokeStyle = color1;
-            ctx.lineWidth = 0.7;
-            ctx.shadowColor = color1;
-            ctx.shadowBlur = 4;
-            ctx.beginPath();
-            ctx.moveTo(nodes[i].x, nodes[i].y);
-            ctx.lineTo(nodes[j].x, nodes[j].y);
-            ctx.stroke();
-          }
+    // Edges
+    ctx.save();
+    ctx.strokeStyle = color1;
+    ctx.lineWidth = 0.7;
+    for (let i = 0; i < nodeData.length; i++) {
+      for (let j = i+1; j < nodeData.length; j++) {
+        const dx = nodeData[i][0] - nodeData[j][0];
+        const dy = nodeData[i][1] - nodeData[j][1];
+        const d = Math.hypot(dx,dy);
+        if (d < W * 0.4) {
+          ctx.globalAlpha = (1 - d/(W*0.4)) * 0.3;
+          ctx.beginPath();
+          ctx.moveTo(nodeData[i][0], nodeData[i][1]);
+          ctx.lineTo(nodeData[j][0], nodeData[j][1]);
+          ctx.stroke();
         }
       }
-      ctx.restore();
-
-      // === Neural nodes with fake bloom ===
-      for (const node of nodes) {
-        const pulse = 0.5 + 0.5 * Math.sin(t * 1.8 + node.phase);
-        const r = node.big ? 2.5 + pulse * 1.5 : 1.5 + pulse * 1.0;
-        const alpha = 0.55 + pulse * 0.45;
-        const col = node.big ? color1 : (Math.random() > 0.7 ? color2 : color1);
-        drawNode(node.x, node.y, r, col, alpha);
-      }
-
-      t += 0.018;
-      frame = requestAnimationFrame(draw);
     }
+    ctx.restore();
 
-    draw();
-    return () => cancelAnimationFrame(frame);
+    // Nodes — draw once (static), no shadowBlur (expensive)
+    for (let i = 0; i < nodeData.length; i++) {
+      const [nx, ny] = nodeData[i];
+      const big = i < 5;
+      const r = big ? 2.8 : 1.6;
+      // Outer soft halo (no shadowBlur — use larger transparent arc instead)
+      ctx.save();
+      ctx.globalAlpha = 0.12;
+      ctx.fillStyle = color1;
+      ctx.beginPath(); ctx.arc(nx, ny, r*4, 0, Math.PI*2); ctx.fill();
+      // Core
+      ctx.globalAlpha = big ? 0.95 : 0.7;
+      ctx.fillStyle = big ? color1 : (i%3===0 ? color2 : color1);
+      ctx.beginPath(); ctx.arc(nx, ny, r, 0, Math.PI*2); ctx.fill();
+      ctx.restore();
+    }
+    // Draw once — no animation loop needed
   }, [color1, color2]);
 
   return (
@@ -209,6 +148,38 @@ function MiniCubeCanvas({ color1, color2 }: { color1: string; color2: string }) 
       ref={canvasRef}
       style={{ width: "100%", height: "100%", display: "block" }}
     />
+  );
+}
+
+// Lightweight CSS-animated pulse dots overlay (replaces canvas animation loop)
+function PulseDots({ color }: { color: string }) {
+  const positions = [
+    { left: "15%", top: "20%", delay: "0s" },
+    { left: "72%", top: "35%", delay: "0.6s" },
+    { left: "40%", top: "65%", delay: "1.1s" },
+    { left: "80%", top: "70%", delay: "0.3s" },
+    { left: "25%", top: "78%", delay: "1.5s" },
+    { left: "60%", top: "15%", delay: "0.9s" },
+  ];
+  return (
+    <>
+      {positions.map((p, i) => (
+        <div
+          key={i}
+          style={{
+            position: "absolute",
+            left: p.left, top: p.top,
+            width: "5px", height: "5px",
+            borderRadius: "50%",
+            background: color,
+            boxShadow: `0 0 8px ${color}, 0 0 16px ${color}60`,
+            animation: `nodePulse 2.4s ease-in-out infinite`,
+            animationDelay: p.delay,
+            pointerEvents: "none",
+          }}
+        />
+      ))}
+    </>
   );
 }
 
@@ -320,6 +291,7 @@ function ProjectCard({
           {/* Cube visual */}
           <div style={{ height: "200px", position: "relative", overflow: "hidden" }}>
             <MiniCubeCanvas color1={project.color1} color2={project.color2} />
+            <PulseDots color={accentColor} />
 
             {/* Status badge */}
             <div style={{
