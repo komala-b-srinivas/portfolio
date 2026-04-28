@@ -112,3 +112,16 @@ body {
   background: linear-gradient(var(--accent-teal), var(--accent-purple));
   border-radius: 10px;
 }
+
+/* HEX clip-path helper */
+.hex-icon {
+  clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+}
+
+/* Smooth section transitions */
+section {
+  transition: opacity 0.3s ease;
+}
+
+/* Remove default list styles */
+ul, ol { padding: 0; margin: 0; list-style: none; }

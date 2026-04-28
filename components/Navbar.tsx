@@ -3,6 +3,8 @@
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 
+const NAV_LINKS = ["Home", "About", "Projects", "Skills", "Experience"];
+
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
 
@@ -14,80 +16,104 @@ export default function Navbar() {
 
   return (
     <motion.nav
-      initial={{ y: -100 }}
-      animate={{ y: 0 }}
+      initial={{ y: -100, opacity: 0 }}
+      animate={{ y: 0, opacity: 1 }}
+      transition={{ duration: 0.6, ease: "easeOut" }}
       style={{
         position: "fixed",
-        top: 0,
-        left: 0,
-        right: 0,
+        top: 0, left: 0, right: 0,
         zIndex: 1000,
-        padding: "24px 8%",
+        padding: "20px 5%",
         transition: "all 0.4s ease",
-        background: scrolled ? "rgba(3, 3, 5, 0.8)" : "transparent",
-        backdropFilter: scrolled ? "blur(20px)" : "none",
-        borderBottom: scrolled ? "1px solid var(--border)" : "none",
+        background: scrolled ? "rgba(3,3,10,0.85)" : "transparent",
+        backdropFilter: scrolled ? "blur(24px)" : "none",
+        borderBottom: scrolled ? "1px solid rgba(255,255,255,0.07)" : "none",
       }}
     >
-      <div style={{ maxWidth: "1600px", margin: "0 auto", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-        <motion.div
+      <div style={{
+        maxWidth: "1700px",
+        margin: "0 auto",
+        display: "flex",
+        justifyContent: "space-between",
+        alignItems: "center",
+      }}>
+        {/* Logo */}
+        <motion.a
+          href="#home"
           style={{
-            fontSize: "20px",
-            fontWeight: 900,
-            color: "white",
-            letterSpacing: "0.2em",
-            display: "flex",
-            alignItems: "center",
-            gap: "12px",
+            fontSize: "18px", fontWeight: 900,
+            color: "white", textDecoration: "none",
+            letterSpacing: "0.18em",
+            display: "flex", alignItems: "center", gap: "12px",
           }}
+          whileHover={{ opacity: 0.8 }}
         >
-          <div style={{ width: "8px", height: "8px", background: "var(--accent-teal)", borderRadius: "50%", boxShadow: "0 0 10px var(--accent-teal)" }} />
+          {/* Hex logo mark */}
+          <div style={{
+            width: "32px", height: "32px",
+            clipPath: "polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%)",
+            background: "linear-gradient(135deg, #00f2ff, #bc13fe)",
+            display: "flex", alignItems: "center", justifyContent: "center",
+          }}>
+            <span style={{ fontSize: "11px", fontWeight: 900, color: "black" }}>K</span>
+          </div>
           KOMALA
-        </motion.div>
+        </motion.a>
 
-        <div style={{ display: "flex", gap: "40px", alignItems: "center" }}>
-          {["Skills", "Projects", "Experience", "Contact"].map((item) => (
+        {/* Nav links */}
+        <div style={{ display: "flex", gap: "36px", alignItems: "center" }}>
+          {NAV_LINKS.map((item) => (
             <motion.a
               key={item}
               href={`#${item.toLowerCase()}`}
               style={{
-                fontSize: "12px",
-                fontWeight: 700,
-                color: "var(--text-muted)",
+                fontSize: "12px", fontWeight: 600,
+                color: "rgba(255,255,255,0.5)",
                 textDecoration: "none",
-                textTransform: "uppercase",
-                letterSpacing: "0.15em",
+                textTransform: "capitalize",
+                letterSpacing: "0.04em",
                 transition: "color 0.3s ease",
+                position: "relative",
               }}
               whileHover={{ color: "white" }}
             >
               {item}
             </motion.a>
           ))}
+
+          {/* Contact Me button */}
           <a
             href="#contact"
             style={{
-              padding: "10px 24px",
-              border: "1px solid var(--accent-teal)",
-              borderRadius: "4px",
-              color: "var(--accent-teal)",
-              fontSize: "12px",
-              fontWeight: 700,
+              padding: "10px 22px",
+              background: "transparent",
+              border: "1px solid rgba(0,242,255,0.5)",
+              borderRadius: "6px",
+              color: "#00f2ff",
+              fontSize: "12px", fontWeight: 700,
               textDecoration: "none",
-              textTransform: "uppercase",
-              letterSpacing: "0.1em",
+              letterSpacing: "0.08em",
+              display: "inline-flex", alignItems: "center", gap: "8px",
               transition: "all 0.3s ease",
             }}
-            onMouseOver={(e) => {
-              e.currentTarget.style.background = "var(--accent-teal)";
-              e.currentTarget.style.color = "black";
+            onMouseEnter={e => {
+              e.currentTarget.style.background = "rgba(0,242,255,0.1)";
+              e.currentTarget.style.boxShadow = "0 0 20px rgba(0,242,255,0.2)";
             }}
-            onMouseOut={(e) => {
+            onMouseLeave={e => {
               e.currentTarget.style.background = "transparent";
-              e.currentTarget.style.color = "var(--accent-teal)";
+              e.currentTarget.style.boxShadow = "none";
             }}
           >
-            Terminal_Access
+            Contact Me
+            <motion.div
+              animate={{ scale: [1, 1.4, 1], opacity: [0.6, 1, 0.6] }}
+              transition={{ duration: 2, repeat: Infinity }}
+              style={{
+                width: "6px", height: "6px", borderRadius: "50%",
+                background: "#00f2ff",
+              }}
+            />
           </a>
         </div>
       </div>

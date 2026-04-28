@@ -1,28 +1,27 @@
 import Navbar from "@/components/Navbar";
-import NeuralScrollScene from "@/components/NeuralScrollScene";
-import Skills from "@/components/Skills";
-import Projects from "@/components/Projects";
+import HeroSection from "@/components/HeroSection";
+import ProjectsSection from "@/components/ProjectsSection";
+import AboutSkills from "@/components/AboutSkills";
 import Experience from "@/components/Experience";
-import Education from "@/components/Education";
 import Contact from "@/components/Contact";
 import ChatbotWidget from "@/components/ChatbotWidget";
 
 export default function Home() {
   return (
     <main style={{ minHeight: "100vh", position: "relative" }}>
+      {/* Dot-grid background */}
       <div className="neural-grid" />
+
       <Navbar />
+      <HeroSection />
+      <ProjectsSection />
+      <AboutSkills />
 
-      <NeuralScrollScene />
+      {/* Skills section anchor redirect */}
+      <div id="skills" style={{ position: "relative", top: "-80px" }} />
 
-      <div style={{ position: "relative", zIndex: 2, paddingBottom: "100px" }}>
-        <Skills />
-        <Projects />
-        <Experience />
-        <Education />
-        <Contact />
-      </div>
-      
+      <Experience />
+      <Contact />
       <ChatbotWidget />
     </main>
   );
