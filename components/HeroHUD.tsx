@@ -9,7 +9,9 @@ interface Props {
 
 export default function HeroHUD({ scrollYProgress }: Props) {
   const opacity = useTransform(scrollYProgress, [0, 0.4], [1, 0]);
-  const y = useTransform(scrollYProgress, [0, 0.4], [0, -40]);
+  const y = useTransform(scrollYProgress, [0, 0.4], [0, -60]);
+  const imgY = useTransform(scrollYProgress, [0, 0.6], [0, 40]);
+  const scale = useTransform(scrollYProgress, [0, 0.6], [1, 0.9]);
 
   return (
     <div
@@ -22,36 +24,55 @@ export default function HeroHUD({ scrollYProgress }: Props) {
         flexDirection: "column",
         alignItems: "center",
         justifyContent: "center",
-        padding: "0 40px",
+        overflow: "hidden",
       }}
     >
-      {/* Subtle Spotlight Background */}
-      <div
+      {/* Background Visual Centerpiece */}
+      <motion.div
         style={{
           position: "absolute",
-          inset: 0,
-          background: "radial-gradient(circle at 80% 20%, rgba(0, 212, 255, 0.05) 0%, transparent 50%), radial-gradient(circle at 20% 80%, rgba(124, 58, 237, 0.03) 0%, transparent 50%)",
-          opacity: 0.8,
+          top: "50%",
+          left: "50%",
+          x: "-50%",
+          y: "-50%",
+          width: "min(600px, 90vw)",
+          height: "min(600px, 90vw)",
+          opacity: useTransform(scrollYProgress, [0, 0.6], [0.7, 0]),
+          scale,
+          translateY: imgY,
+          filter: "drop-shadow(0 0 50px rgba(0, 212, 255, 0.15))",
         }}
-      />
+      >
+        <Image
+          src="/hero-vision.png"
+          alt="Abstract Organic AI Vision"
+          fill
+          style={{ objectFit: "contain" }}
+          priority
+        />
+      </motion.div>
 
+      {/* Hero Content */}
       <motion.div
         style={{
           opacity,
           y,
           textAlign: "center",
-          maxWidth: "900px",
+          maxWidth: "1000px",
+          zIndex: 20,
+          position: "relative",
+          padding: "0 24px",
         }}
       >
         <motion.p
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
+          transition={{ duration: 0.8 }}
           style={{
-            fontSize: "14px",
-            letterSpacing: "0.4em",
+            fontSize: "13px",
+            letterSpacing: "0.5em",
             color: "var(--accent-cyan)",
-            marginBottom: "24px",
+            marginBottom: "32px",
             fontFamily: "var(--font-outfit)",
             textTransform: "uppercase",
             fontWeight: 600,
@@ -61,12 +82,12 @@ export default function HeroHUD({ scrollYProgress }: Props) {
         </motion.p>
         <h1
           style={{
-            fontSize: "clamp(48px, 9vw, 110px)",
+            fontSize: "clamp(56px, 10vw, 120px)",
             fontWeight: 800,
-            lineHeight: 0.9,
+            lineHeight: 0.85,
             color: "#fff",
-            letterSpacing: "-0.04em",
-            margin: "0 0 32px",
+            letterSpacing: "-0.05em",
+            margin: "0 0 40px",
             fontFamily: "var(--font-outfit)",
           }}
         >
@@ -75,7 +96,7 @@ export default function HeroHUD({ scrollYProgress }: Props) {
           <span
             style={{
               color: "transparent",
-              WebkitTextStroke: "1px rgba(255, 255, 255, 0.2)",
+              WebkitTextStroke: "1px rgba(255, 255, 255, 0.25)",
             }}
           >
             BELUR SRINIVAS
@@ -83,35 +104,35 @@ export default function HeroHUD({ scrollYProgress }: Props) {
         </h1>
         <p
           style={{
-            fontSize: "clamp(18px, 2vw, 22px)",
+            fontSize: "clamp(18px, 2.2vw, 24px)",
             color: "rgba(255, 255, 255, 0.6)",
             maxWidth: "700px",
-            margin: "0 auto 48px",
-            lineHeight: 1.6,
+            margin: "0 auto 64px",
+            lineHeight: 1.5,
             fontWeight: 300,
             fontFamily: "var(--font-outfit)",
           }}
         >
-          Optimizing human potential through 
+          Architecting 
           <span style={{ color: "var(--accent-cyan)", fontWeight: 500 }}> intelligent systems </span> 
-          and production-ready AI automation.
+          and production-grade AI automation workflows.
         </p>
 
-        <div style={{ display: "flex", gap: "20px", justifyContent: "center", pointerEvents: "auto" }}>
+        <div style={{ display: "flex", gap: "24px", justifyContent: "center", pointerEvents: "auto" }}>
           <a
             href="#projects"
             style={{
-              padding: "16px 40px",
+              padding: "18px 48px",
               background: "white",
               color: "black",
               borderRadius: "100px",
               fontWeight: 600,
-              fontSize: "14px",
+              fontSize: "15px",
               textDecoration: "none",
               fontFamily: "var(--font-outfit)",
-              transition: "transform 0.2s",
+              transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
             }}
-            onMouseOver={(e) => (e.currentTarget.style.transform = "translateY(-2px)")}
+            onMouseOver={(e) => (e.currentTarget.style.transform = "translateY(-4px)")}
             onMouseOut={(e) => (e.currentTarget.style.transform = "translateY(0)")}
           >
             View Projects
@@ -119,18 +140,24 @@ export default function HeroHUD({ scrollYProgress }: Props) {
           <a
             href="#contact"
             style={{
-              padding: "16px 40px",
+              padding: "18px 48px",
               border: "1px solid rgba(255, 255, 255, 0.2)",
               color: "white",
               borderRadius: "100px",
               fontWeight: 500,
-              fontSize: "14px",
+              fontSize: "15px",
               textDecoration: "none",
               fontFamily: "var(--font-outfit)",
-              transition: "all 0.2s",
+              transition: "all 0.3s ease",
             }}
-            onMouseOver={(e) => (e.currentTarget.style.background = "rgba(255, 255, 255, 0.05)")}
-            onMouseOut={(e) => (e.currentTarget.style.background = "transparent")}
+            onMouseOver={(e) => {
+              e.currentTarget.style.background = "rgba(255, 255, 255, 0.05)";
+              e.currentTarget.style.borderColor = "white";
+            }}
+            onMouseOut={(e) => {
+              e.currentTarget.style.background = "transparent";
+              e.currentTarget.style.borderColor = "rgba(255, 255, 255, 0.2)";
+            }}
           >
             Get in Touch
           </a>
@@ -152,7 +179,7 @@ export default function HeroHUD({ scrollYProgress }: Props) {
         }}
       >
         <div style={{ width: "1px", height: "40px", background: "linear-gradient(to bottom, var(--accent-cyan), transparent)" }} />
-        <span style={{ fontSize: "10px", letterSpacing: "0.2em", color: "var(--accent-cyan)", fontFamily: "var(--font-outfit)" }}>SCROLL</span>
+        <span style={{ fontSize: "10px", letterSpacing: "0.2em", color: "var(--accent-cyan)", fontFamily: "var(--font-outfit)", fontWeight: 600 }}>SYSTEM.ACTIVE</span>
       </motion.div>
     </div>
   );
