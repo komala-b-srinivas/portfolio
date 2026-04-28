@@ -2,11 +2,11 @@ import { openai } from '@ai-sdk/openai';
 import { generateText } from 'ai';
 
 export async function POST(req: Request) {
-  const apiKey = process.env.OPENAI_API_KEY;
+  const apiKey = process.env.GROQ_API_KEY;
   
   if (!apiKey) {
     return Response.json(
-      { text: "System Error: OpenAI API Key is missing. Please ensure 'OPENAI_API_KEY' is set in your Vercel Environment Variables." },
+      { text: "System Error: Groq API Key is missing. Please ensure 'GROQ_API_KEY' is set in your Vercel Environment Variables." },
       { status: 500 }
     );
   }
@@ -14,14 +14,14 @@ export async function POST(req: Request) {
   const { messages } = await req.json();
 
   try {
-    const response = await fetch("https://api.openai.com/v1/chat/completions", {
+    const response = await fetch("https://api.groq.com/openai/v1/chat/completions", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${apiKey}`,
       },
       body: JSON.stringify({
-        model: "gpt-4o-mini",
+        model: "llama-3.3-70b-versatile",
         messages: [
           {
             role: "system",
@@ -52,15 +52,14 @@ export async function POST(req: Request) {
           ...messages.map((m: any) => ({ role: m.role, content: m.content })),
         ],
         temperature: 0.7,
-        max_tokens: 500,
       }),
     });
 
     if (!response.ok) {
       const errorData = await response.json();
-      console.error("OpenAI Error:", errorData);
+      console.error("Groq Error:", errorData);
       return Response.json(
-        { text: `OpenAI Service Error: ${errorData.error?.message || "Unknown error"}` },
+        { text: `Groq Service Error: ${errorData.error?.message || "Unknown error"}` },
         { status: 500 }
       );
     }
