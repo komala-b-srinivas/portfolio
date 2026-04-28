@@ -25,18 +25,13 @@ export default function HeroHUD({ scrollYProgress }: Props) {
         padding: "0 40px",
       }}
     >
-      {/* Subtle Background Grid */}
+      {/* Subtle Spotlight Background */}
       <div
         style={{
           position: "absolute",
           inset: 0,
-          background: `
-            linear-gradient(rgba(0, 212, 255, 0.03) 1px, transparent 1px),
-            linear-gradient(90deg, rgba(0, 212, 255, 0.03) 1px, transparent 1px)
-          `,
-          backgroundSize: "60px 60px",
-          opacity: 0.5,
-          maskImage: "radial-gradient(circle at center, black, transparent 80%)",
+          background: "radial-gradient(circle at 80% 20%, rgba(0, 212, 255, 0.05) 0%, transparent 50%), radial-gradient(circle at 20% 80%, rgba(124, 58, 237, 0.03) 0%, transparent 50%)",
+          opacity: 0.8,
         }}
       />
 
