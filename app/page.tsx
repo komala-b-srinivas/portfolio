@@ -15,7 +15,7 @@ export default function Home() {
 
       <NeuralScrollScene />
 
-      <div style={{ position: "relative", zHeight: 2, paddingBottom: "100px" }}>
+      <div style={{ position: "relative", zIndex: 2, paddingBottom: "100px" }}>
         <Skills />
         <Projects />
         <Experience />
