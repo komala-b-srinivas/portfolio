@@ -28,8 +28,8 @@ export default function NeuralScrollScene() {
           background: "var(--bg)",
         }}
       >
-        {/* Animated 3D particle background */}
-        <ThreeCanvas />
+        {/* Atmospheric Neural Background */}
+        <div style={{ position: "absolute", inset: 0, background: "var(--bg)", zIndex: 0 }} />
 
         {/* HUD overlay */}
         <HeroHUD scrollYProgress={scrollYProgress} />

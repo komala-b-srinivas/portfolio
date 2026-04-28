@@ -8,10 +8,9 @@ interface Props {
 }
 
 export default function HeroHUD({ scrollYProgress }: Props) {
-  const opacity = useTransform(scrollYProgress, [0, 0.4], [1, 0]);
-  const y = useTransform(scrollYProgress, [0, 0.4], [0, -60]);
-  const imgY = useTransform(scrollYProgress, [0, 0.6], [0, 40]);
-  const scale = useTransform(scrollYProgress, [0, 0.6], [1, 0.9]);
+  const opacity = useTransform(scrollYProgress, [0, 0.3], [1, 0]);
+  const scale = useTransform(scrollYProgress, [0, 0.4], [1, 1.1]);
+  const rotateX = useTransform(scrollYProgress, [0, 0.4], [0, 5]);
 
   return (
     <div
@@ -27,159 +26,164 @@ export default function HeroHUD({ scrollYProgress }: Props) {
         overflow: "hidden",
       }}
     >
-      {/* Background Visual Centerpiece */}
+      {/* BACKGROUND ATMOSPHERE */}
+      <div
+        style={{
+          position: "absolute",
+          inset: 0,
+          background: "radial-gradient(circle at 50% 50%, rgba(0, 242, 255, 0.05) 0%, transparent 70%)",
+          zIndex: 1,
+        }}
+      />
+      
+      {/* 3D NEURAL CENTERPIECE */}
       <motion.div
         style={{
           position: "absolute",
-          top: "50%",
-          left: "50%",
-          x: "-50%",
-          y: "-50%",
-          width: "min(600px, 90vw)",
-          height: "min(600px, 90vw)",
-          opacity: useTransform(scrollYProgress, [0, 0.6], [0.7, 0]),
+          width: "min(800px, 120vw)",
+          height: "min(800px, 120vw)",
+          opacity: 0.6,
           scale,
-          translateY: imgY,
-          filter: "drop-shadow(0 0 50px rgba(0, 212, 255, 0.15))",
+          rotateX,
+          zIndex: 2,
+          filter: "brightness(0.8) contrast(1.2)",
         }}
       >
         <Image
-          src="/hero-vision.png"
-          alt="Abstract Organic AI Vision"
+          src="/hero-neural.png"
+          alt="Isometric Neural Architecture"
           fill
           style={{ objectFit: "contain" }}
           priority
         />
       </motion.div>
 
-      {/* Hero Content */}
+      {/* HERO CONTENT */}
       <motion.div
         style={{
           opacity,
-          y,
           textAlign: "center",
-          maxWidth: "1000px",
-          zIndex: 20,
+          maxWidth: "1100px",
+          zIndex: 10,
           position: "relative",
           padding: "0 24px",
         }}
       >
-        <motion.p
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.8 }}
-          style={{
-            fontSize: "13px",
-            letterSpacing: "0.5em",
-            color: "var(--accent-cyan)",
-            marginBottom: "32px",
-            fontFamily: "var(--font-outfit)",
-            textTransform: "uppercase",
-            fontWeight: 600,
-          }}
         >
-          AI Automation Engineer
-        </motion.p>
-        <h1
-          style={{
-            fontSize: "clamp(56px, 10vw, 120px)",
-            fontWeight: 800,
-            lineHeight: 0.85,
-            color: "#fff",
-            letterSpacing: "-0.05em",
-            margin: "0 0 40px",
-            fontFamily: "var(--font-outfit)",
-          }}
-        >
-          KOMALA
-          <br />
-          <span
+          <p
             style={{
-              color: "transparent",
-              WebkitTextStroke: "1px rgba(255, 255, 255, 0.25)",
+              fontSize: "12px",
+              letterSpacing: "0.6em",
+              color: "var(--accent-cyan)",
+              marginBottom: "40px",
+              fontFamily: "var(--font-outfit)",
+              textTransform: "uppercase",
+              fontWeight: 700,
             }}
           >
-            BELUR SRINIVAS
-          </span>
-        </h1>
-        <p
-          style={{
-            fontSize: "clamp(18px, 2.2vw, 24px)",
-            color: "rgba(255, 255, 255, 0.6)",
-            maxWidth: "700px",
-            margin: "0 auto 64px",
-            lineHeight: 1.5,
-            fontWeight: 300,
-            fontFamily: "var(--font-outfit)",
-          }}
-        >
-          Architecting 
-          <span style={{ color: "var(--accent-cyan)", fontWeight: 500 }}> intelligent systems </span> 
-          and production-grade AI automation workflows.
-        </p>
+            AI Automation Engineer
+          </p>
+          <h1
+            style={{
+              fontSize: "clamp(64px, 12vw, 160px)",
+              fontWeight: 900,
+              lineHeight: 0.8,
+              color: "#fff",
+              letterSpacing: "-0.06em",
+              margin: "0 0 48px",
+              fontFamily: "var(--font-outfit)",
+              textTransform: "uppercase",
+            }}
+          >
+            KOMALA
+            <br />
+            <span
+              style={{
+                color: "transparent",
+                WebkitTextStroke: "1px rgba(255, 255, 255, 0.15)",
+              }}
+            >
+              BELUR SRINIVAS
+            </span>
+          </h1>
+          <p
+            style={{
+              fontSize: "clamp(16px, 2vw, 20px)",
+              color: "rgba(255, 255, 255, 0.4)",
+              maxWidth: "700px",
+              margin: "0 auto 80px",
+              lineHeight: 1.6,
+              fontWeight: 400,
+              fontFamily: "var(--font-outfit)",
+              letterSpacing: "0.02em",
+            }}
+          >
+            Architecting <span className="text-glow" style={{ color: "var(--accent-cyan)", fontWeight: 600 }}>intelligent systems</span> and production-grade
+            <br />
+            AI automation workflows.
+          </p>
 
-        <div style={{ display: "flex", gap: "24px", justifyContent: "center", pointerEvents: "auto" }}>
-          <a
-            href="#projects"
-            style={{
-              padding: "18px 48px",
-              background: "white",
-              color: "black",
-              borderRadius: "100px",
-              fontWeight: 600,
-              fontSize: "15px",
-              textDecoration: "none",
-              fontFamily: "var(--font-outfit)",
-              transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
-            }}
-            onMouseOver={(e) => (e.currentTarget.style.transform = "translateY(-4px)")}
-            onMouseOut={(e) => (e.currentTarget.style.transform = "translateY(0)")}
-          >
-            View Projects
-          </a>
-          <a
-            href="#contact"
-            style={{
-              padding: "18px 48px",
-              border: "1px solid rgba(255, 255, 255, 0.2)",
-              color: "white",
-              borderRadius: "100px",
-              fontWeight: 500,
-              fontSize: "15px",
-              textDecoration: "none",
-              fontFamily: "var(--font-outfit)",
-              transition: "all 0.3s ease",
-            }}
-            onMouseOver={(e) => {
-              e.currentTarget.style.background = "rgba(255, 255, 255, 0.05)";
-              e.currentTarget.style.borderColor = "white";
-            }}
-            onMouseOut={(e) => {
-              e.currentTarget.style.background = "transparent";
-              e.currentTarget.style.borderColor = "rgba(255, 255, 255, 0.2)";
-            }}
-          >
-            Get in Touch
-          </a>
-        </div>
+          <div style={{ display: "flex", gap: "32px", justifyContent: "center", pointerEvents: "auto" }}>
+            <a
+              href="#projects"
+              className="block-3d"
+              style={{
+                padding: "20px 56px",
+                background: "white",
+                color: "black",
+                borderRadius: "4px",
+                fontWeight: 700,
+                fontSize: "14px",
+                textDecoration: "none",
+                fontFamily: "var(--font-outfit)",
+                textTransform: "uppercase",
+                letterSpacing: "0.1em",
+              }}
+            >
+              View Projects
+            </a>
+            <a
+              href="#contact"
+              className="block-3d"
+              style={{
+                padding: "20px 56px",
+                border: "1px solid rgba(255, 255, 255, 0.2)",
+                color: "white",
+                borderRadius: "4px",
+                fontWeight: 600,
+                fontSize: "14px",
+                textDecoration: "none",
+                fontFamily: "var(--font-outfit)",
+                textTransform: "uppercase",
+                letterSpacing: "0.1em",
+              }}
+            >
+              Get in Touch
+            </a>
+          </div>
+        </motion.div>
       </motion.div>
       
-      {/* Scroll Indicator */}
+      {/* SYSTEM STATUS FOOTER */}
       <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 0.4 }}
-        transition={{ delay: 1, duration: 1 }}
         style={{
           position: "absolute",
-          bottom: "40px",
+          bottom: "64px",
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
-          gap: "8px",
+          gap: "12px",
+          opacity: 0.3,
         }}
       >
-        <div style={{ width: "1px", height: "40px", background: "linear-gradient(to bottom, var(--accent-cyan), transparent)" }} />
-        <span style={{ fontSize: "10px", letterSpacing: "0.2em", color: "var(--accent-cyan)", fontFamily: "var(--font-outfit)", fontWeight: 600 }}>SYSTEM.ACTIVE</span>
+        <span style={{ fontSize: "9px", letterSpacing: "0.4em", color: "var(--accent-cyan)", fontFamily: "var(--font-outfit)", fontWeight: 700 }}>
+          SYSTEM.ACTIVE
+        </span>
+        <div style={{ width: "1px", height: "30px", background: "linear-gradient(to bottom, var(--accent-cyan), transparent)" }} />
       </motion.div>
     </div>
   );

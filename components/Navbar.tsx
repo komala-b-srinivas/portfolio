@@ -89,21 +89,28 @@ export default function Navbar() {
         <a
           href="mailto:komalsrinivas20@gmail.com"
           style={{
-            fontSize: "13px",
-            letterSpacing: "0.05em",
+            fontSize: "12px",
+            letterSpacing: "0.1em",
             color: "black",
             backgroundColor: "white",
-            padding: "10px 24px",
-            borderRadius: "100px",
+            padding: "12px 28px",
+            borderRadius: "2px",
             textDecoration: "none",
-            fontWeight: 600,
-            transition: "transform 0.2s",
+            fontWeight: 800,
+            transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
             fontFamily: "var(--font-outfit)",
+            textTransform: "uppercase",
           }}
-          onMouseEnter={(e) => (e.currentTarget.style.transform = "scale(1.05)")}
-          onMouseLeave={(e) => (e.currentTarget.style.transform = "scale(1)")}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.transform = "translateY(-2px)";
+            e.currentTarget.style.boxShadow = "0 0 20px rgba(255,255,255,0.2)";
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.transform = "translateY(0)";
+            e.currentTarget.style.boxShadow = "none";
+          }}
         >
-          CONNECT
+          Connect
         </a>
       </div>
     </motion.nav>

@@ -70,40 +70,41 @@ export default function Experience() {
     <section
       id="experience"
       style={{
-        padding: "120px 0",
+        padding: "160px 0",
         background: "var(--bg)",
         position: "relative",
       }}
     >
-      <div style={{ maxWidth: "1100px", margin: "0 auto", padding: "0 32px" }}>
+      <div style={{ maxWidth: "1200px", margin: "0 auto", padding: "0 32px" }}>
         <motion.div
           initial={{ opacity: 0, y: 24 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-80px" }}
-          transition={{ duration: 0.6 }}
-          style={{ marginBottom: "64px", textAlign: "center" }}
+          transition={{ duration: 0.8 }}
+          style={{ marginBottom: "80px", textAlign: "center" }}
         >
           <p
-            className="text-glow"
             style={{
-              fontSize: "12px",
-              letterSpacing: "0.4em",
+              fontSize: "10px",
+              letterSpacing: "0.5em",
               color: "var(--accent-cyan)",
               marginBottom: "16px",
               fontFamily: "var(--font-outfit)",
-              fontWeight: 500,
+              fontWeight: 700,
+              textTransform: "uppercase",
             }}
           >
-            CHRONOLOGICAL EVOLUTION
+            Professional Evolution
           </p>
           <h2
             style={{
-              fontSize: "clamp(32px, 5vw, 56px)",
-              fontWeight: 700,
+              fontSize: "clamp(32px, 6vw, 64px)",
+              fontWeight: 900,
               color: "white",
-              letterSpacing: "-0.02em",
+              letterSpacing: "-0.04em",
               margin: 0,
               fontFamily: "var(--font-outfit)",
+              textTransform: "uppercase",
             }}
           >
             Experience
@@ -111,48 +112,46 @@ export default function Experience() {
         </motion.div>
 
         <div style={{ position: "relative" }}>
-          {/* Timeline line */}
+          {/* Vertical Grid Line */}
           <div
             style={{
               position: "absolute",
-              left: "14px",
+              left: "4px",
               top: 0,
               bottom: 0,
-              width: "2px",
-              background: "linear-gradient(180deg, var(--accent-cyan) 0%, rgba(124, 58, 237, 0.2) 100%)",
-              opacity: 0.3,
+              width: "1px",
+              background: "linear-gradient(180deg, var(--accent-cyan) 0%, transparent 100%)",
+              opacity: 0.2,
             }}
           />
 
-          <div style={{ display: "flex", flexDirection: "column", gap: "48px" }}>
+          <div style={{ display: "flex", flexDirection: "column", gap: "40px" }}>
             {jobs.map((job, i) => (
               <motion.div
                 key={i}
                 initial={{ opacity: 0, x: -20 }}
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true, margin: "-60px" }}
-                transition={{ duration: 0.5, delay: i * 0.1 }}
-                className="glass-panel"
+                transition={{ duration: 0.6, delay: i * 0.1 }}
+                className="block-3d"
                 style={{ 
-                  padding: "32px", 
+                  padding: "48px", 
                   position: "relative",
-                  borderRadius: "20px",
-                  marginLeft: "48px",
+                  borderRadius: "4px",
+                  marginLeft: "40px",
+                  borderLeft: job.current ? "2px solid var(--accent-cyan)" : "2px solid rgba(255,255,255,0.1)",
                 }}
               >
-                {/* Timeline dot */}
+                {/* Timeline Connector */}
                 <div
                   style={{
                     position: "absolute",
-                    left: "-42px",
-                    top: "38px",
-                    width: "16px",
-                    height: "16px",
-                    borderRadius: "50%",
-                    background: job.current ? "var(--accent-cyan)" : "rgba(255, 255, 255, 0.1)",
-                    border: `4px solid var(--bg)`,
-                    boxShadow: job.current ? "0 0 15px var(--accent-cyan)" : "none",
-                    zIndex: 2,
+                    left: "-36px",
+                    top: "54px",
+                    width: "36px",
+                    height: "1px",
+                    background: job.current ? "var(--accent-cyan)" : "rgba(255,255,255,0.1)",
+                    opacity: 0.4,
                   }}
                 />
 
@@ -162,56 +161,62 @@ export default function Experience() {
                     justifyContent: "space-between",
                     alignItems: "flex-start",
                     flexWrap: "wrap",
-                    gap: "12px",
-                    marginBottom: "16px",
+                    gap: "24px",
+                    marginBottom: "32px",
                   }}
                 >
                   <div>
                     <h3
                       style={{
-                        fontSize: "20px",
-                        fontWeight: 600,
+                        fontSize: "24px",
+                        fontWeight: 700,
                         color: "white",
-                        margin: "0 0 6px",
+                        margin: "0 0 8px",
                         fontFamily: "var(--font-outfit)",
+                        textTransform: "uppercase",
+                        letterSpacing: "-0.01em",
                       }}
                     >
                       {job.role}
                     </h3>
                     <p
+                      className="text-glow"
                       style={{
                         fontSize: "14px",
                         color: "var(--accent-cyan)",
                         margin: 0,
-                        fontWeight: 500,
+                        fontWeight: 600,
                         fontFamily: "var(--font-outfit)",
+                        textTransform: "uppercase",
+                        letterSpacing: "0.1em",
                       }}
                     >
-                      {job.company} <span style={{ color: "rgba(255,255,255,0.3)", margin: "0 8px" }}>|</span> {job.location}
+                      {job.company} <span style={{ color: "rgba(255,255,255,0.1)", margin: "0 12px" }}>/</span> {job.location}
                     </p>
                   </div>
-                  <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+                  <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>
                     {job.current && (
                       <span
                         style={{
-                          fontSize: "10px",
-                          letterSpacing: "0.15em",
+                          fontSize: "9px",
+                          letterSpacing: "0.2em",
                           color: "var(--accent-cyan)",
                           border: "1px solid var(--accent-cyan)",
-                          padding: "4px 10px",
-                          borderRadius: "100px",
-                          fontWeight: 600,
+                          padding: "4px 12px",
+                          borderRadius: "2px",
+                          fontWeight: 800,
                         }}
                       >
-                        LIVE
+                        ACTIVE
                       </span>
                     )}
                     <span
                       style={{
                         fontSize: "13px",
-                        color: "rgba(255, 255, 255, 0.4)",
+                        color: "rgba(255, 255, 255, 0.3)",
                         whiteSpace: "nowrap",
                         fontFamily: "var(--font-outfit)",
+                        fontWeight: 500,
                       }}
                     >
                       {job.period}
@@ -224,24 +229,26 @@ export default function Experience() {
                     <li
                       key={idx}
                       style={{
-                        fontSize: "14px",
-                        color: "rgba(255, 255, 255, 0.6)",
-                        paddingLeft: "20px",
+                        fontSize: "15px",
+                        color: "rgba(255, 255, 255, 0.4)",
+                        paddingLeft: "24px",
                         position: "relative",
-                        marginBottom: "10px",
-                        lineHeight: 1.6,
+                        marginBottom: "12px",
+                        lineHeight: 1.7,
+                        fontWeight: 300,
                       }}
                     >
-                      <span
+                      <div
                         style={{
                           position: "absolute",
                           left: 0,
-                          color: "var(--accent-cyan)",
-                          opacity: 0.4,
+                          top: "12px",
+                          width: "8px",
+                          height: "1px",
+                          background: "var(--accent-cyan)",
+                          opacity: 0.3,
                         }}
-                      >
-                        ▹
-                      </span>
+                      />
                       {b}
                     </li>
                   ))}

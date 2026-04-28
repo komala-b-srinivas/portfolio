@@ -71,51 +71,56 @@ export default function Skills() {
     <section
       id="skills"
       style={{
-        padding: "120px 0",
+        padding: "160px 0",
         background: "var(--bg)",
         position: "relative",
+        overflow: "hidden",
       }}
     >
-      <div style={{ maxWidth: "1100px", margin: "0 auto", padding: "0 32px" }}>
+      {/* Background decoration */}
+      <div style={{ position: "absolute", top: "20%", left: "-10%", width: "40%", height: "40%", background: "radial-gradient(circle, rgba(188, 19, 254, 0.05) 0%, transparent 70%)", zIndex: 0 }} />
+
+      <div style={{ maxWidth: "1200px", margin: "0 auto", padding: "0 32px", position: "relative", zIndex: 1 }}>
         <motion.div
           initial={{ opacity: 0, y: 24 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-80px" }}
-          transition={{ duration: 0.6 }}
-          style={{ marginBottom: "64px", textAlign: "center" }}
+          transition={{ duration: 0.8 }}
+          style={{ marginBottom: "80px", textAlign: "center" }}
         >
           <p
-            className="text-glow"
             style={{
-              fontSize: "12px",
-              letterSpacing: "0.4em",
+              fontSize: "10px",
+              letterSpacing: "0.5em",
               color: "var(--accent-cyan)",
               marginBottom: "16px",
               fontFamily: "var(--font-outfit)",
-              fontWeight: 500,
+              fontWeight: 700,
+              textTransform: "uppercase",
             }}
           >
-            TECHNICAL CAPABILITIES
+            Technical Infrastructure
           </p>
           <h2
             style={{
-              fontSize: "clamp(32px, 5vw, 56px)",
-              fontWeight: 700,
+              fontSize: "clamp(32px, 6vw, 64px)",
+              fontWeight: 900,
               color: "white",
-              letterSpacing: "-0.02em",
+              letterSpacing: "-0.04em",
               margin: 0,
               fontFamily: "var(--font-outfit)",
+              textTransform: "uppercase",
             }}
           >
-            Technical Stack
+            Capabilities
           </h2>
         </motion.div>
 
         <div
           style={{
             display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
-            gap: "32px",
+            gridTemplateColumns: "repeat(auto-fit, minmax(340px, 1fr))",
+            gap: "40px",
           }}
         >
           {skillGroups.map((group, i) => (
@@ -124,57 +129,55 @@ export default function Skills() {
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-50px" }}
-              transition={{ duration: 0.5, delay: i * 0.1 }}
-              className="glass-panel"
+              transition={{ duration: 0.6, delay: i * 0.1 }}
+              className="block-3d"
               style={{
-                padding: "32px",
-                borderRadius: "20px",
-                position: "relative",
-                overflow: "hidden",
+                padding: "48px",
+                borderRadius: "4px",
+                borderLeft: i % 2 === 0 ? "2px solid var(--accent-cyan)" : "2px solid var(--accent-purple)",
               }}
             >
-              {/* Subtle accent corner */}
-              <div style={{ position: "absolute", top: 0, right: 0, width: "40px", height: "40px", background: "linear-gradient(225deg, var(--accent-cyan), transparent)", opacity: 0.1 }} />
-              
               <p
+                className={i % 2 === 0 ? "text-glow" : "text-glow-purple"}
                 style={{
                   fontSize: "11px",
                   letterSpacing: "0.2em",
-                  color: "var(--accent-cyan)",
-                  marginBottom: "24px",
+                  color: i % 2 === 0 ? "var(--accent-cyan)" : "var(--accent-purple)",
+                  marginBottom: "32px",
                   textTransform: "uppercase",
                   fontFamily: "var(--font-outfit)",
-                  fontWeight: 600,
+                  fontWeight: 800,
                 }}
               >
                 {group.category}
               </p>
-              <div style={{ display: "flex", flexWrap: "wrap", gap: "10px" }}>
+              <div style={{ display: "flex", flexWrap: "wrap", gap: "12px" }}>
                 {group.skills.map((skill) => (
                   <span
                     key={skill}
                     style={{
-                      fontSize: "13px",
-                      color: "rgba(255, 255, 255, 0.6)",
-                      background: "rgba(255, 255, 255, 0.03)",
+                      fontSize: "14px",
+                      color: "rgba(255, 255, 255, 0.4)",
+                      background: "rgba(255, 255, 255, 0.02)",
                       border: "1px solid rgba(255, 255, 255, 0.05)",
-                      padding: "6px 14px",
-                      borderRadius: "100px",
+                      padding: "8px 18px",
+                      borderRadius: "2px",
                       transition: "all 0.3s ease",
                       cursor: "default",
                       fontFamily: "var(--font-outfit)",
+                      fontWeight: 300,
                     }}
                     onMouseEnter={(e) => {
                       const el = e.currentTarget;
                       el.style.borderColor = "var(--accent-cyan)";
-                      el.style.color = "var(--accent-cyan)";
+                      el.style.color = "white";
                       el.style.background = "rgba(0, 242, 255, 0.05)";
                     }}
                     onMouseLeave={(e) => {
                       const el = e.currentTarget;
                       el.style.borderColor = "rgba(255, 255, 255, 0.05)";
-                      el.style.color = "rgba(255, 255, 255, 0.6)";
-                      el.style.background = "rgba(255, 255, 255, 0.03)";
+                      el.style.color = "rgba(255, 255, 255, 0.4)";
+                      el.style.background = "rgba(255, 255, 255, 0.02)";
                     }}
                   >
                     {skill}

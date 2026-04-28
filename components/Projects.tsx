@@ -102,65 +102,65 @@ export default function Projects() {
     <section
       id="projects"
       style={{
-        padding: "120px 0",
+        padding: "160px 0",
         background: "var(--bg)",
         position: "relative",
       }}
     >
-      <div style={{ maxWidth: "1100px", margin: "0 auto", padding: "0 32px" }}>
-        {/* Section header */}
+      <div style={{ maxWidth: "1200px", margin: "0 auto", padding: "0 32px" }}>
         <motion.div
           initial={{ opacity: 0, y: 24 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-80px" }}
-          transition={{ duration: 0.6 }}
-          style={{ marginBottom: "64px", textAlign: "center" }}
+          transition={{ duration: 0.8 }}
+          style={{ marginBottom: "80px", textAlign: "center" }}
         >
           <p
-            className="text-glow"
             style={{
-              fontSize: "12px",
-              letterSpacing: "0.4em",
+              fontSize: "10px",
+              letterSpacing: "0.5em",
               color: "var(--accent-cyan)",
               marginBottom: "16px",
               fontFamily: "var(--font-outfit)",
-              fontWeight: 500,
+              fontWeight: 700,
+              textTransform: "uppercase",
             }}
           >
-            SELECTED ARCHITECTURES
+            System Architectures
           </p>
           <h2
             style={{
-              fontSize: "clamp(32px, 5vw, 56px)",
-              fontWeight: 700,
+              fontSize: "clamp(32px, 6vw, 64px)",
+              fontWeight: 900,
               color: "white",
-              letterSpacing: "-0.02em",
+              letterSpacing: "-0.04em",
               margin: 0,
               fontFamily: "var(--font-outfit)",
+              textTransform: "uppercase",
             }}
           >
             Projects & Patents
           </h2>
         </motion.div>
 
-        {/* Project cards */}
-        <div style={{ display: "flex", flexDirection: "column", gap: "32px" }}>
+        <div style={{ display: "flex", flexDirection: "column", gap: "48px" }}>
           {projects.map((project, i) => (
             <motion.div
               key={project.id}
               initial={{ opacity: 0, y: 32 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-60px" }}
-              transition={{ duration: 0.55, delay: i * 0.08 }}
+              transition={{ duration: 0.6, delay: i * 0.1 }}
             >
               <div
-                className="glass-panel"
+                className="block-3d"
                 style={{
-                  padding: "40px",
-                  borderRadius: "24px",
+                  padding: "64px",
+                  borderRadius: "4px",
                   cursor: "default",
                   position: "relative",
                   overflow: "hidden",
+                  borderLeft: project.patent ? "4px solid var(--accent-purple)" : "4px solid var(--accent-cyan)",
                 }}
               >
                 {/* Number accent */}
@@ -168,37 +168,38 @@ export default function Projects() {
                   style={{
                     position: "absolute",
                     top: "32px",
-                    right: "40px",
-                    fontSize: "72px",
-                    fontWeight: 700,
-                    color: project.patent ? "rgba(245, 158, 11, 0.03)" : "rgba(0, 242, 255, 0.03)",
+                    right: "48px",
+                    fontSize: "120px",
+                    fontWeight: 900,
+                    color: project.patent ? "rgba(188, 19, 254, 0.03)" : "rgba(0, 242, 255, 0.03)",
                     lineHeight: 1,
                     userSelect: "none",
                     fontFamily: "var(--font-outfit)",
+                    letterSpacing: "-0.05em",
                   }}
                 >
                   {project.id}
                 </span>
 
-                <div>
-                  {/* Title row */}
+                <div style={{ position: "relative", zIndex: 2 }}>
                   <div
                     style={{
                       display: "flex",
                       alignItems: "center",
-                      gap: "16px",
-                      marginBottom: "12px",
+                      gap: "24px",
+                      marginBottom: "24px",
                       flexWrap: "wrap",
                     }}
                   >
                     <h3
                       style={{
-                        fontSize: "28px",
-                        fontWeight: 600,
+                        fontSize: "36px",
+                        fontWeight: 700,
                         color: "white",
                         margin: 0,
-                        letterSpacing: "-0.01em",
+                        letterSpacing: "-0.02em",
                         fontFamily: "var(--font-outfit)",
+                        textTransform: "uppercase",
                       }}
                     >
                       {project.title}
@@ -206,32 +207,28 @@ export default function Projects() {
                     <span
                       style={{
                         fontSize: "10px",
-                        letterSpacing: "0.15em",
-                        color: project.statusColor,
-                        border: `1px solid ${project.statusColor}`,
-                        padding: "4px 10px",
-                        borderRadius: "100px",
+                        letterSpacing: "0.2em",
+                        color: project.patent ? "var(--accent-purple)" : "var(--accent-cyan)",
+                        border: `1px solid ${project.patent ? "var(--accent-purple)" : "var(--accent-cyan)"}`,
+                        padding: "6px 16px",
+                        borderRadius: "2px",
                         whiteSpace: "nowrap",
-                        fontWeight: 600,
+                        fontWeight: 800,
+                        textTransform: "uppercase",
                       }}
                     >
                       {project.status}
                     </span>
-                    {project.period && (
-                      <span style={{ fontSize: "12px", color: "rgba(255, 255, 255, 0.4)", fontFamily: "var(--font-outfit)" }}>
-                        {project.period}
-                      </span>
-                    )}
                   </div>
 
                   <p
-                    className="text-glow"
+                    className={project.patent ? "text-glow-purple" : "text-glow"}
                     style={{
-                      fontSize: "14px",
-                      color: project.patent ? "#f59e0b" : "var(--accent-cyan)",
-                      marginBottom: "20px",
-                      letterSpacing: "0.1em",
-                      fontWeight: 500,
+                      fontSize: "13px",
+                      color: project.patent ? "var(--accent-purple)" : "var(--accent-cyan)",
+                      marginBottom: "32px",
+                      letterSpacing: "0.2em",
+                      fontWeight: 700,
                       textTransform: "uppercase",
                       fontFamily: "var(--font-outfit)",
                     }}
@@ -241,41 +238,41 @@ export default function Projects() {
 
                   <p
                     style={{
-                      fontSize: "16px",
-                      color: "rgba(255, 255, 255, 0.7)",
-                      lineHeight: 1.6,
-                      marginBottom: "24px",
-                      maxWidth: "750px",
+                      fontSize: "18px",
+                      color: "rgba(255, 255, 255, 0.5)",
+                      lineHeight: 1.7,
+                      marginBottom: "48px",
+                      maxWidth: "800px",
                       fontWeight: 300,
+                      letterSpacing: "0.01em",
                     }}
                   >
                     {project.description}
                   </p>
 
-                  {/* Patent details block */}
                   {project.patent && (
                     <div
+                      className="block-3d"
                       style={{
-                        marginBottom: "24px",
-                        padding: "20px",
-                        border: "1px solid rgba(245, 158, 11, 0.1)",
-                        borderRadius: "16px",
-                        background: "rgba(245, 158, 11, 0.03)",
-                        display: "inline-flex",
+                        marginBottom: "48px",
+                        padding: "32px",
+                        background: "rgba(188, 19, 254, 0.02)",
+                        border: "1px solid rgba(188, 19, 254, 0.1)",
+                        borderRadius: "2px",
+                        display: "flex",
                         flexDirection: "column",
-                        gap: "8px",
-                        width: "100%",
-                        maxWidth: "500px",
+                        gap: "12px",
+                        maxWidth: "600px",
                       }}
                     >
-                      <span style={{ fontSize: "11px", letterSpacing: "0.2em", color: "#f59e0b", fontWeight: 600 }}>
-                        DEUTSCHES PATENT- UND MARKENAMT
+                      <span style={{ fontSize: "10px", letterSpacing: "0.4em", color: "var(--accent-purple)", fontWeight: 800 }}>
+                        DPMA · MUNICH, GERMANY
                       </span>
-                      <span style={{ fontSize: "15px", color: "white", fontWeight: 500, fontFamily: "var(--font-outfit)" }}>
+                      <span style={{ fontSize: "18px", color: "white", fontWeight: 700, fontFamily: "var(--font-outfit)" }}>
                         {project.patent.number}
                       </span>
-                      <span style={{ fontSize: "13px", color: "rgba(255, 255, 255, 0.5)" }}>
-                        Registered {project.patent.registered} · Munich, Germany
+                      <span style={{ fontSize: "14px", color: "rgba(255, 255, 255, 0.4)", fontWeight: 300 }}>
+                        Registered {project.patent.registered} · Utility Patent
                       </span>
                       <a
                         href={project.patent.link}
@@ -283,62 +280,63 @@ export default function Projects() {
                         rel="noopener noreferrer"
                         style={{
                           fontSize: "12px",
-                          color: "#f59e0b",
+                          color: "var(--accent-purple)",
                           textDecoration: "none",
-                          fontWeight: 500,
-                          marginTop: "4px",
-                          display: "flex",
-                          alignItems: "center",
-                          gap: "4px",
+                          fontWeight: 700,
+                          marginTop: "8px",
+                          textTransform: "uppercase",
+                          letterSpacing: "0.1em",
                         }}
                       >
-                        View Legal Register ↗
+                        Legal Repository ↗
                       </a>
                     </div>
                   )}
 
-                  {/* Highlights */}
-                  <ul style={{ margin: "0 0 24px", padding: 0, listStyle: "none" }}>
+                  <ul style={{ margin: "0 0 48px", padding: 0, listStyle: "none" }}>
                     {project.highlights.map((h, idx) => (
                       <li
                         key={idx}
                         style={{
-                          fontSize: "14px",
-                          color: "rgba(255, 255, 255, 0.6)",
-                          paddingLeft: "20px",
+                          fontSize: "15px",
+                          color: "rgba(255, 255, 255, 0.4)",
+                          paddingLeft: "32px",
                           position: "relative",
-                          marginBottom: "10px",
-                          lineHeight: 1.6,
+                          marginBottom: "16px",
+                          lineHeight: 1.8,
+                          fontWeight: 300,
                         }}
                       >
-                        <span
+                        <div
                           style={{
                             position: "absolute",
                             left: 0,
-                            color: project.patent ? "#f59e0b" : "var(--accent-cyan)",
+                            top: "12px",
+                            width: "12px",
+                            height: "1px",
+                            background: project.patent ? "var(--accent-purple)" : "var(--accent-cyan)",
                             opacity: 0.6,
                           }}
-                        >
-                          ●
-                        </span>
+                        />
                         {h}
                       </li>
                     ))}
                   </ul>
 
-                  {/* Tags */}
-                  <div style={{ display: "flex", flexWrap: "wrap", gap: "10px" }}>
+                  <div style={{ display: "flex", flexWrap: "wrap", gap: "12px" }}>
                     {project.tags.map((tag) => (
                       <span
                         key={tag}
                         style={{
                           fontSize: "12px",
-                          color: "rgba(255, 255, 255, 0.5)",
-                          background: "rgba(255, 255, 255, 0.03)",
+                          color: "rgba(255, 255, 255, 0.3)",
+                          background: "rgba(255, 255, 255, 0.02)",
                           border: "1px solid rgba(255, 255, 255, 0.05)",
-                          padding: "6px 12px",
-                          borderRadius: "8px",
+                          padding: "8px 16px",
+                          borderRadius: "2px",
                           fontFamily: "var(--font-outfit)",
+                          fontWeight: 400,
+                          letterSpacing: "0.05em",
                         }}
                       >
                         {tag}
