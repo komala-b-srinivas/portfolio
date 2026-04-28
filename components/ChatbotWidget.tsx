@@ -117,7 +117,7 @@ export default function ChatbotWidget() {
                 <input
                   value={input}
                   onChange={(e) => setInput(e.target.value)}
-                  placeholder="Query system core..."
+                  placeholder="Ask me anything..."
                   style={{ flex: 1, background: "rgba(255, 255, 255, 0.05)", border: "1px solid var(--border)", borderRadius: "8px", padding: "14px 20px", color: "white", fontSize: "15px", outline: "none" }}
                 />
                 <button type="submit" style={{ width: "52px", height: "52px", borderRadius: "8px", background: "var(--accent-teal)", border: "none", color: "black", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "20px", fontWeight: 800 }}>→</button>

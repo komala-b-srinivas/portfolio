@@ -21,8 +21,8 @@ const NeuralCubeScene = dynamic(() => import("./NeuralCubeScene"), {
 });
 
 const stats = [
-  { value: "4+", label: "Projects" },
-  { value: "2+", label: "Years Exp" },
+  { value: "10+", label: "Projects" },
+  { value: "3+", label: "Years Exp" },
   { value: "10+", label: "Technologies" },
 ];
 

@@ -171,7 +171,7 @@ const featured = [
     color1: "#00f2ff",
     color2: "#0090a0",
     status: "CURRENT",
-    link: "#experience",
+    link: "https://github.com/komala-b-srinivas?tab=repositories",
     patent: null,
   },
   {
@@ -195,7 +195,7 @@ const featured = [
     color1: "#bc13fe",
     color2: "#5b0f80",
     status: "RESEARCH",
-    link: "#projects",
+    link: "https://github.com/komala-b-srinivas?tab=repositories",
     patent: null,
   },
   {
@@ -207,7 +207,7 @@ const featured = [
     color1: "#00f2ff",
     color2: "#004455",
     status: "AUG 2025",
-    link: "#projects",
+    link: "https://github.com/komala-b-srinivas?tab=repositories",
     patent: null,
   },
 ];
@@ -401,7 +401,9 @@ export default function ProjectsSection() {
           </div>
 
           <motion.a
-            href="#experience"
+            href="https://github.com/komala-b-srinivas?tab=repositories"
+            target="_blank"
+            rel="noopener noreferrer"
             style={{
               display: "inline-flex", alignItems: "center", gap: "10px",
               fontSize: "13px", color: "rgba(255,255,255,0.6)",

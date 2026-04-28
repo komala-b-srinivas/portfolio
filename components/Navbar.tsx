@@ -3,7 +3,13 @@
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 
-const NAV_LINKS = ["Home", "About", "Projects", "Skills", "Experience"];
+const NAV_LINKS = [
+  { label: "Home",       href: "#home" },
+  { label: "About",      href: "#about" },
+  { label: "Projects",   href: "#projects" },
+  { label: "Skills",     href: "#about" },   // skills live inside AboutSkills
+  { label: "Experience", href: "#experience" },
+];
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
@@ -37,47 +43,38 @@ export default function Navbar() {
         justifyContent: "space-between",
         alignItems: "center",
       }}>
-        {/* Logo */}
+        {/* Logo — hex mark only */}
         <motion.a
           href="#home"
-          style={{
-            fontSize: "18px", fontWeight: 900,
-            color: "white", textDecoration: "none",
-            letterSpacing: "0.18em",
-            display: "flex", alignItems: "center", gap: "12px",
-          }}
+          style={{ display: "flex", alignItems: "center", textDecoration: "none" }}
           whileHover={{ opacity: 0.8 }}
         >
-          {/* Hex logo mark */}
           <div style={{
-            width: "32px", height: "32px",
+            width: "36px", height: "36px",
             clipPath: "polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%)",
             background: "linear-gradient(135deg, #00f2ff, #bc13fe)",
             display: "flex", alignItems: "center", justifyContent: "center",
           }}>
-            <span style={{ fontSize: "11px", fontWeight: 900, color: "black" }}>K</span>
+            <span style={{ fontSize: "13px", fontWeight: 900, color: "black" }}>K</span>
           </div>
-          KOMALA
         </motion.a>
 
         {/* Nav links */}
         <div style={{ display: "flex", gap: "36px", alignItems: "center" }}>
           {NAV_LINKS.map((item) => (
             <motion.a
-              key={item}
-              href={`#${item.toLowerCase()}`}
+              key={item.label}
+              href={item.href}
               style={{
                 fontSize: "12px", fontWeight: 600,
                 color: "rgba(255,255,255,0.5)",
                 textDecoration: "none",
-                textTransform: "capitalize",
                 letterSpacing: "0.04em",
                 transition: "color 0.3s ease",
-                position: "relative",
               }}
               whileHover={{ color: "white" }}
             >
-              {item}
+              {item.label}
             </motion.a>
           ))}
 
