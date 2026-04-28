@@ -133,21 +133,21 @@ export default function AboutSkills() {
             </h2>
 
             <p style={{ fontSize: "16px", color: "rgba(255,255,255,0.65)", lineHeight: 1.8, marginBottom: "20px" }}>
-              I build machine learning systems — and I&apos;m someone who genuinely loves
+              I build machine learning systems, and I&apos;m someone who genuinely loves
               organizing chaos into something useful. Give me a messy clinical workflow
               and a deadline, and I&apos;ll give you a production AI pipeline.
             </p>
 
             <p style={{ fontSize: "15.5px", color: "rgba(255,255,255,0.5)", lineHeight: 1.8, marginBottom: "20px" }}>
               I specialize in <span style={{ color: "#00f2ff", fontWeight: 600 }}>AI automation</span> and{" "}
-              <span style={{ color: "#bc13fe", fontWeight: 600 }}>healthcare AI</span> — building
+              <span style={{ color: "#bc13fe", fontWeight: 600 }}>healthcare AI</span>, building
               LLM-powered pipelines that automate high-stakes clinical tasks with HIPAA compliance,
               PHI de-identification, and human-in-the-loop safety baked in from day one.
             </p>
 
             <p style={{ fontSize: "15px", color: "rgba(255,255,255,0.4)", lineHeight: 1.8, marginBottom: "40px" }}>
               Currently at Rimon Health, cutting neuropsychological report writing from 3 hours to
-              30 minutes using multimodal LLMs. M.S. CS at Hofstra University.
+              30 minutes using multimodal LLMs.
             </p>
 
             <OpenToWorkBadge />

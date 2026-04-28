@@ -3,14 +3,15 @@
 import { useRef, useEffect } from "react";
 import { motion } from "framer-motion";
 
-// ── Mini canvas cube visual per card ──────────────────────────────────────────
+// ── Premium isometric cube canvas for project cards ───────────────────────────
 function MiniCubeCanvas({ color1, color2 }: { color1: string; color2: string }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
-    const ctx = canvas.getContext("2d");
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    const ctx = canvas.getContext("2d")!;
     if (!ctx) return;
 
     const dpr = window.devicePixelRatio || 1;
@@ -20,131 +21,182 @@ function MiniCubeCanvas({ color1, color2 }: { color1: string; color2: string }) 
     canvas.height = H * dpr;
     ctx.scale(dpr, dpr);
 
-    // Isometric cube helpers
     const cx = W / 2;
-    const cy = H * 0.48;
-    const s = Math.min(W, H) * 0.22;
+    const cy = H * 0.54;
+    // Tile size — bigger for more visible cubes
+    const TW = W * 0.155; // horizontal half-width
+    const TH = TW * 0.5;  // vertical half-height (2:1 iso ratio)
+    const TZ = TW * 0.92; // vertical step per z-level
 
-    // ISO projection: converts grid (col, row, z) to screen (x, y)
-    function iso(col: number, row: number, z: number): [number, number] {
+    // Isometric projection: grid (gx, gy) → screen (x, y) at elevation gz
+    function g2s(gx: number, gy: number, gz: number): [number, number] {
       return [
-        cx + (col - row) * s,
-        cy + (col + row) * s * 0.5 - z * s * 0.85,
+        cx + (gx - gy) * TW,
+        cy + (gx + gy) * TH - gz * TZ,
       ];
     }
 
-    // Draw one iso cube face
-    function drawFace(
-      pts: [number, number][],
-      fill: string,
-      stroke: string,
-      opacity = 1
-    ) {
-      ctx!.save();
-      ctx!.globalAlpha = opacity;
-      ctx!.beginPath();
-      ctx!.moveTo(pts[0][0], pts[0][1]);
-      for (let i = 1; i < pts.length; i++) ctx!.lineTo(pts[i][0], pts[i][1]);
-      ctx!.closePath();
-      ctx!.fillStyle = fill;
-      ctx!.fill();
-      ctx!.strokeStyle = stroke;
-      ctx!.lineWidth = 0.8;
-      ctx!.stroke();
-      ctx!.restore();
+    // Draw a filled polygon face
+    function poly(pts: [number,number][], fill: string, stroke: string, sw: number, ga: number) {
+      ctx.save();
+      ctx.globalAlpha = ga;
+      ctx.beginPath();
+      ctx.moveTo(pts[0][0], pts[0][1]);
+      for (let i = 1; i < pts.length; i++) ctx.lineTo(pts[i][0], pts[i][1]);
+      ctx.closePath();
+      ctx.fillStyle = fill;
+      ctx.fill();
+      if (sw > 0) {
+        ctx.strokeStyle = stroke;
+        ctx.lineWidth = sw;
+        ctx.shadowColor = stroke;
+        ctx.shadowBlur = 6;
+        ctx.stroke();
+        ctx.shadowBlur = 0;
+      }
+      ctx.restore();
     }
 
-    // Neural nodes
-    const nodes: { x: number; y: number; r: number; phase: number }[] = [];
-    for (let i = 0; i < 22; i++) {
+    // Draw a single isometric cube at (gx, gy, gz)
+    function drawCube(gx: number, gy: number, gz: number, accent: string, bright: boolean) {
+      // 8 corners: (x, y) combinations for top and bottom faces
+      const [TLt, TRt, BRt, BLt] = [
+        g2s(gx,   gy,   gz+1),
+        g2s(gx+1, gy,   gz+1),
+        g2s(gx+1, gy+1, gz+1),
+        g2s(gx,   gy+1, gz+1),
+      ];
+      const [TRb, BRb, BLb] = [
+        g2s(gx+1, gy,   gz),
+        g2s(gx+1, gy+1, gz),
+        g2s(gx,   gy+1, gz),
+      ];
+
+      const opacity = bright ? 0.8 : 0.55;
+      const edgeOpacity = bright ? 1.0 : 0.55;
+      const edgeWidth = bright ? 1.2 : 0.8;
+
+      // Top face — brightest
+      poly([TLt,TRt,BRt,BLt], "rgba(10,10,30,0.92)", accent, edgeWidth, opacity);
+      // Right face — medium
+      poly([TRt,BRt,BRb,TRb], "rgba(6,6,18,0.95)", accent, edgeWidth * 0.7, edgeOpacity * 0.7);
+      // Left face — darkest
+      poly([BRt,BLt,BLb,BRb], "rgba(4,4,14,0.97)", accent, edgeWidth * 0.5, edgeOpacity * 0.45);
+    }
+
+    // Cube layout: (gx, gy, gz, isBright)
+    const cubes: [number, number, number, boolean][] = [
+      // Base layer
+      [-1, 0, 0, false], [0, 0, 0, false], [1, 0, 0, false],
+      [-1, 1, 0, false], [0, 1, 0, false], [1, 1, 0, false],
+      [-1, 2, 0, false], [0, 2, 0, false],
+      // Second layer
+      [-1, 0, 1, false], [0, 0, 1, false],
+      [-1, 1, 1, true],  [0, 1, 1, false],
+      // Third layer
+      [-1, 0, 2, false],
+      [-1, 1, 2, true],
+      // Top lone cube
+      [-1, 0, 3, true],
+    ];
+
+    // Neural nodes — positioned in image space
+    const nodeCount = 28;
+    const nodes: { x: number; y: number; phase: number; big: boolean }[] = [];
+    for (let i = 0; i < nodeCount; i++) {
       nodes.push({
-        x: W * 0.1 + Math.random() * W * 0.8,
-        y: H * 0.1 + Math.random() * H * 0.8,
-        r: 1.5 + Math.random() * 2,
+        x: W * 0.06 + Math.random() * W * 0.88,
+        y: H * 0.06 + Math.random() * H * 0.88,
         phase: Math.random() * Math.PI * 2,
+        big: i < 6,
       });
+    }
+
+    // Draw a glowing node (fake bloom: 3 layers)
+    function drawNode(x: number, y: number, r: number, col: string, alpha: number) {
+      ctx.save();
+      // Outer bloom
+      ctx.globalAlpha = alpha * 0.12;
+      ctx.shadowColor = col; ctx.shadowBlur = 0;
+      ctx.beginPath(); ctx.arc(x, y, r * 5, 0, Math.PI * 2);
+      ctx.fillStyle = col; ctx.fill();
+      // Mid bloom
+      ctx.globalAlpha = alpha * 0.28;
+      ctx.beginPath(); ctx.arc(x, y, r * 2.5, 0, Math.PI * 2);
+      ctx.fillStyle = col; ctx.fill();
+      // Core
+      ctx.globalAlpha = alpha;
+      ctx.shadowColor = col; ctx.shadowBlur = r * 8;
+      ctx.beginPath(); ctx.arc(x, y, r, 0, Math.PI * 2);
+      ctx.fillStyle = col; ctx.fill();
+      ctx.restore();
     }
 
     let frame: number;
     let t = 0;
 
     function draw() {
-      ctx!.clearRect(0, 0, W, H);
+      ctx.clearRect(0, 0, W, H);
 
-      // Dark bg gradient
-      const bg = ctx!.createRadialGradient(cx, cy, 0, cx, cy, H * 0.8);
-      bg.addColorStop(0, "rgba(10,10,28,0.95)");
-      bg.addColorStop(1, "rgba(4,4,12,0.98)");
-      ctx!.fillStyle = bg;
-      ctx!.fillRect(0, 0, W, H);
+      // === Background ===
+      const bg = ctx.createRadialGradient(cx, cy * 0.8, 0, cx, H * 0.5, H);
+      bg.addColorStop(0, "rgba(8,8,24,1)");
+      bg.addColorStop(0.5, "rgba(5,5,16,1)");
+      bg.addColorStop(1, "rgba(3,3,10,1)");
+      ctx.fillStyle = bg;
+      ctx.fillRect(0, 0, W, H);
 
-      // Grid of iso cubes (3×2 cluster)
-      const cubes: [number, number, number][] = [
-        [0, 0, 0], [1, 0, 0], [-1, 0, 0],
-        [0, 1, 0], [0, 0, 1],
-      ];
+      // === Base platform glow ===
+      const platY = cy + TH * 3;
+      const platGrad = ctx.createRadialGradient(cx, platY, 0, cx, platY, W * 0.55);
+      platGrad.addColorStop(0, `${color1}30`);
+      platGrad.addColorStop(0.5, `${color1}10`);
+      platGrad.addColorStop(1, "transparent");
+      ctx.fillStyle = platGrad;
+      ctx.fillRect(0, 0, W, H);
 
-      for (const [col, row, z] of cubes) {
-        const a = iso(col, row, z + 1);
-        const b = iso(col + 1, row, z + 1);
-        const c = iso(col + 1, row + 1, z + 1);
-        const d = iso(col, row + 1, z + 1);
-        const e = iso(col, row, z);
-        const f = iso(col + 1, row, z);
-        const g = iso(col + 1, row + 1, z);
-        const h = iso(col, row + 1, z);
-
-        // Top
-        drawFace([a, b, c, d], "rgba(15,15,40,0.8)", color1, 0.75);
-        // Right
-        drawFace([b, c, g, f], "rgba(8,8,22,0.7)", color2, 0.5);
-        // Left
-        drawFace([d, c, g, h], "rgba(5,5,16,0.7)", color1, 0.35);
+      // === Cubes (back to front — painter's algorithm) ===
+      // Sort by gx+gy (front cubes drawn last)
+      const sorted = [...cubes].sort((a, b) => (a[0]+a[1]) - (b[0]+b[1]));
+      for (const [gx, gy, gz, bright] of sorted) {
+        drawCube(gx, gy, gz, bright ? color1 : color2, bright);
       }
 
-      // Glow base
-      const baseGlow = ctx!.createRadialGradient(cx, H * 0.82, 0, cx, H * 0.82, W * 0.45);
-      baseGlow.addColorStop(0, `${color1}22`);
-      baseGlow.addColorStop(1, "transparent");
-      ctx!.fillStyle = baseGlow;
-      ctx!.fillRect(0, 0, W, H);
-
-      // Neural network edges
-      ctx!.save();
+      // === Neural edges ===
+      ctx.save();
       for (let i = 0; i < nodes.length; i++) {
         for (let j = i + 1; j < nodes.length; j++) {
           const dx = nodes[i].x - nodes[j].x;
           const dy = nodes[i].y - nodes[j].y;
-          const dist = Math.sqrt(dx * dx + dy * dy);
-          if (dist < W * 0.38) {
-            const alpha = (1 - dist / (W * 0.38)) * 0.25;
-            ctx!.beginPath();
-            ctx!.moveTo(nodes[i].x, nodes[i].y);
-            ctx!.lineTo(nodes[j].x, nodes[j].y);
-            ctx!.strokeStyle = color1;
-            ctx!.lineWidth = 0.6;
-            ctx!.globalAlpha = alpha;
-            ctx!.stroke();
+          const dist = Math.hypot(dx, dy);
+          const maxDist = W * 0.42;
+          if (dist < maxDist) {
+            const alpha = (1 - dist / maxDist) * 0.35;
+            const pulse = 0.7 + 0.3 * Math.sin(t * 0.8 + nodes[i].phase);
+            ctx.globalAlpha = alpha * pulse;
+            ctx.strokeStyle = color1;
+            ctx.lineWidth = 0.7;
+            ctx.shadowColor = color1;
+            ctx.shadowBlur = 4;
+            ctx.beginPath();
+            ctx.moveTo(nodes[i].x, nodes[i].y);
+            ctx.lineTo(nodes[j].x, nodes[j].y);
+            ctx.stroke();
           }
         }
       }
-      ctx!.restore();
+      ctx.restore();
 
-      // Neural nodes
-      ctx!.save();
+      // === Neural nodes with fake bloom ===
       for (const node of nodes) {
-        const pulse = 0.5 + 0.5 * Math.sin(t * 1.5 + node.phase);
-        ctx!.globalAlpha = 0.4 + pulse * 0.6;
-        ctx!.beginPath();
-        ctx!.arc(node.x, node.y, node.r * (0.7 + pulse * 0.5), 0, Math.PI * 2);
-        ctx!.fillStyle = color1;
-        ctx!.shadowColor = color1;
-        ctx!.shadowBlur = 6 * pulse;
-        ctx!.fill();
+        const pulse = 0.5 + 0.5 * Math.sin(t * 1.8 + node.phase);
+        const r = node.big ? 2.5 + pulse * 1.5 : 1.5 + pulse * 1.0;
+        const alpha = 0.55 + pulse * 0.45;
+        const col = node.big ? color1 : (Math.random() > 0.7 ? color2 : color1);
+        drawNode(node.x, node.y, r, col, alpha);
       }
-      ctx!.restore();
 
-      t += 0.016;
+      t += 0.018;
       frame = requestAnimationFrame(draw);
     }
 
@@ -166,7 +218,7 @@ const featured = [
     id: "01",
     title: "Rimon Health AI",
     subtitle: "AI Report Writer",
-    description: "End-to-end clinical AI system automating neuropsych evaluation reports — reducing 3-hour work to 30 min.",
+    description: "End-to-end clinical AI system automating neuropsych evaluation reports, reducing 3-hour work to 30 min.",
     tags: ["LLaMA 3.3-70B", "Whisper", "HIPAA", "Streamlit"],
     color1: "#00f2ff",
     color2: "#0090a0",

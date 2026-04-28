@@ -78,7 +78,7 @@ export default function HeroSection() {
               fontSize: "12px", color: "rgba(255,255,255,0.55)",
               letterSpacing: "0.22em", textTransform: "uppercase", fontWeight: 600,
             }}>
-              AI/ML Engineer &amp; Data Scientist
+              AI Automation Engineer &amp; MS in CS grad
             </span>
           </motion.div>
 
@@ -116,7 +116,7 @@ export default function HeroSection() {
             }}
           >
             I build AI-powered solutions and production ML systems that solve
-            real-world problems — from clinical AI to autonomous robotics.
+            real-world problems, from clinical AI to autonomous robotics.
           </motion.p>
 
           {/* CTAs */}

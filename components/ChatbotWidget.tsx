@@ -18,7 +18,7 @@ export default function ChatbotWidget() {
     {
       id: "1",
       role: "assistant",
-      content: "System initialized. Hello, I am Jarvis. How can I assist you with Komala's technical specifications today?",
+      content: "Hello, I am Jarvis. How can I assist you with Komala's technical specifications today?",
     }
   ]);
   const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -79,7 +79,6 @@ export default function ChatbotWidget() {
                 <div style={{ width: "12px", height: "12px", borderRadius: "50%", background: "var(--accent-teal)", boxShadow: "0 0 15px var(--accent-teal)" }} />
                 <div>
                   <h3 style={{ fontSize: "18px", fontWeight: 800, color: "white", margin: 0, letterSpacing: "-0.01em" }}>JARVIS</h3>
-                  <span style={{ fontSize: "10px", color: "var(--accent-teal)", fontWeight: 800, letterSpacing: "0.2em" }}>SYSTEM ONLINE</span>
                 </div>
               </div>
               <button onClick={() => setIsOpen(false)} style={{ background: "none", border: "none", color: "var(--text-muted)", cursor: "pointer", fontSize: "24px" }}>×</button>
