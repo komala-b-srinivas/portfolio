@@ -9,8 +9,8 @@ interface Props {
 
 export default function HeroHUD({ scrollYProgress }: Props) {
   const opacity = useTransform(scrollYProgress, [0, 0.3], [1, 0]);
-  const scale = useTransform(scrollYProgress, [0, 0.4], [1, 1.1]);
-  const rotateX = useTransform(scrollYProgress, [0, 0.4], [0, 5]);
+  const textX = useTransform(scrollYProgress, [0, 0.4], [0, -50]);
+  const cubeRotate = useTransform(scrollYProgress, [0, 1], [0, 360]);
 
   return (
     <div
@@ -20,170 +20,165 @@ export default function HeroHUD({ scrollYProgress }: Props) {
         zIndex: 10,
         pointerEvents: "none",
         display: "flex",
-        flexDirection: "column",
         alignItems: "center",
         justifyContent: "center",
-        overflow: "hidden",
+        padding: "0 8%",
+        maxWidth: "1800px",
+        margin: "0 auto",
       }}
     >
-      {/* BACKGROUND ATMOSPHERE */}
-      <div
-        style={{
-          position: "absolute",
-          inset: 0,
-          background: "radial-gradient(circle at 50% 50%, rgba(0, 242, 255, 0.05) 0%, transparent 70%)",
-          zIndex: 1,
-        }}
-      />
-      
-      {/* 3D NEURAL CENTERPIECE */}
-      <motion.div
-        style={{
-          position: "absolute",
-          width: "min(800px, 120vw)",
-          height: "min(800px, 120vw)",
-          opacity: 0.6,
-          scale,
-          rotateX,
-          zIndex: 2,
-          filter: "brightness(0.8) contrast(1.2)",
-        }}
-      >
-        <Image
-          src="/hero-neural.png"
-          alt="Isometric Neural Architecture"
-          fill
-          style={{ objectFit: "contain" }}
-          priority
-        />
-      </motion.div>
-
-      {/* HERO CONTENT */}
       <motion.div
         style={{
           opacity,
-          textAlign: "center",
-          maxWidth: "1100px",
-          zIndex: 10,
-          position: "relative",
-          padding: "0 24px",
+          display: "flex",
+          width: "100%",
+          alignItems: "center",
+          justifyContent: "space-between",
+          gap: "40px",
         }}
       >
+        {/* LEFT SIDE: MINIMAL TEXT */}
         <motion.div
-          initial={{ opacity: 0, scale: 0.95 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.8 }}
+          style={{ x: textX, flex: 1, textAlign: "left" }}
+          initial={{ opacity: 0, x: -30 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 1, ease: "easeOut" }}
         >
-          <p
+          <motion.p
             style={{
-              fontSize: "12px",
-              letterSpacing: "0.6em",
-              color: "var(--accent-cyan)",
-              marginBottom: "40px",
-              fontFamily: "var(--font-outfit)",
-              textTransform: "uppercase",
+              fontSize: "14px",
+              letterSpacing: "0.5em",
+              color: "var(--accent-teal)",
+              marginBottom: "24px",
               fontWeight: 700,
+              textTransform: "uppercase",
             }}
+            className="glow-teal"
           >
-            AI Automation Engineer
-          </p>
+            AI SYSTEM ARCHITECT
+          </motion.p>
           <h1
             style={{
-              fontSize: "clamp(64px, 12vw, 160px)",
+              fontSize: "clamp(48px, 6vw, 110px)",
               fontWeight: 900,
-              lineHeight: 0.8,
+              lineHeight: 0.9,
               color: "#fff",
-              letterSpacing: "-0.06em",
-              margin: "0 0 48px",
-              fontFamily: "var(--font-outfit)",
-              textTransform: "uppercase",
+              letterSpacing: "-0.04em",
+              margin: "0 0 32px",
             }}
           >
-            KOMALA
+            Building
             <br />
-            <span
-              style={{
-                color: "transparent",
-                WebkitTextStroke: "1px rgba(255, 255, 255, 0.15)",
-              }}
-            >
-              BELUR SRINIVAS
-            </span>
+            <span className="text-gradient">Intelligent</span>
+            <br />
+            Systems.
           </h1>
           <p
             style={{
-              fontSize: "clamp(16px, 2vw, 20px)",
-              color: "rgba(255, 255, 255, 0.4)",
-              maxWidth: "700px",
-              margin: "0 auto 80px",
+              fontSize: "clamp(16px, 1.2vw, 19px)",
+              color: "var(--text-secondary)",
+              maxWidth: "500px",
+              margin: "0 0 48px",
               lineHeight: 1.6,
               fontWeight: 400,
-              fontFamily: "var(--font-outfit)",
-              letterSpacing: "0.02em",
             }}
           >
-            Architecting <span className="text-glow" style={{ color: "var(--accent-cyan)", fontWeight: 600 }}>intelligent systems</span> and production-grade
-            <br />
-            AI automation workflows.
+            I architect AI-powered solutions and scalable systems
+            that solve real-world problems.
           </p>
 
-          <div style={{ display: "flex", gap: "32px", justifyContent: "center", pointerEvents: "auto" }}>
-            <a
-              href="#projects"
-              className="block-3d"
-              style={{
-                padding: "20px 56px",
-                background: "white",
-                color: "black",
-                borderRadius: "4px",
-                fontWeight: 700,
-                fontSize: "14px",
-                textDecoration: "none",
-                fontFamily: "var(--font-outfit)",
-                textTransform: "uppercase",
-                letterSpacing: "0.1em",
-              }}
-            >
-              View Projects
+          <div style={{ display: "flex", gap: "24px", pointerEvents: "auto" }}>
+            <a href="#projects" className="btn-neon">
+              View My Work
+              <span style={{ fontSize: "18px" }}>→</span>
             </a>
             <a
               href="#contact"
-              className="block-3d"
               style={{
-                padding: "20px 56px",
-                border: "1px solid rgba(255, 255, 255, 0.2)",
+                padding: "14px 32px",
+                border: "1px solid var(--border)",
                 color: "white",
-                borderRadius: "4px",
+                borderRadius: "6px",
                 fontWeight: 600,
                 fontSize: "14px",
                 textDecoration: "none",
-                fontFamily: "var(--font-outfit)",
-                textTransform: "uppercase",
-                letterSpacing: "0.1em",
+                transition: "all 0.3s ease",
               }}
+              onMouseOver={(e) => (e.currentTarget.style.borderColor = "var(--accent-teal)")}
+              onMouseOut={(e) => (e.currentTarget.style.borderColor = "var(--border)")}
             >
-              Get in Touch
+              Get In Touch
             </a>
           </div>
         </motion.div>
+
+        {/* RIGHT SIDE: 3D MASTER CUBE */}
+        <motion.div
+          style={{
+            flex: 1,
+            display: "flex",
+            justifyContent: "flex-end",
+            position: "relative",
+          }}
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 1.2, delay: 0.2 }}
+        >
+          <motion.div
+            animate={{ 
+              y: [0, -20, 0],
+              rotateZ: [-2, 2, -2]
+            }}
+            transition={{ 
+              duration: 8, 
+              repeat: Infinity, 
+              ease: "easeInOut" 
+            }}
+            style={{
+              width: "min(600px, 45vw)",
+              height: "min(600px, 45vw)",
+              position: "relative",
+              filter: "drop-shadow(0 0 30px rgba(0, 242, 255, 0.2))",
+            }}
+          >
+            <Image
+              src="/hero-neural.png"
+              alt="Neural Architecture Hub"
+              fill
+              style={{ objectFit: "contain" }}
+              priority
+            />
+            {/* Core Glow Pulse */}
+            <motion.div
+              animate={{ opacity: [0.1, 0.3, 0.1] }}
+              transition={{ duration: 4, repeat: Infinity }}
+              style={{
+                position: "absolute",
+                inset: "20%",
+                background: "radial-gradient(circle, var(--accent-teal) 0%, transparent 70%)",
+                zIndex: -1,
+                filter: "blur(40px)",
+              }}
+            />
+          </motion.div>
+        </motion.div>
       </motion.div>
-      
-      {/* SYSTEM STATUS FOOTER */}
+
+      {/* SYSTEM STATUS */}
       <motion.div
         style={{
           position: "absolute",
-          bottom: "64px",
+          bottom: "40px",
           display: "flex",
-          flexDirection: "column",
           alignItems: "center",
           gap: "12px",
-          opacity: 0.3,
+          opacity: 0.4,
         }}
       >
-        <span style={{ fontSize: "9px", letterSpacing: "0.4em", color: "var(--accent-cyan)", fontFamily: "var(--font-outfit)", fontWeight: 700 }}>
-          SYSTEM.ACTIVE
+        <div style={{ width: "8px", height: "8px", borderRadius: "50%", background: "var(--accent-teal)", boxShadow: "0 0 10px var(--accent-teal)" }} />
+        <span style={{ fontSize: "10px", letterSpacing: "0.2em", fontWeight: 700, color: "var(--accent-teal)" }}>
+          SYSTEM CORE ACTIVE
         </span>
-        <div style={{ width: "1px", height: "30px", background: "linear-gradient(to bottom, var(--accent-cyan), transparent)" }} />
       </motion.div>
     </div>
   );

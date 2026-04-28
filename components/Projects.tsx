@@ -99,249 +99,196 @@ const projects = [
 
 export default function Projects() {
   return (
-    <section
-      id="projects"
-      style={{
-        padding: "160px 0",
-        background: "var(--bg)",
-        position: "relative",
-      }}
-    >
-      <div style={{ maxWidth: "1200px", margin: "0 auto", padding: "0 32px" }}>
+    <section id="projects" style={{ padding: "160px 0", position: "relative" }}>
+      <div style={{ maxWidth: "1400px", margin: "0 auto", padding: "0 32px" }}>
         <motion.div
           initial={{ opacity: 0, y: 24 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-80px" }}
+          viewport={{ once: true }}
           transition={{ duration: 0.8 }}
-          style={{ marginBottom: "80px", textAlign: "center" }}
+          style={{ marginBottom: "100px" }}
         >
-          <p
-            style={{
-              fontSize: "10px",
-              letterSpacing: "0.5em",
-              color: "var(--accent-cyan)",
-              marginBottom: "16px",
-              fontFamily: "var(--font-outfit)",
-              fontWeight: 700,
-              textTransform: "uppercase",
-            }}
-          >
-            System Architectures
-          </p>
+          <div style={{ display: "flex", alignItems: "center", gap: "20px", marginBottom: "16px" }}>
+            <div style={{ width: "40px", height: "1px", background: "var(--accent-teal)" }} />
+            <p
+              style={{
+                fontSize: "12px",
+                letterSpacing: "0.4em",
+                color: "var(--accent-teal)",
+                fontWeight: 700,
+                textTransform: "uppercase",
+              }}
+            >
+              System Deployments
+            </p>
+          </div>
           <h2
             style={{
-              fontSize: "clamp(32px, 6vw, 64px)",
-              fontWeight: 900,
+              fontSize: "clamp(40px, 4vw, 64px)",
+              fontWeight: 800,
               color: "white",
               letterSpacing: "-0.04em",
               margin: 0,
-              fontFamily: "var(--font-outfit)",
-              textTransform: "uppercase",
             }}
           >
-            Projects & Patents
+            Featured <span className="text-gradient">Projects</span>
           </h2>
         </motion.div>
 
-        <div style={{ display: "flex", flexDirection: "column", gap: "48px" }}>
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fit, minmax(400px, 1fr))",
+            gap: "40px",
+          }}
+        >
           {projects.map((project, i) => (
             <motion.div
               key={project.id}
-              initial={{ opacity: 0, y: 32 }}
+              initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-60px" }}
+              viewport={{ once: true }}
               transition={{ duration: 0.6, delay: i * 0.1 }}
+              className="system-block"
             >
               <div
-                className="block-3d"
+                className="glass-card"
                 style={{
-                  padding: "64px",
-                  borderRadius: "4px",
-                  cursor: "default",
+                  height: "100%",
+                  padding: "48px",
+                  display: "flex",
+                  flexDirection: "column",
                   position: "relative",
                   overflow: "hidden",
-                  borderLeft: project.patent ? "4px solid var(--accent-purple)" : "4px solid var(--accent-cyan)",
                 }}
               >
-                {/* Number accent */}
-                <span
+                {/* Project Core Visual */}
+                <div
                   style={{
                     position: "absolute",
-                    top: "32px",
-                    right: "48px",
-                    fontSize: "120px",
-                    fontWeight: 900,
-                    color: project.patent ? "rgba(188, 19, 254, 0.03)" : "rgba(0, 242, 255, 0.03)",
-                    lineHeight: 1,
-                    userSelect: "none",
-                    fontFamily: "var(--font-outfit)",
-                    letterSpacing: "-0.05em",
+                    top: "-20px",
+                    right: "-20px",
+                    width: "140px",
+                    height: "140px",
+                    opacity: 0.1,
                   }}
                 >
-                  {project.id}
-                </span>
+                  <motion.div
+                    animate={{ 
+                      scale: [1, 1.2, 1],
+                      rotate: [0, 90, 180]
+                    }}
+                    transition={{ duration: 10, repeat: Infinity, ease: "linear" }}
+                    style={{
+                      width: "100%",
+                      height: "100%",
+                      border: `2px dashed ${project.patent ? "var(--accent-purple)" : "var(--accent-teal)"}`,
+                      borderRadius: "20%",
+                    }}
+                  />
+                </div>
 
                 <div style={{ position: "relative", zIndex: 2 }}>
-                  <div
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      gap: "24px",
-                      marginBottom: "24px",
-                      flexWrap: "wrap",
-                    }}
-                  >
-                    <h3
-                      style={{
-                        fontSize: "36px",
-                        fontWeight: 700,
-                        color: "white",
-                        margin: 0,
-                        letterSpacing: "-0.02em",
-                        fontFamily: "var(--font-outfit)",
-                        textTransform: "uppercase",
-                      }}
-                    >
-                      {project.title}
-                    </h3>
+                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "32px" }}>
                     <span
                       style={{
-                        fontSize: "10px",
-                        letterSpacing: "0.2em",
-                        color: project.patent ? "var(--accent-purple)" : "var(--accent-cyan)",
-                        border: `1px solid ${project.patent ? "var(--accent-purple)" : "var(--accent-cyan)"}`,
-                        padding: "6px 16px",
-                        borderRadius: "2px",
-                        whiteSpace: "nowrap",
-                        fontWeight: 800,
-                        textTransform: "uppercase",
+                        fontSize: "40px",
+                        fontWeight: 900,
+                        color: "rgba(255, 255, 255, 0.05)",
+                        fontFamily: "var(--font-main)",
                       }}
                     >
-                      {project.status}
+                      {project.id}
                     </span>
+                    <div style={{ display: "flex", gap: "8px" }}>
+                      <span
+                        style={{
+                          fontSize: "10px",
+                          letterSpacing: "0.1em",
+                          color: project.patent ? "var(--accent-purple)" : "var(--accent-teal)",
+                          border: `1px solid ${project.patent ? "var(--accent-purple)" : "var(--accent-teal)"}`,
+                          padding: "4px 12px",
+                          borderRadius: "4px",
+                          fontWeight: 700,
+                        }}
+                      >
+                        {project.status}
+                      </span>
+                    </div>
                   </div>
 
+                  <h3
+                    style={{
+                      fontSize: "28px",
+                      fontWeight: 700,
+                      color: "white",
+                      marginBottom: "12px",
+                      letterSpacing: "-0.02em",
+                    }}
+                  >
+                    {project.title}
+                  </h3>
                   <p
-                    className={project.patent ? "text-glow-purple" : "text-glow"}
                     style={{
                       fontSize: "13px",
-                      color: project.patent ? "var(--accent-purple)" : "var(--accent-cyan)",
-                      marginBottom: "32px",
-                      letterSpacing: "0.2em",
-                      fontWeight: 700,
+                      color: project.patent ? "var(--accent-purple)" : "var(--accent-teal)",
+                      marginBottom: "24px",
+                      fontWeight: 600,
                       textTransform: "uppercase",
-                      fontFamily: "var(--font-outfit)",
+                      letterSpacing: "0.1em",
                     }}
+                    className={project.patent ? "glow-purple" : "glow-teal"}
                   >
                     {project.subtitle}
                   </p>
 
                   <p
                     style={{
-                      fontSize: "18px",
-                      color: "rgba(255, 255, 255, 0.5)",
-                      lineHeight: 1.7,
-                      marginBottom: "48px",
-                      maxWidth: "800px",
-                      fontWeight: 300,
-                      letterSpacing: "0.01em",
+                      fontSize: "16px",
+                      color: "var(--text-secondary)",
+                      lineHeight: 1.6,
+                      marginBottom: "40px",
+                      fontWeight: 400,
                     }}
                   >
                     {project.description}
                   </p>
 
-                  {project.patent && (
-                    <div
-                      className="block-3d"
-                      style={{
-                        marginBottom: "48px",
-                        padding: "32px",
-                        background: "rgba(188, 19, 254, 0.02)",
-                        border: "1px solid rgba(188, 19, 254, 0.1)",
-                        borderRadius: "2px",
-                        display: "flex",
-                        flexDirection: "column",
-                        gap: "12px",
-                        maxWidth: "600px",
-                      }}
-                    >
-                      <span style={{ fontSize: "10px", letterSpacing: "0.4em", color: "var(--accent-purple)", fontWeight: 800 }}>
-                        DPMA · MUNICH, GERMANY
-                      </span>
-                      <span style={{ fontSize: "18px", color: "white", fontWeight: 700, fontFamily: "var(--font-outfit)" }}>
-                        {project.patent.number}
-                      </span>
-                      <span style={{ fontSize: "14px", color: "rgba(255, 255, 255, 0.4)", fontWeight: 300 }}>
-                        Registered {project.patent.registered} · Utility Patent
-                      </span>
-                      <a
-                        href={project.patent.link}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        style={{
-                          fontSize: "12px",
-                          color: "var(--accent-purple)",
-                          textDecoration: "none",
-                          fontWeight: 700,
-                          marginTop: "8px",
-                          textTransform: "uppercase",
-                          letterSpacing: "0.1em",
-                        }}
-                      >
-                        Legal Repository ↗
-                      </a>
-                    </div>
-                  )}
-
-                  <ul style={{ margin: "0 0 48px", padding: 0, listStyle: "none" }}>
-                    {project.highlights.map((h, idx) => (
-                      <li
-                        key={idx}
-                        style={{
-                          fontSize: "15px",
-                          color: "rgba(255, 255, 255, 0.4)",
-                          paddingLeft: "32px",
-                          position: "relative",
-                          marginBottom: "16px",
-                          lineHeight: 1.8,
-                          fontWeight: 300,
-                        }}
-                      >
-                        <div
+                  <div style={{ marginTop: "auto" }}>
+                    <div style={{ display: "flex", flexWrap: "wrap", gap: "8px", marginBottom: "32px" }}>
+                      {project.tags.slice(0, 5).map((tag) => (
+                        <span
+                          key={tag}
                           style={{
-                            position: "absolute",
-                            left: 0,
-                            top: "12px",
-                            width: "12px",
-                            height: "1px",
-                            background: project.patent ? "var(--accent-purple)" : "var(--accent-cyan)",
-                            opacity: 0.6,
+                            fontSize: "11px",
+                            color: "var(--text-muted)",
+                            background: "rgba(255, 255, 255, 0.03)",
+                            padding: "4px 10px",
+                            borderRadius: "4px",
+                            border: "1px solid rgba(255, 255, 255, 0.05)",
                           }}
-                        />
-                        {h}
-                      </li>
-                    ))}
-                  </ul>
+                        >
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
 
-                  <div style={{ display: "flex", flexWrap: "wrap", gap: "12px" }}>
-                    {project.tags.map((tag) => (
-                      <span
-                        key={tag}
-                        style={{
-                          fontSize: "12px",
-                          color: "rgba(255, 255, 255, 0.3)",
-                          background: "rgba(255, 255, 255, 0.02)",
-                          border: "1px solid rgba(255, 255, 255, 0.05)",
-                          padding: "8px 16px",
-                          borderRadius: "2px",
-                          fontFamily: "var(--font-outfit)",
-                          fontWeight: 400,
-                          letterSpacing: "0.05em",
-                        }}
-                      >
-                        {tag}
-                      </span>
-                    ))}
+                    <motion.a
+                      href="#"
+                      style={{
+                        display: "inline-flex",
+                        alignItems: "center",
+                        gap: "12px",
+                        color: "white",
+                        fontSize: "14px",
+                        fontWeight: 600,
+                        textDecoration: "none",
+                      }}
+                      whileHover={{ x: 8 }}
+                    >
+                      Initialize Component
+                      <span style={{ color: "var(--accent-teal)" }}>→</span>
+                    </motion.a>
                   </div>
                 </div>
               </div>

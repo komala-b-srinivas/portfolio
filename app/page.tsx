@@ -9,12 +9,13 @@ import ChatbotWidget from "@/components/ChatbotWidget";
 
 export default function Home() {
   return (
-    <main style={{ background: "var(--bg)" }}>
+    <main style={{ minHeight: "100vh", position: "relative" }}>
+      <div className="neural-grid" />
       <Navbar />
 
       <NeuralScrollScene />
 
-      <div style={{ position: "relative", zIndex: 20, background: "var(--bg)" }}>
+      <div style={{ position: "relative", zHeight: 2, paddingBottom: "100px" }}>
         <Skills />
         <Projects />
         <Experience />

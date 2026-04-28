@@ -68,59 +68,47 @@ const skillGroups = [
 
 export default function Skills() {
   return (
-    <section
-      id="skills"
-      style={{
-        padding: "160px 0",
-        background: "var(--bg)",
-        position: "relative",
-        overflow: "hidden",
-      }}
-    >
-      {/* Background decoration */}
-      <div style={{ position: "absolute", top: "20%", left: "-10%", width: "40%", height: "40%", background: "radial-gradient(circle, rgba(188, 19, 254, 0.05) 0%, transparent 70%)", zIndex: 0 }} />
-
-      <div style={{ maxWidth: "1200px", margin: "0 auto", padding: "0 32px", position: "relative", zIndex: 1 }}>
+    <section id="skills" style={{ padding: "160px 0", position: "relative" }}>
+      <div style={{ maxWidth: "1400px", margin: "0 auto", padding: "0 32px" }}>
         <motion.div
           initial={{ opacity: 0, y: 24 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-80px" }}
+          viewport={{ once: true }}
           transition={{ duration: 0.8 }}
-          style={{ marginBottom: "80px", textAlign: "center" }}
+          style={{ marginBottom: "80px", textAlign: "left" }}
         >
-          <p
-            style={{
-              fontSize: "10px",
-              letterSpacing: "0.5em",
-              color: "var(--accent-cyan)",
-              marginBottom: "16px",
-              fontFamily: "var(--font-outfit)",
-              fontWeight: 700,
-              textTransform: "uppercase",
-            }}
-          >
-            Technical Infrastructure
-          </p>
+          <div style={{ display: "flex", alignItems: "center", gap: "20px", marginBottom: "16px" }}>
+            <div style={{ width: "40px", height: "1px", background: "var(--accent-teal)" }} />
+            <p
+              style={{
+                fontSize: "12px",
+                letterSpacing: "0.4em",
+                color: "var(--accent-teal)",
+                fontWeight: 700,
+                textTransform: "uppercase",
+              }}
+            >
+              System Core
+            </p>
+          </div>
           <h2
             style={{
-              fontSize: "clamp(32px, 6vw, 64px)",
-              fontWeight: 900,
+              fontSize: "clamp(40px, 4vw, 64px)",
+              fontWeight: 800,
               color: "white",
               letterSpacing: "-0.04em",
               margin: 0,
-              fontFamily: "var(--font-outfit)",
-              textTransform: "uppercase",
             }}
           >
-            Capabilities
+            Technologies I <span className="text-gradient">Work With</span>
           </h2>
         </motion.div>
 
         <div
           style={{
             display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(340px, 1fr))",
-            gap: "40px",
+            gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
+            gap: "32px",
           }}
         >
           {skillGroups.map((group, i) => (
@@ -128,61 +116,54 @@ export default function Skills() {
               key={group.category}
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-50px" }}
+              viewport={{ once: true }}
               transition={{ duration: 0.6, delay: i * 0.1 }}
-              className="block-3d"
-              style={{
-                padding: "48px",
-                borderRadius: "4px",
-                borderLeft: i % 2 === 0 ? "2px solid var(--accent-cyan)" : "2px solid var(--accent-purple)",
-              }}
+              className="system-block"
             >
-              <p
-                className={i % 2 === 0 ? "text-glow" : "text-glow-purple"}
+              <div
+                className="glass-card"
                 style={{
-                  fontSize: "11px",
-                  letterSpacing: "0.2em",
-                  color: i % 2 === 0 ? "var(--accent-cyan)" : "var(--accent-purple)",
-                  marginBottom: "32px",
-                  textTransform: "uppercase",
-                  fontFamily: "var(--font-outfit)",
-                  fontWeight: 800,
+                  padding: "40px",
+                  height: "100%",
                 }}
               >
-                {group.category}
-              </p>
-              <div style={{ display: "flex", flexWrap: "wrap", gap: "12px" }}>
-                {group.skills.map((skill) => (
-                  <span
-                    key={skill}
-                    style={{
-                      fontSize: "14px",
-                      color: "rgba(255, 255, 255, 0.4)",
-                      background: "rgba(255, 255, 255, 0.02)",
-                      border: "1px solid rgba(255, 255, 255, 0.05)",
-                      padding: "8px 18px",
-                      borderRadius: "2px",
-                      transition: "all 0.3s ease",
-                      cursor: "default",
-                      fontFamily: "var(--font-outfit)",
-                      fontWeight: 300,
-                    }}
-                    onMouseEnter={(e) => {
-                      const el = e.currentTarget;
-                      el.style.borderColor = "var(--accent-cyan)";
-                      el.style.color = "white";
-                      el.style.background = "rgba(0, 242, 255, 0.05)";
-                    }}
-                    onMouseLeave={(e) => {
-                      const el = e.currentTarget;
-                      el.style.borderColor = "rgba(255, 255, 255, 0.05)";
-                      el.style.color = "rgba(255, 255, 255, 0.4)";
-                      el.style.background = "rgba(255, 255, 255, 0.02)";
-                    }}
-                  >
-                    {skill}
-                  </span>
-                ))}
+                <p
+                  style={{
+                    fontSize: "10px",
+                    letterSpacing: "0.2em",
+                    color: i % 2 === 0 ? "var(--accent-teal)" : "var(--accent-purple)",
+                    marginBottom: "32px",
+                    textTransform: "uppercase",
+                    fontWeight: 800,
+                  }}
+                  className={i % 2 === 0 ? "glow-teal" : "glow-purple"}
+                >
+                  {group.category}
+                </p>
+                <div style={{ display: "flex", flexWrap: "wrap", gap: "12px" }}>
+                  {group.skills.map((skill) => (
+                    <motion.div
+                      key={skill}
+                      whileHover={{ scale: 1.05 }}
+                      style={{
+                        fontSize: "14px",
+                        color: "white",
+                        background: "rgba(255, 255, 255, 0.02)",
+                        border: "1px solid rgba(255, 255, 255, 0.05)",
+                        padding: "10px 20px",
+                        borderRadius: "4px",
+                        cursor: "default",
+                        fontWeight: 400,
+                        display: "flex",
+                        alignItems: "center",
+                        gap: "10px",
+                      }}
+                    >
+                      <div style={{ width: "6px", height: "6px", borderRadius: "50%", background: i % 2 === 0 ? "var(--accent-teal)" : "var(--accent-purple)" }} />
+                      {skill}
+                    </motion.div>
+                  ))}
+                </div>
               </div>
             </motion.div>
           ))}

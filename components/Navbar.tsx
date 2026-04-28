@@ -14,104 +14,82 @@ export default function Navbar() {
 
   return (
     <motion.nav
-      initial={{ y: -20, opacity: 0 }}
-      animate={{ y: 0, opacity: 1 }}
-      transition={{ duration: 0.6, ease: "easeOut" }}
+      initial={{ y: -100 }}
+      animate={{ y: 0 }}
       style={{
         position: "fixed",
         top: 0,
         left: 0,
         right: 0,
-        zIndex: 100,
-        padding: scrolled ? "12px 40px" : "24px 40px",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "space-between",
-        background: scrolled
-          ? "rgba(10, 10, 15, 0.7)"
-          : "transparent",
+        zIndex: 1000,
+        padding: "24px 8%",
+        transition: "all 0.4s ease",
+        background: scrolled ? "rgba(3, 3, 5, 0.8)" : "transparent",
         backdropFilter: scrolled ? "blur(20px)" : "none",
-        borderBottom: scrolled
-          ? "1px solid rgba(255, 255, 255, 0.05)"
-          : "none",
-        transition: "all 0.4s cubic-bezier(0.4, 0, 0.2, 1)",
+        borderBottom: scrolled ? "1px solid var(--border)" : "none",
       }}
     >
-      {/* Brand */}
-      <div
-        style={{
-          fontSize: "18px",
-          fontWeight: 700,
-          letterSpacing: "0.1em",
-          color: "white",
-          fontFamily: "var(--font-outfit)",
-        }}
-      >
-        KOMALA
-      </div>
-
-      {/* Nav links */}
-      <div
-        style={{
-          display: "flex",
-          gap: "32px",
-          alignItems: "center",
-        }}
-      >
-        {["Skills", "Projects", "Experience", "Contact"].map((item) => (
-          <a
-            key={item}
-            href={`#${item.toLowerCase()}`}
-            style={{
-              fontSize: "14px",
-              letterSpacing: "0.05em",
-              color: "rgba(255, 255, 255, 0.5)",
-              textDecoration: "none",
-              fontWeight: 500,
-              transition: "all 0.2s",
-              fontFamily: "var(--font-outfit)",
-            }}
-            onMouseEnter={(e) => {
-              (e.target as HTMLElement).style.color = "white";
-              (e.target as HTMLElement).style.textShadow = "0 0 10px rgba(255,255,255,0.5)";
-            }}
-            onMouseLeave={(e) => {
-              (e.target as HTMLElement).style.color = "rgba(255, 255, 255, 0.5)";
-              (e.target as HTMLElement).style.textShadow = "none";
-            }}
-          >
-            {item}
-          </a>
-        ))}
-
-        <div style={{ width: "1px", height: "16px", background: "rgba(255, 255, 255, 0.1)", margin: "0 8px" }} />
-
-        <a
-          href="mailto:komalsrinivas20@gmail.com"
+      <div style={{ maxWidth: "1600px", margin: "0 auto", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+        <motion.div
           style={{
-            fontSize: "12px",
-            letterSpacing: "0.1em",
-            color: "black",
-            backgroundColor: "white",
-            padding: "12px 28px",
-            borderRadius: "2px",
-            textDecoration: "none",
-            fontWeight: 800,
-            transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
-            fontFamily: "var(--font-outfit)",
-            textTransform: "uppercase",
-          }}
-          onMouseEnter={(e) => {
-            e.currentTarget.style.transform = "translateY(-2px)";
-            e.currentTarget.style.boxShadow = "0 0 20px rgba(255,255,255,0.2)";
-          }}
-          onMouseLeave={(e) => {
-            e.currentTarget.style.transform = "translateY(0)";
-            e.currentTarget.style.boxShadow = "none";
+            fontSize: "20px",
+            fontWeight: 900,
+            color: "white",
+            letterSpacing: "0.2em",
+            display: "flex",
+            alignItems: "center",
+            gap: "12px",
           }}
         >
-          Connect
-        </a>
+          <div style={{ width: "8px", height: "8px", background: "var(--accent-teal)", borderRadius: "50%", boxShadow: "0 0 10px var(--accent-teal)" }} />
+          KOMALA
+        </motion.div>
+
+        <div style={{ display: "flex", gap: "40px", alignItems: "center" }}>
+          {["Skills", "Projects", "Experience", "Contact"].map((item) => (
+            <motion.a
+              key={item}
+              href={`#${item.toLowerCase()}`}
+              style={{
+                fontSize: "12px",
+                fontWeight: 700,
+                color: "var(--text-muted)",
+                textDecoration: "none",
+                textTransform: "uppercase",
+                letterSpacing: "0.15em",
+                transition: "color 0.3s ease",
+              }}
+              whileHover={{ color: "white" }}
+            >
+              {item}
+            </motion.a>
+          ))}
+          <a
+            href="#contact"
+            style={{
+              padding: "10px 24px",
+              border: "1px solid var(--accent-teal)",
+              borderRadius: "4px",
+              color: "var(--accent-teal)",
+              fontSize: "12px",
+              fontWeight: 700,
+              textDecoration: "none",
+              textTransform: "uppercase",
+              letterSpacing: "0.1em",
+              transition: "all 0.3s ease",
+            }}
+            onMouseOver={(e) => {
+              e.currentTarget.style.background = "var(--accent-teal)";
+              e.currentTarget.style.color = "black";
+            }}
+            onMouseOut={(e) => {
+              e.currentTarget.style.background = "transparent";
+              e.currentTarget.style.color = "var(--accent-teal)";
+            }}
+          >
+            Terminal_Access
+          </a>
+        </div>
       </div>
     </motion.nav>
   );

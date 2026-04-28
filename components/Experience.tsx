@@ -67,52 +67,43 @@ const jobs = [
 
 export default function Experience() {
   return (
-    <section
-      id="experience"
-      style={{
-        padding: "160px 0",
-        background: "var(--bg)",
-        position: "relative",
-      }}
-    >
+    <section id="experience" style={{ padding: "160px 0", position: "relative" }}>
       <div style={{ maxWidth: "1200px", margin: "0 auto", padding: "0 32px" }}>
         <motion.div
           initial={{ opacity: 0, y: 24 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-80px" }}
+          viewport={{ once: true }}
           transition={{ duration: 0.8 }}
-          style={{ marginBottom: "80px", textAlign: "center" }}
+          style={{ marginBottom: "80px", textAlign: "right" }}
         >
-          <p
-            style={{
-              fontSize: "10px",
-              letterSpacing: "0.5em",
-              color: "var(--accent-cyan)",
-              marginBottom: "16px",
-              fontFamily: "var(--font-outfit)",
-              fontWeight: 700,
-              textTransform: "uppercase",
-            }}
-          >
-            Professional Evolution
-          </p>
+          <div style={{ display: "flex", alignItems: "center", gap: "20px", marginBottom: "16px", justifyContent: "flex-end" }}>
+            <p
+              style={{
+                fontSize: "12px",
+                letterSpacing: "0.4em",
+                color: "var(--accent-teal)",
+                fontWeight: 700,
+                textTransform: "uppercase",
+              }}
+            >
+              Operational Logs
+            </p>
+            <div style={{ width: "40px", height: "1px", background: "var(--accent-teal)" }} />
+          </div>
           <h2
             style={{
-              fontSize: "clamp(32px, 6vw, 64px)",
-              fontWeight: 900,
+              fontSize: "clamp(40px, 4vw, 64px)",
+              fontWeight: 800,
               color: "white",
               letterSpacing: "-0.04em",
               margin: 0,
-              fontFamily: "var(--font-outfit)",
-              textTransform: "uppercase",
             }}
           >
-            Experience
+            Professional <span className="text-gradient">Evolution</span>
           </h2>
         </motion.div>
 
         <div style={{ position: "relative" }}>
-          {/* Vertical Grid Line */}
           <div
             style={{
               position: "absolute",
@@ -120,7 +111,7 @@ export default function Experience() {
               top: 0,
               bottom: 0,
               width: "1px",
-              background: "linear-gradient(180deg, var(--accent-cyan) 0%, transparent 100%)",
+              background: "linear-gradient(180deg, var(--accent-teal) 0%, transparent 100%)",
               opacity: 0.2,
             }}
           />
@@ -131,128 +122,126 @@ export default function Experience() {
                 key={i}
                 initial={{ opacity: 0, x: -20 }}
                 whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true, margin: "-60px" }}
+                viewport={{ once: true }}
                 transition={{ duration: 0.6, delay: i * 0.1 }}
-                className="block-3d"
-                style={{ 
-                  padding: "48px", 
-                  position: "relative",
-                  borderRadius: "4px",
-                  marginLeft: "40px",
-                  borderLeft: job.current ? "2px solid var(--accent-cyan)" : "2px solid rgba(255,255,255,0.1)",
-                }}
+                className="system-block"
               >
-                {/* Timeline Connector */}
                 <div
-                  style={{
-                    position: "absolute",
-                    left: "-36px",
-                    top: "54px",
-                    width: "36px",
-                    height: "1px",
-                    background: job.current ? "var(--accent-cyan)" : "rgba(255,255,255,0.1)",
-                    opacity: 0.4,
-                  }}
-                />
-
-                <div
-                  style={{
-                    display: "flex",
-                    justifyContent: "space-between",
-                    alignItems: "flex-start",
-                    flexWrap: "wrap",
-                    gap: "24px",
-                    marginBottom: "32px",
+                  className="glass-card"
+                  style={{ 
+                    padding: "48px", 
+                    position: "relative",
+                    marginLeft: "40px",
                   }}
                 >
-                  <div>
-                    <h3
-                      style={{
-                        fontSize: "24px",
-                        fontWeight: 700,
-                        color: "white",
-                        margin: "0 0 8px",
-                        fontFamily: "var(--font-outfit)",
-                        textTransform: "uppercase",
-                        letterSpacing: "-0.01em",
-                      }}
-                    >
-                      {job.role}
-                    </h3>
-                    <p
-                      className="text-glow"
-                      style={{
-                        fontSize: "14px",
-                        color: "var(--accent-cyan)",
-                        margin: 0,
-                        fontWeight: 600,
-                        fontFamily: "var(--font-outfit)",
-                        textTransform: "uppercase",
-                        letterSpacing: "0.1em",
-                      }}
-                    >
-                      {job.company} <span style={{ color: "rgba(255,255,255,0.1)", margin: "0 12px" }}>/</span> {job.location}
-                    </p>
-                  </div>
-                  <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>
-                    {job.current && (
-                      <span
+                  <div
+                    style={{
+                      position: "absolute",
+                      left: "-36px",
+                      top: "54px",
+                      width: "36px",
+                      height: "1px",
+                      background: job.current ? "var(--accent-teal)" : "rgba(255,255,255,0.1)",
+                      opacity: 0.4,
+                    }}
+                  />
+
+                  <div
+                    style={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                      alignItems: "flex-start",
+                      flexWrap: "wrap",
+                      gap: "24px",
+                      marginBottom: "32px",
+                    }}
+                  >
+                    <div>
+                      <h3
                         style={{
-                          fontSize: "9px",
-                          letterSpacing: "0.2em",
-                          color: "var(--accent-cyan)",
-                          border: "1px solid var(--accent-cyan)",
-                          padding: "4px 12px",
-                          borderRadius: "2px",
-                          fontWeight: 800,
+                          fontSize: "24px",
+                          fontWeight: 700,
+                          color: "white",
+                          margin: "0 0 8px",
+                          textTransform: "uppercase",
+                          letterSpacing: "-0.01em",
                         }}
                       >
-                        ACTIVE
-                      </span>
-                    )}
-                    <span
-                      style={{
-                        fontSize: "13px",
-                        color: "rgba(255, 255, 255, 0.3)",
-                        whiteSpace: "nowrap",
-                        fontFamily: "var(--font-outfit)",
-                        fontWeight: 500,
-                      }}
-                    >
-                      {job.period}
-                    </span>
-                  </div>
-                </div>
-
-                <ul style={{ margin: 0, padding: 0, listStyle: "none" }}>
-                  {job.bullets.map((b, idx) => (
-                    <li
-                      key={idx}
-                      style={{
-                        fontSize: "15px",
-                        color: "rgba(255, 255, 255, 0.4)",
-                        paddingLeft: "24px",
-                        position: "relative",
-                        marginBottom: "12px",
-                        lineHeight: 1.7,
-                        fontWeight: 300,
-                      }}
-                    >
-                      <div
+                        {job.role}
+                      </h3>
+                      <p
+                        className="glow-teal"
                         style={{
-                          position: "absolute",
-                          left: 0,
-                          top: "12px",
-                          width: "8px",
-                          height: "1px",
-                          background: "var(--accent-cyan)",
-                          opacity: 0.3,
+                          fontSize: "14px",
+                          color: "var(--accent-teal)",
+                          margin: 0,
+                          fontWeight: 600,
+                          textTransform: "uppercase",
+                          letterSpacing: "0.1em",
                         }}
-                      />
-                      {b}
-                    </li>
-                  ))}
-                </ul>
+                      >
+                        {job.company} <span style={{ color: "rgba(255,255,255,0.1)", margin: "0 12px" }}>/</span> {job.location}
+                      </p>
+                    </div>
+                    <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>
+                      {job.current && (
+                        <span
+                          style={{
+                            fontSize: "9px",
+                            letterSpacing: "0.2em",
+                            color: "var(--accent-teal)",
+                            border: "1px solid var(--accent-teal)",
+                            padding: "4px 12px",
+                            borderRadius: "2px",
+                            fontWeight: 800,
+                          }}
+                        >
+                          ACTIVE
+                        </span>
+                      )}
+                      <span
+                        style={{
+                          fontSize: "13px",
+                          color: "var(--text-muted)",
+                          whiteSpace: "nowrap",
+                          fontWeight: 500,
+                        }}
+                      >
+                        {job.period}
+                      </span>
+                    </div>
+                  </div>
+
+                  <ul style={{ margin: 0, padding: 0, listStyle: "none" }}>
+                    {job.bullets.map((b, idx) => (
+                      <li
+                        key={idx}
+                        style={{
+                          fontSize: "15px",
+                          color: "var(--text-secondary)",
+                          paddingLeft: "24px",
+                          position: "relative",
+                          marginBottom: "12px",
+                          lineHeight: 1.7,
+                          fontWeight: 400,
+                        }}
+                      >
+                        <div
+                          style={{
+                            position: "absolute",
+                            left: 0,
+                            top: "12px",
+                            width: "8px",
+                            height: "1px",
+                            background: "var(--accent-teal)",
+                            opacity: 0.3,
+                          }}
+                        />
+                        {b}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
               </motion.div>
             ))}
           </div>

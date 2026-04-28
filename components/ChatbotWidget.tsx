@@ -12,358 +12,143 @@ type Message = {
 
 export default function ChatbotWidget() {
   const [isOpen, setIsOpen] = useState(false);
-  const [inputValue, setInputValue] = useState("");
+  const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const messagesEndRef = useRef<HTMLDivElement>(null);
-
   const [messages, setMessages] = useState<Message[]>([
     {
       id: "1",
       role: "assistant",
-      content: "Hi! I'm Jarvis, Komala's Assistant. Ask me anything about her skills, experience, or projects.",
+      content: "System initialized. Hello, I am Jarvis. How can I assist you with Komala's technical specifications today?",
     }
   ]);
-
-  const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  };
+  const messagesEndRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    scrollToBottom();
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages, isLoading]);
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!inputValue.trim() || isLoading) return;
+  const handleSend = async (e?: React.FormEvent) => {
+    e?.preventDefault();
+    if (!input.trim() || isLoading) return;
 
-    const userMessage: Message = {
-      id: Date.now().toString(),
-      role: "user",
-      content: inputValue,
-    };
-
-    const newMessages = [...messages, userMessage];
-    setMessages(newMessages);
-    setInputValue("");
+    const userMsg: Message = { id: Date.now().toString(), role: "user", content: input };
+    setMessages((prev) => [...prev, userMsg]);
+    setInput("");
     setIsLoading(true);
 
     try {
       const res = await fetch("/api/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ messages: newMessages }),
+        body: JSON.stringify({ messages: [...messages, userMsg] }),
       });
-
       const data = await res.json();
-
-      if (!res.ok) {
-        throw new Error(data.text || "Network response was not ok");
+      if (data.text) {
+        setMessages((prev) => [...prev, { id: (Date.now() + 1).toString(), role: "assistant", content: data.text }]);
       }
-      
-      const assistantMessage: Message = {
-        id: (Date.now() + 1).toString(),
-        role: "assistant",
-        content: data.text,
-      };
-
-      setMessages((prev) => [...prev, assistantMessage]);
-    } catch (error: any) {
-      console.error("Failed to fetch chat:", error);
-      const errorMessage: Message = {
-        id: (Date.now() + 1).toString(),
-        role: "assistant",
-        content: error.message || "Sorry, I'm having trouble connecting right now. Please try again later!",
-      };
-      setMessages((prev) => [...prev, errorMessage]);
+    } catch (err) {
+      console.error(err);
     } finally {
       setIsLoading(false);
     }
   };
 
   return (
-    <>
-      {/* Floating Button */}
-      <AnimatePresence>
-        {!isOpen && (
-          <motion.button
-            initial={{ scale: 0, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            exit={{ scale: 0, opacity: 0 }}
-            whileHover={{ scale: 1.1, boxShadow: "0 0 20px rgba(0, 242, 255, 0.6)" }}
-            whileTap={{ scale: 0.9 }}
-            onClick={() => setIsOpen(true)}
-            style={{
-              position: "fixed",
-              bottom: "32px",
-              right: "32px",
-              zIndex: 100,
-              width: "64px",
-              height: "64px",
-              borderRadius: "50%",
-              background: "rgba(0, 0, 0, 0.8)",
-              border: "1px solid rgba(0, 242, 255, 0.3)",
-              color: "white",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              boxShadow: "0 8px 32px rgba(0, 0, 0, 0.5)",
-              cursor: "pointer",
-              backdropFilter: "blur(12px)",
-            }}
-          >
-            <div 
-              style={{
-                position: "absolute",
-                inset: "-2px",
-                borderRadius: "50%",
-                background: "linear-gradient(135deg, var(--accent-cyan), var(--accent-purple))",
-                opacity: 0.4,
-                zIndex: -1,
-              }}
-            />
-            <MessageSquare size={28} className="text-glow" style={{ color: "var(--accent-cyan)" }} />
-          </motion.button>
-        )}
-      </AnimatePresence>
-
-      {/* Chat Window */}
+    <div style={{ position: "fixed", bottom: "40px", right: "40px", zIndex: 2000 }}>
       <AnimatePresence>
         {isOpen && (
           <motion.div
-            initial={{ opacity: 0, y: 20, scale: 0.9, filter: "blur(10px)" }}
-            animate={{ opacity: 1, y: 0, scale: 1, filter: "blur(0px)" }}
-            exit={{ opacity: 0, y: 20, scale: 0.9, filter: "blur(10px)" }}
-            transition={{ type: "spring", stiffness: 300, damping: 25 }}
+            initial={{ opacity: 0, y: 20, scale: 0.95 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 20, scale: 0.95 }}
+            className="glass-card"
             style={{
-              position: "fixed",
-              bottom: "32px",
-              right: "32px",
-              zIndex: 100,
-              width: "400px",
+              width: "420px",
               height: "600px",
-              maxWidth: "calc(100vw - 64px)",
-              maxHeight: "calc(100vh - 64px)",
-              background: "rgba(10, 10, 15, 0.8)",
-              backdropFilter: "blur(24px)",
-              WebkitBackdropFilter: "blur(24px)",
-              border: "1px solid rgba(255, 255, 255, 0.1)",
-              borderRadius: "24px",
+              marginBottom: "24px",
               display: "flex",
               flexDirection: "column",
-              boxShadow: "0 24px 64px rgba(0, 0, 0, 0.8)",
+              border: "1px solid var(--border-glow)",
+              boxShadow: "0 24px 80px rgba(0, 0, 0, 0.6)",
               overflow: "hidden",
             }}
           >
             {/* Header */}
-            <div
-              style={{
-                padding: "24px",
-                borderBottom: "1px solid rgba(255, 255, 255, 0.05)",
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "center",
-                background: "rgba(0, 0, 0, 0.2)",
-              }}
-            >
-              <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
-                <div
-                  style={{
-                    width: "10px",
-                    height: "10px",
-                    borderRadius: "50%",
-                    background: "var(--accent-cyan)",
-                    boxShadow: "0 0 12px var(--accent-cyan)",
-                  }}
-                />
-                <span
-                  style={{
-                    fontSize: "14px",
-                    fontWeight: 700,
-                    color: "white",
-                    fontFamily: "var(--font-outfit)",
-                    letterSpacing: "0.15em",
-                    textTransform: "uppercase",
-                  }}
-                >
-                  Jarvis
-                </span>
+            <div style={{ padding: "32px", borderBottom: "1px solid var(--border)", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+              <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>
+                <div style={{ width: "12px", height: "12px", borderRadius: "50%", background: "var(--accent-teal)", boxShadow: "0 0 15px var(--accent-teal)" }} />
+                <div>
+                  <h3 style={{ fontSize: "18px", fontWeight: 800, color: "white", margin: 0, letterSpacing: "-0.01em" }}>JARVIS</h3>
+                  <span style={{ fontSize: "10px", color: "var(--accent-teal)", fontWeight: 800, letterSpacing: "0.2em" }}>SYSTEM ONLINE</span>
+                </div>
               </div>
-              <button
-                onClick={() => setIsOpen(false)}
-                style={{
-                  background: "transparent",
-                  border: "none",
-                  color: "rgba(255, 255, 255, 0.4)",
-                  cursor: "pointer",
-                  display: "flex",
-                  transition: "color 0.2s",
-                }}
-                onMouseEnter={(e) => (e.currentTarget.style.color = "white")}
-                onMouseLeave={(e) => (e.currentTarget.style.color = "rgba(255, 255, 255, 0.4)")}
-              >
-                <X size={20} />
-              </button>
+              <button onClick={() => setIsOpen(false)} style={{ background: "none", border: "none", color: "var(--text-muted)", cursor: "pointer", fontSize: "24px" }}>×</button>
             </div>
 
-            {/* Messages Area */}
-            <div
-              style={{
-                flex: 1,
-                overflowY: "auto",
-                padding: "24px",
-                display: "flex",
-                flexDirection: "column",
-                gap: "20px",
-              }}
-            >
-              {messages.map((msg) => (
-                <div
-                  key={msg.id}
-                  style={{
-                    display: "flex",
-                    gap: "14px",
-                    alignItems: "flex-start",
-                    flexDirection: msg.role === "user" ? "row-reverse" : "row",
-                  }}
-                >
-                  <div
-                    style={{
-                      width: "36px",
-                      height: "36px",
-                      borderRadius: "12px",
-                      background: msg.role !== "user" ? "rgba(0, 242, 255, 0.1)" : "rgba(124, 58, 237, 0.1)",
-                      border: `1px solid ${msg.role !== "user" ? "rgba(0, 242, 255, 0.2)" : "rgba(124, 58, 237, 0.2)"}`,
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      flexShrink: 0,
-                    }}
-                  >
-                    {msg.role !== "user" ? <Bot size={18} color="var(--accent-cyan)" /> : <User size={18} color="var(--accent-purple)" />}
-                  </div>
-                  <div
-                    className="glass-panel"
-                    style={{
-                      padding: "16px 20px",
-                      borderRadius: "18px",
-                      borderTopLeftRadius: msg.role !== "user" ? "4px" : "18px",
-                      borderTopRightRadius: msg.role === "user" ? "4px" : "18px",
-                      fontSize: "15px",
-                      lineHeight: 1.6,
-                      color: "rgba(255, 255, 255, 0.8)",
-                      maxWidth: "80%",
-                      whiteSpace: "pre-wrap",
-                      fontFamily: "var(--font-outfit)",
-                      fontWeight: 300,
-                    }}
-                  >
-                    {msg.content}
+            {/* Messages */}
+            <div style={{ flex: 1, padding: "32px", overflowY: "auto", display: "flex", flexDirection: "column", gap: "24px" }}>
+              {messages.map((m) => (
+                <div key={m.id} style={{ alignSelf: m.role === "user" ? "flex-end" : "flex-start", maxWidth: "85%" }}>
+                  <div style={{
+                    padding: "16px 20px",
+                    borderRadius: "12px",
+                    fontSize: "15px",
+                    lineHeight: 1.6,
+                    background: m.role === "user" ? "var(--accent-teal)" : "rgba(255, 255, 255, 0.03)",
+                    color: m.role === "user" ? "black" : "white",
+                    fontWeight: m.role === "user" ? 700 : 400,
+                    border: m.role === "user" ? "none" : "1px solid var(--border)",
+                  }}>
+                    {m.content}
                   </div>
                 </div>
               ))}
               {isLoading && (
-                <div style={{ display: "flex", gap: "14px", alignItems: "center" }}>
-                  <div
-                    style={{
-                      width: "36px",
-                      height: "36px",
-                      borderRadius: "12px",
-                      background: "rgba(0, 242, 255, 0.1)",
-                      border: "1px solid rgba(0, 242, 255, 0.2)",
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                    }}
-                  >
-                    <Bot size={18} color="var(--accent-cyan)" />
-                  </div>
-                  <div
-                    className="glass-panel"
-                    style={{
-                      padding: "16px 20px",
-                      borderRadius: "18px",
-                      borderTopLeftRadius: "4px",
-                    }}
-                  >
-                    <motion.div
-                      animate={{ opacity: [0.3, 1, 0.3] }}
-                      transition={{ duration: 1.5, repeat: Infinity }}
-                      style={{ fontSize: "24px", lineHeight: 0.5, color: "var(--accent-cyan)" }}
-                    >
-                      ...
-                    </motion.div>
-                  </div>
+                <div style={{ alignSelf: "flex-start", padding: "16px 20px", background: "rgba(255, 255, 255, 0.03)", borderRadius: "12px", border: "1px solid var(--border)" }}>
+                  <motion.div animate={{ opacity: [0.3, 1, 0.3] }} transition={{ duration: 1.5, repeat: Infinity }} style={{ fontSize: "10px", color: "var(--accent-teal)", fontWeight: 800, letterSpacing: "0.2em" }}>PROCESSING...</motion.div>
                 </div>
               )}
               <div ref={messagesEndRef} />
             </div>
 
-            {/* Input Area */}
-            <div
-              style={{
-                padding: "24px",
-                borderTop: "1px solid rgba(255, 255, 255, 0.05)",
-                background: "rgba(0, 0, 0, 0.3)",
-              }}
-            >
-              <form
-                onSubmit={handleSubmit}
-                style={{
-                  display: "flex",
-                  gap: "12px",
-                }}
-              >
+            {/* Input */}
+            <div style={{ padding: "32px", borderTop: "1px solid var(--border)", background: "rgba(0, 0, 0, 0.2)" }}>
+              <form onSubmit={handleSend} style={{ display: "flex", gap: "16px" }}>
                 <input
-                  type="text"
-                  value={inputValue}
-                  onChange={(e) => setInputValue(e.target.value)}
-                  placeholder="Query the system..."
-                  disabled={isLoading}
-                  style={{
-                    flex: 1,
-                    background: "rgba(255, 255, 255, 0.03)",
-                    border: "1px solid rgba(255, 255, 255, 0.1)",
-                    borderRadius: "14px",
-                    padding: "14px 20px",
-                    color: "white",
-                    fontSize: "15px",
-                    outline: "none",
-                    fontFamily: "var(--font-outfit)",
-                    transition: "border-color 0.2s",
-                  }}
-                  onFocus={(e) => (e.currentTarget.style.borderColor = "var(--accent-cyan)")}
-                  onBlur={(e) => (e.currentTarget.style.borderColor = "rgba(255, 255, 255, 0.1)")}
+                  value={input}
+                  onChange={(e) => setInput(e.target.value)}
+                  placeholder="Query system core..."
+                  style={{ flex: 1, background: "rgba(255, 255, 255, 0.05)", border: "1px solid var(--border)", borderRadius: "8px", padding: "14px 20px", color: "white", fontSize: "15px", outline: "none" }}
                 />
-                <button
-                  type="submit"
-                  disabled={!inputValue.trim() || isLoading}
-                  style={{
-                    background: inputValue.trim() && !isLoading ? "white" : "rgba(255, 255, 255, 0.05)",
-                    border: "none",
-                    borderRadius: "14px",
-                    width: "52px",
-                    height: "52px",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    color: inputValue.trim() && !isLoading ? "black" : "rgba(255, 255, 255, 0.2)",
-                    cursor: inputValue.trim() && !isLoading ? "pointer" : "default",
-                    transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
-                  }}
-                  onMouseEnter={(e) => {
-                    if (inputValue.trim() && !isLoading) e.currentTarget.style.transform = "scale(1.05)";
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.transform = "scale(1)";
-                  }}
-                >
-                  <Send size={22} />
-                </button>
+                <button type="submit" style={{ width: "52px", height: "52px", borderRadius: "8px", background: "var(--accent-teal)", border: "none", color: "black", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "20px", fontWeight: 800 }}>→</button>
               </form>
             </div>
           </motion.div>
         )}
       </AnimatePresence>
-    </>
+
+      <motion.button
+        whileHover={{ scale: 1.05 }}
+        whileTap={{ scale: 0.95 }}
+        onClick={() => setIsOpen(!isOpen)}
+        style={{
+          width: "72px",
+          height: "72px",
+          borderRadius: "50%",
+          background: "rgba(3, 3, 5, 0.8)",
+          backdropFilter: "blur(20px)",
+          border: "1px solid var(--accent-teal)",
+          boxShadow: "0 0 30px rgba(0, 242, 255, 0.3)",
+          color: "var(--accent-teal)",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          cursor: "pointer",
+          fontSize: "28px",
+        }}
+      >
+        <motion.div animate={{ scale: [1, 1.1, 1], rotate: [0, 5, 0] }} transition={{ duration: 4, repeat: Infinity }}>◈</motion.div>
+      </motion.button>
+    </div>
   );
 }
