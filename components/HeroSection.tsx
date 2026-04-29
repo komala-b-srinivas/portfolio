@@ -91,17 +91,15 @@ export default function HeroSection() {
               color: "white",
             }}
           >
-            Hi, I&apos;m<br />
+            Hi There,<br />
             <span style={{
               color: "#00f2ff",
               textShadow: "0 0 50px rgba(0,242,255,0.45), 0 0 100px rgba(0,242,255,0.2)",
             }}>
-              Komala.
+              I build
             </span>
             <br />
-            <span style={{ fontSize: isMobile ? "clamp(22px, 6vw, 36px)" : "clamp(26px, 3.2vw, 48px)", fontWeight: 700, color: "rgba(255,255,255,0.75)", letterSpacing: "-0.02em" }}>
-              I build intelligent systems.
-            </span>
+            intelligent systems.
           </motion.h1>
 
           {/* Description */}
@@ -116,9 +114,8 @@ export default function HeroSection() {
               maxWidth: isMobile ? "100%" : "460px", fontWeight: 400,
             }}
           >
-            AI Automation Engineer based in New York. I ship production ML systems
-            for healthcare, clinical AI, and real-world automation — currently
-            at Rimon Health, holder of a German utility patent.
+            AI Automation Engineer based in New York, building end-to-end AI solutions
+            for healthcare and clinical automation. Currently at Rimon Health.
           </motion.p>
 
           {/* CTAs */}

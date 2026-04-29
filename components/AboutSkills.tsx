@@ -127,7 +127,7 @@ export default function AboutSkills() {
               fontWeight: 900, color: "white", letterSpacing: "-0.035em",
               lineHeight: 1.15, marginBottom: "28px",
             }}>
-              I&apos;m Komala —<br />
+              I&apos;m Komala,<br />
               <span style={{ color: "#00f2ff", textShadow: "0 0 24px rgba(0,242,255,0.4)" }}>AI engineer</span>
               {" "}based in NYC
             </h2>

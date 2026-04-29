@@ -28,12 +28,12 @@ export const viewport = {
 };
 
 export const metadata: Metadata = {
-  title: "Komala Belur Srinivas — AI/ML Engineer",
+  title: "Komala Belur Srinivas | AI/ML Engineer",
   description:
     "Portfolio of Komala Belur Srinivas, an AI/ML engineer specializing in deep learning, multimodal systems, and production ML pipelines.",
   keywords: ["AI", "Machine Learning", "Data Science", "Python", "Deep Learning", "Portfolio"],
   openGraph: {
-    title: "Komala Belur Srinivas — AI/ML Engineer",
+    title: "Komala Belur Srinivas | AI/ML Engineer",
     description:
       "AI/ML Engineer specializing in deep learning, multimodal systems, and production ML pipelines. M.S. CS @ Hofstra University. Open to full-time roles.",
     url: "https://portfolio-f2c2oibdn-komala-b-srinivas-projects.vercel.app",
@@ -43,14 +43,14 @@ export const metadata: Metadata = {
         url: "/og-image.jpg",
         width: 1200,
         height: 630,
-        alt: "Komala Belur Srinivas — AI/ML Engineer Portfolio",
+        alt: "Komala Belur Srinivas | AI/ML Engineer Portfolio",
       },
     ],
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Komala Belur Srinivas — AI/ML Engineer",
+    title: "Komala Belur Srinivas | AI/ML Engineer",
     description:
       "AI/ML Engineer · Deep Learning · Multimodal Systems · Production ML Pipelines",
     images: ["/og-image.jpg"],

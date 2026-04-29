@@ -71,7 +71,7 @@ export default function Contact() {
               }}
             >
               I&apos;m actively looking for full-time roles in AI Automation, AI Solutions,
-              or ML Engineering in New York. If your team ships real AI, I&apos;d love to talk.
+              or ML Engineering in New York. Feel free to reach out and let&apos;s connect.
             </p>
 
             <div style={{ display: "flex", gap: "16px", justifyContent: "center", flexWrap: "wrap", width: "100%" }}>
