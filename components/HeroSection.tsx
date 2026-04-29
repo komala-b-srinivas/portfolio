@@ -91,7 +91,7 @@ export default function HeroSection() {
               color: "rgba(255,255,255,0.55)",
               letterSpacing: "0.18em", textTransform: "uppercase", fontWeight: 600,
             }}>
-              AI Automation Engineer &amp; MS in CS grad
+              Komala Belur Srinivas &nbsp;·&nbsp; AI Engineer &amp; MS CS
             </span>
           </motion.div>
 
@@ -107,15 +107,17 @@ export default function HeroSection() {
               color: "white",
             }}
           >
-            Building<br />
+            Hi, I&apos;m<br />
             <span style={{
               color: "#00f2ff",
               textShadow: "0 0 50px rgba(0,242,255,0.45), 0 0 100px rgba(0,242,255,0.2)",
             }}>
-              Intelligent
+              Komala.
             </span>
             <br />
-            Systems.
+            <span style={{ fontSize: isMobile ? "clamp(22px, 6vw, 36px)" : "clamp(26px, 3.2vw, 48px)", fontWeight: 700, color: "rgba(255,255,255,0.75)", letterSpacing: "-0.02em" }}>
+              I build intelligent systems.
+            </span>
           </motion.h1>
 
           {/* Description */}
@@ -130,8 +132,9 @@ export default function HeroSection() {
               maxWidth: isMobile ? "100%" : "460px", fontWeight: 400,
             }}
           >
-            I build AI-powered solutions and production ML systems that solve
-            real-world problems, from clinical AI to autonomous robotics.
+            AI Automation Engineer based in New York. I ship production ML systems
+            for healthcare, clinical AI, and real-world automation — currently
+            at Rimon Health, holder of a German utility patent.
           </motion.p>
 
           {/* CTAs */}

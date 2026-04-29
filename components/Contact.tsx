@@ -70,8 +70,8 @@ export default function Contact() {
                 fontWeight: 300,
               }}
             >
-              I&apos;m seeking mission-critical roles in AI Automation and Solutions. 
-              If you&apos;re building the future of intelligent systems, let&apos;s talk.
+              I&apos;m actively looking for full-time roles in AI Automation, AI Solutions,
+              or ML Engineering in New York. If your team ships real AI, I&apos;d love to talk.
             </p>
 
             <div style={{ display: "flex", gap: "16px", justifyContent: "center", flexWrap: "wrap", width: "100%" }}>

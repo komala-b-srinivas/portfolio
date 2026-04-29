@@ -127,10 +127,9 @@ export default function AboutSkills() {
               fontWeight: 900, color: "white", letterSpacing: "-0.035em",
               lineHeight: 1.15, marginBottom: "28px",
             }}>
-              Passionate about
-              <br />
-              building the{" "}
-              <span style={{ color: "#00f2ff", textShadow: "0 0 24px rgba(0,242,255,0.4)" }}>future</span>
+              I&apos;m Komala —<br />
+              <span style={{ color: "#00f2ff", textShadow: "0 0 24px rgba(0,242,255,0.4)" }}>AI engineer</span>
+              {" "}based in NYC
             </h2>
 
             <p style={{ fontSize: "16px", color: "rgba(255,255,255,0.65)", lineHeight: 1.8, marginBottom: "20px" }}>
@@ -174,8 +173,8 @@ export default function AboutSkills() {
               fontWeight: 900, color: "white", letterSpacing: "-0.035em",
               lineHeight: 1.15, marginBottom: "40px",
             }}>
-              Technologies I{" "}
-              <span style={{ color: "#00f2ff", textShadow: "0 0 24px rgba(0,242,255,0.4)" }}>Work With</span>
+              My{" "}
+              <span style={{ color: "#00f2ff", textShadow: "0 0 24px rgba(0,242,255,0.4)" }}>Tech Stack</span>
             </h2>
 
             {/* Hex grid — 4 cols desktop, 4 cols tablet, 3 cols mobile */}
