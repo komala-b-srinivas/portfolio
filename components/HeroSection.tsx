@@ -1,24 +1,8 @@
 "use client";
 
-import dynamic from "next/dynamic";
 import { motion } from "framer-motion";
 import { useBreakpoint } from "../hooks/useBreakpoint";
-
-const NeuralCubeScene = dynamic(() => import("./NeuralCubeScene"), {
-  ssr: false,
-  loading: () => (
-    <div style={{
-      width: "100%", height: "100%",
-      display: "flex", alignItems: "center", justifyContent: "center",
-    }}>
-      <motion.div
-        animate={{ scale: [1, 1.4, 1], opacity: [0.4, 1, 0.4] }}
-        transition={{ duration: 2, repeat: Infinity }}
-        style={{ width: "10px", height: "10px", borderRadius: "50%", background: "#00f2ff", boxShadow: "0 0 20px #00f2ff" }}
-      />
-    </div>
-  ),
-});
+import HeroPipeline from "./HeroPipeline";
 
 const stats = [
   { value: "10+", label: "Projects" },
@@ -212,25 +196,15 @@ export default function HeroSection() {
           transition={{ duration: 1.1, delay: 0.15, ease: "easeOut" }}
           style={{
             flex: 1,
-            height: isMobile ? "320px" : isTablet ? "480px" : "680px",
+            height: isMobile ? "280px" : isTablet ? "400px" : "500px",
             width: isMobile ? "100%" : undefined,
             position: "relative",
             minWidth: 0,
             marginTop: isMobile ? "32px" : "0",
           }}
         >
-          <NeuralCubeScene />
+          <HeroPipeline />
 
-          {/* Base reflection glow */}
-          <div style={{
-            position: "absolute",
-            bottom: "0",
-            left: "10%", right: "10%",
-            height: "80px",
-            background: "radial-gradient(ellipse at center, rgba(0,242,255,0.12) 0%, transparent 70%)",
-            filter: "blur(12px)",
-            pointerEvents: "none",
-          }} />
         </motion.div>
       </div>
 
