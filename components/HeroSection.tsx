@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 import { useBreakpoint } from "../hooks/useBreakpoint";
-import HeroPipeline from "./HeroPipeline";
+import HeroHands from "./HeroHands";
 
 const stats = [
   { value: "10+", label: "Projects" },
@@ -200,7 +200,7 @@ export default function HeroSection() {
             marginTop: isMobile ? "32px" : "0",
           }}
         >
-          <HeroPipeline />
+          <HeroHands />
 
         </motion.div>
       </div>
