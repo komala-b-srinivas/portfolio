@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import { useBreakpoint } from "../hooks/useBreakpoint";
 
 const jobs = [
   {
@@ -66,9 +67,10 @@ const jobs = [
 ];
 
 export default function Experience() {
+  const { isMobile } = useBreakpoint();
   return (
-    <section id="experience" style={{ padding: "160px 0", position: "relative" }}>
-      <div style={{ maxWidth: "1200px", margin: "0 auto", padding: "0 32px" }}>
+    <section id="experience" style={{ padding: isMobile ? "80px 0 60px" : "160px 0", position: "relative" }}>
+      <div style={{ maxWidth: "1200px", margin: "0 auto", padding: isMobile ? "0 20px" : "0 32px" }}>
         <motion.div
           initial={{ opacity: 0, y: 24 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -128,10 +130,10 @@ export default function Experience() {
               >
                 <div
                   className="glass-card"
-                  style={{ 
-                    padding: "48px", 
+                  style={{
+                    padding: isMobile ? "24px" : "48px",
                     position: "relative",
-                    marginLeft: "40px",
+                    marginLeft: isMobile ? "24px" : "40px",
                   }}
                 >
                   <div

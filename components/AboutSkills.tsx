@@ -1,8 +1,8 @@
 "use client";
 
 import { motion } from "framer-motion";
+import { useBreakpoint } from "../hooks/useBreakpoint";
 
-// ── AI-Automation focused skills ──────────────────────────────────────────────
 const skills = [
   { name: "Python",     icon: "Py",  color: "#3b82f6" },
   { name: "PyTorch",    icon: "PT",  color: "#ee4c2c" },
@@ -26,10 +26,9 @@ function HexSkill({ skill, index }: { skill: (typeof skills)[0]; index: number }
       viewport={{ once: true }}
       transition={{ duration: 0.42, delay: index * 0.055 }}
       whileHover={{ scale: 1.13, transition: { duration: 0.2 } }}
-      style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "10px", cursor: "default" }}
+      style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "8px", cursor: "default" }}
     >
-      {/* Hex icon */}
-      <div style={{ position: "relative", width: "72px", height: "72px" }}>
+      <div style={{ position: "relative", width: "64px", height: "64px" }}>
         <div
           style={{
             position: "absolute", inset: 0,
@@ -49,7 +48,7 @@ function HexSkill({ skill, index }: { skill: (typeof skills)[0]; index: number }
           }}
         >
           <span style={{
-            fontSize: "13px", fontWeight: 900,
+            fontSize: "12px", fontWeight: 900,
             color: skill.color, letterSpacing: "-0.02em",
             textShadow: `0 0 12px ${skill.color}70`,
           }}>
@@ -64,7 +63,6 @@ function HexSkill({ skill, index }: { skill: (typeof skills)[0]; index: number }
   );
 }
 
-// ── Open to work badge ────────────────────────────────────────────────────────
 function OpenToWorkBadge() {
   return (
     <motion.div
@@ -89,29 +87,34 @@ function OpenToWorkBadge() {
   );
 }
 
-// ── Main component ────────────────────────────────────────────────────────────
 export default function AboutSkills() {
+  const { isMobile, isTablet } = useBreakpoint();
+  const stacked = isMobile || isTablet;
+
   return (
-    <section id="about" style={{ padding: "120px 0 100px", position: "relative" }}>
-      {/* Divider top */}
+    <section id="about" style={{ padding: isMobile ? "80px 0 60px" : "120px 0 100px", position: "relative" }}>
       <div style={{
         position: "absolute", top: 0, left: "5%", right: "5%",
         height: "1px",
         background: "linear-gradient(90deg, transparent, rgba(255,255,255,0.08), transparent)",
       }} />
 
-      <div style={{ maxWidth: "1600px", margin: "0 auto", padding: "0 5%" }}>
-        <div style={{ display: "flex", gap: "80px", alignItems: "flex-start", flexWrap: "wrap" }}>
+      <div style={{ maxWidth: "1600px", margin: "0 auto", padding: isMobile ? "0 20px" : "0 5%" }}>
+        <div style={{
+          display: "flex",
+          flexDirection: stacked ? "column" : "row",
+          gap: stacked ? "60px" : "80px",
+          alignItems: "flex-start",
+        }}>
 
-          {/* ── LEFT: About ── */}
+          {/* ── About ── */}
           <motion.div
-            initial={{ opacity: 0, x: -30 }}
+            initial={{ opacity: 0, x: stacked ? 0 : -30 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.7 }}
-            style={{ flex: "0 0 420px", minWidth: 0 }}
+            style={{ flex: stacked ? "none" : "0 0 420px", width: stacked ? "100%" : undefined, minWidth: 0 }}
           >
-            {/* Section label */}
             <div style={{ display: "flex", alignItems: "center", gap: "14px", marginBottom: "28px" }}>
               <div style={{ width: "6px", height: "6px", borderRadius: "50%", background: "#00f2ff", boxShadow: "0 0 8px #00f2ff" }} />
               <span style={{ fontSize: "11px", color: "rgba(255,255,255,0.4)", letterSpacing: "0.35em", textTransform: "uppercase", fontWeight: 700 }}>
@@ -120,16 +123,14 @@ export default function AboutSkills() {
             </div>
 
             <h2 style={{
-              fontSize: "clamp(28px, 3.5vw, 44px)", fontWeight: 900,
-              color: "white", letterSpacing: "-0.035em",
+              fontSize: isMobile ? "clamp(26px, 8vw, 36px)" : "clamp(28px, 3.5vw, 44px)",
+              fontWeight: 900, color: "white", letterSpacing: "-0.035em",
               lineHeight: 1.15, marginBottom: "28px",
             }}>
               Passionate about
               <br />
               building the{" "}
-              <span style={{ color: "#00f2ff", textShadow: "0 0 24px rgba(0,242,255,0.4)" }}>
-                future
-              </span>
+              <span style={{ color: "#00f2ff", textShadow: "0 0 24px rgba(0,242,255,0.4)" }}>future</span>
             </h2>
 
             <p style={{ fontSize: "16px", color: "rgba(255,255,255,0.65)", lineHeight: 1.8, marginBottom: "20px" }}>
@@ -153,13 +154,13 @@ export default function AboutSkills() {
             <OpenToWorkBadge />
           </motion.div>
 
-          {/* ── RIGHT: Skills ── */}
+          {/* ── Skills ── */}
           <motion.div
-            initial={{ opacity: 0, x: 30 }}
+            initial={{ opacity: 0, x: stacked ? 0 : 30 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.7, delay: 0.1 }}
-            style={{ flex: 1, minWidth: 0 }}
+            style={{ flex: 1, minWidth: 0, width: stacked ? "100%" : undefined }}
           >
             <div style={{ display: "flex", alignItems: "center", gap: "14px", marginBottom: "28px" }}>
               <div style={{ width: "6px", height: "6px", borderRadius: "50%", background: "#bc13fe", boxShadow: "0 0 8px #bc13fe" }} />
@@ -169,18 +170,21 @@ export default function AboutSkills() {
             </div>
 
             <h2 style={{
-              fontSize: "clamp(28px, 3.5vw, 44px)", fontWeight: 900,
-              color: "white", letterSpacing: "-0.035em",
-              lineHeight: 1.15, marginBottom: "48px",
+              fontSize: isMobile ? "clamp(26px, 8vw, 36px)" : "clamp(28px, 3.5vw, 44px)",
+              fontWeight: 900, color: "white", letterSpacing: "-0.035em",
+              lineHeight: 1.15, marginBottom: "40px",
             }}>
               Technologies I{" "}
-              <span style={{ color: "#00f2ff", textShadow: "0 0 24px rgba(0,242,255,0.4)" }}>
-                Work With
-              </span>
+              <span style={{ color: "#00f2ff", textShadow: "0 0 24px rgba(0,242,255,0.4)" }}>Work With</span>
             </h2>
 
-            {/* Hex grid */}
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: "28px 24px", maxWidth: "420px" }}>
+            {/* Hex grid — 4 cols desktop, 4 cols tablet, 3 cols mobile */}
+            <div style={{
+              display: "grid",
+              gridTemplateColumns: isMobile ? "repeat(4, 1fr)" : "repeat(4, 1fr)",
+              gap: isMobile ? "20px 16px" : "28px 24px",
+              maxWidth: isMobile ? "100%" : "420px",
+            }}>
               {skills.map((skill, i) => (
                 <HexSkill key={skill.name} skill={skill} index={i} />
               ))}
@@ -188,7 +192,7 @@ export default function AboutSkills() {
 
             {/* Extra tags */}
             <div style={{
-              marginTop: "48px", padding: "24px",
+              marginTop: "40px", padding: isMobile ? "16px" : "24px",
               background: "rgba(10,10,24,0.6)",
               border: "1px solid rgba(255,255,255,0.07)",
               borderRadius: "12px", backdropFilter: "blur(10px)",
@@ -196,7 +200,7 @@ export default function AboutSkills() {
               <p style={{
                 fontSize: "10px", color: "rgba(255,255,255,0.35)",
                 letterSpacing: "0.2em", textTransform: "uppercase",
-                fontWeight: 700, marginBottom: "16px",
+                fontWeight: 700, marginBottom: "14px",
               }}>
                 + Also proficient in
               </p>
@@ -212,7 +216,7 @@ export default function AboutSkills() {
                     fontSize: "11px", color: "rgba(255,255,255,0.45)",
                     background: "rgba(255,255,255,0.03)",
                     border: "1px solid rgba(255,255,255,0.07)",
-                    padding: "5px 12px", borderRadius: "6px", fontWeight: 500,
+                    padding: "5px 10px", borderRadius: "6px", fontWeight: 500,
                   }}>
                     {tag}
                   </span>
@@ -223,7 +227,6 @@ export default function AboutSkills() {
         </div>
       </div>
 
-      {/* Divider bottom */}
       <div style={{
         position: "absolute", bottom: 0, left: "5%", right: "5%",
         height: "1px",

@@ -2,9 +2,9 @@
 
 import { useRef, useEffect } from "react";
 import { motion } from "framer-motion";
+import { useBreakpoint } from "../hooks/useBreakpoint";
 
-// ── Static isometric cube canvas — drawn ONCE, no animation loop ─────────────
-// Animated nodes handled via CSS (zero canvas overhead)
+// ── Static isometric cube canvas ──────────────────────────────────────────────
 function MiniCubeCanvas({ color1, color2 }: { color1: string; color2: string }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
@@ -63,21 +63,18 @@ function MiniCubeCanvas({ color1, color2 }: { color1: string; color2: string }) 
       face([BRt,BLt,BLb,BRb], "rgba(4,4,14,0.97)",   accent, ew*0.4, ea*0.38);
     }
 
-    // --- Background ---
     const bg = ctx.createRadialGradient(cx, cy*0.7, 0, cx, H*0.5, H);
     bg.addColorStop(0, "rgba(8,8,24,1)");
     bg.addColorStop(1, "rgba(3,3,10,1)");
     ctx.fillStyle = bg;
     ctx.fillRect(0, 0, W, H);
 
-    // --- Base glow ---
     const pg = ctx.createRadialGradient(cx, H*0.85, 0, cx, H*0.85, W*0.5);
     pg.addColorStop(0, `${color1}28`);
     pg.addColorStop(1, "transparent");
     ctx.fillStyle = pg;
     ctx.fillRect(0, 0, W, H);
 
-    // --- Cubes (painter's order) ---
     const cubes: [number,number,number,boolean][] = [
       [-1,2,0,false],[0,2,0,false],
       [-1,1,0,false],[0,1,0,false],[1,1,0,false],
@@ -93,18 +90,15 @@ function MiniCubeCanvas({ color1, color2 }: { color1: string; color2: string }) 
       drawCube(gx, gy, gz, bright ? color1 : color2, bright);
     }
 
-    // --- Static neural edges (pre-seeded, no random in draw) ---
-    const seed = color1.charCodeAt(1); // deterministic per card
+    const seed = color1.charCodeAt(1);
     const nNodes = 18;
     const nodeData: [number,number][] = [];
     for (let i = 0; i < nNodes; i++) {
-      // deterministic positions using simple hash
       const h = (seed * 37 + i * 73 + i * i * 13) % 10000;
       nodeData.push([W * 0.08 + (h % 84) / 100 * W * 0.84,
                      H * 0.08 + ((h * 17) % 84) / 100 * H * 0.84]);
     }
 
-    // Edges
     ctx.save();
     ctx.strokeStyle = color1;
     ctx.lineWidth = 0.7;
@@ -124,23 +118,19 @@ function MiniCubeCanvas({ color1, color2 }: { color1: string; color2: string }) 
     }
     ctx.restore();
 
-    // Nodes — draw once (static), no shadowBlur (expensive)
     for (let i = 0; i < nodeData.length; i++) {
       const [nx, ny] = nodeData[i];
       const big = i < 5;
       const r = big ? 2.8 : 1.6;
-      // Outer soft halo (no shadowBlur — use larger transparent arc instead)
       ctx.save();
       ctx.globalAlpha = 0.12;
       ctx.fillStyle = color1;
       ctx.beginPath(); ctx.arc(nx, ny, r*4, 0, Math.PI*2); ctx.fill();
-      // Core
       ctx.globalAlpha = big ? 0.95 : 0.7;
       ctx.fillStyle = big ? color1 : (i%3===0 ? color2 : color1);
       ctx.beginPath(); ctx.arc(nx, ny, r, 0, Math.PI*2); ctx.fill();
       ctx.restore();
     }
-    // Draw once — no animation loop needed
   }, [color1, color2]);
 
   return (
@@ -151,7 +141,6 @@ function MiniCubeCanvas({ color1, color2 }: { color1: string; color2: string }) 
   );
 }
 
-// Lightweight CSS-animated pulse dots overlay (replaces canvas animation loop)
 function PulseDots({ color }: { color: string }) {
   const positions = [
     { left: "15%", top: "20%", delay: "0s" },
@@ -183,7 +172,6 @@ function PulseDots({ color }: { color: string }) {
   );
 }
 
-// ── Project data ──────────────────────────────────────────────────────────────
 const featured = [
   {
     id: "01",
@@ -235,7 +223,6 @@ const featured = [
   },
 ];
 
-// ── Card component ────────────────────────────────────────────────────────────
 function ProjectCard({
   project,
   index,
@@ -253,7 +240,7 @@ function ProjectCard({
       viewport={{ once: true }}
       transition={{ duration: 0.6, delay: index * 0.1 }}
       whileHover={{ y: -6, transition: { duration: 0.3 } }}
-      style={{ flex: "1 1 0", minWidth: 0, cursor: "pointer" }}
+      style={{ cursor: "pointer" }}
     >
       <a
         href={project.link}
@@ -282,18 +269,12 @@ function ProjectCard({
             e.currentTarget.style.boxShadow = "none";
           }}
         >
-          {/* Top accent bar */}
-          <div style={{
-            height: "2px",
-            background: `linear-gradient(90deg, ${project.color1}, ${project.color2})`,
-          }} />
+          <div style={{ height: "2px", background: `linear-gradient(90deg, ${project.color1}, ${project.color2})` }} />
 
-          {/* Cube visual */}
-          <div style={{ height: "200px", position: "relative", overflow: "hidden" }}>
+          <div style={{ height: "180px", position: "relative", overflow: "hidden" }}>
             <MiniCubeCanvas color1={project.color1} color2={project.color2} />
             <PulseDots color={accentColor} />
 
-            {/* Status badge */}
             <div style={{
               position: "absolute", top: "14px", left: "14px",
               fontSize: "9px", letterSpacing: "0.18em",
@@ -306,7 +287,6 @@ function ProjectCard({
               {project.status}
             </div>
 
-            {/* Patent badge */}
             {project.patent && (
               <div style={{
                 position: "absolute", bottom: "14px", right: "14px",
@@ -321,30 +301,28 @@ function ProjectCard({
             )}
           </div>
 
-          {/* Card content */}
-          <div style={{ padding: "24px", flex: 1, display: "flex", flexDirection: "column" }}>
+          <div style={{ padding: "20px", flex: 1, display: "flex", flexDirection: "column" }}>
             <div style={{
               fontSize: "11px", color: accentColor,
               textTransform: "uppercase", letterSpacing: "0.15em",
-              fontWeight: 700, marginBottom: "8px",
+              fontWeight: 700, marginBottom: "6px",
             }}>
               {project.subtitle}
             </div>
             <h3 style={{
-              fontSize: "20px", fontWeight: 800, color: "white",
-              marginBottom: "12px", letterSpacing: "-0.02em",
+              fontSize: "18px", fontWeight: 800, color: "white",
+              marginBottom: "10px", letterSpacing: "-0.02em",
             }}>
               {project.title}
             </h3>
             <p style={{
-              fontSize: "13.5px", color: "rgba(255,255,255,0.55)",
-              lineHeight: 1.65, marginBottom: "20px", flex: 1,
+              fontSize: "13px", color: "rgba(255,255,255,0.55)",
+              lineHeight: 1.65, marginBottom: "16px", flex: 1,
             }}>
               {project.description}
             </p>
 
-            {/* Tags */}
-            <div style={{ display: "flex", flexWrap: "wrap", gap: "6px", marginBottom: "20px" }}>
+            <div style={{ display: "flex", flexWrap: "wrap", gap: "6px", marginBottom: "16px" }}>
               {project.tags.map(tag => (
                 <span key={tag} style={{
                   fontSize: "10px", color: "rgba(255,255,255,0.4)",
@@ -358,13 +336,7 @@ function ProjectCard({
               ))}
             </div>
 
-            {/* Arrow */}
-            <div style={{
-              display: "flex", justifyContent: "flex-end",
-              color: accentColor, fontSize: "18px",
-            }}>
-              ↗
-            </div>
+            <div style={{ display: "flex", justifyContent: "flex-end", color: accentColor, fontSize: "18px" }}>↗</div>
           </div>
         </div>
       </a>
@@ -372,18 +344,21 @@ function ProjectCard({
   );
 }
 
-// ── Main section ──────────────────────────────────────────────────────────────
 export default function ProjectsSection() {
+  const { isMobile, isTablet } = useBreakpoint();
+
+  // Responsive grid: 1 col mobile, 2 col tablet, 4 col desktop
+  const gridCols = isMobile ? 1 : isTablet ? 2 : 4;
+
   return (
-    <section id="projects" style={{ padding: "120px 0 100px", position: "relative" }}>
-      {/* Section bg glow */}
+    <section id="projects" style={{ padding: isMobile ? "80px 0 60px" : "120px 0 100px", position: "relative" }}>
       <div style={{
         position: "absolute", inset: 0,
         background: "radial-gradient(ellipse at 50% 0%, rgba(0,242,255,0.025) 0%, transparent 60%)",
         pointerEvents: "none",
       }} />
 
-      <div style={{ maxWidth: "1600px", margin: "0 auto", padding: "0 5%" }}>
+      <div style={{ maxWidth: "1600px", margin: "0 auto", padding: isMobile ? "0 20px" : "0 5%" }}>
         {/* Header row */}
         <motion.div
           initial={{ opacity: 0, y: 24 }}
@@ -391,36 +366,28 @@ export default function ProjectsSection() {
           viewport={{ once: true }}
           transition={{ duration: 0.7 }}
           style={{
-            display: "flex", justifyContent: "space-between",
-            alignItems: "flex-end", marginBottom: "60px", flexWrap: "wrap", gap: "24px",
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: isMobile ? "flex-start" : "flex-end",
+            flexDirection: isMobile ? "column" : "row",
+            marginBottom: isMobile ? "40px" : "60px",
+            gap: "20px",
           }}
         >
           <div>
-            <div style={{
-              display: "flex", alignItems: "center",
-              gap: "14px", marginBottom: "12px",
-            }}>
-              <div style={{
-                width: "6px", height: "6px", borderRadius: "50%",
-                background: "#bc13fe", boxShadow: "0 0 8px #bc13fe",
-              }} />
-              <span style={{
-                fontSize: "11px", color: "#bc13fe",
-                letterSpacing: "0.35em", textTransform: "uppercase", fontWeight: 700,
-              }}>
+            <div style={{ display: "flex", alignItems: "center", gap: "14px", marginBottom: "12px" }}>
+              <div style={{ width: "6px", height: "6px", borderRadius: "50%", background: "#bc13fe", boxShadow: "0 0 8px #bc13fe" }} />
+              <span style={{ fontSize: "11px", color: "#bc13fe", letterSpacing: "0.35em", textTransform: "uppercase", fontWeight: 700 }}>
                 Featured Projects
               </span>
             </div>
             <h2 style={{
-              fontSize: "clamp(32px, 4vw, 56px)",
+              fontSize: isMobile ? "clamp(28px, 8vw, 40px)" : "clamp(32px, 4vw, 56px)",
               fontWeight: 900, color: "white",
-              letterSpacing: "-0.04em", margin: 0,
-              lineHeight: 1.1,
+              letterSpacing: "-0.04em", margin: 0, lineHeight: 1.1,
             }}>
               Some Things I&apos;ve{" "}
-              <span style={{ color: "#00f2ff", textShadow: "0 0 30px rgba(0,242,255,0.3)" }}>
-                Built
-              </span>
+              <span style={{ color: "#00f2ff", textShadow: "0 0 30px rgba(0,242,255,0.3)" }}>Built</span>
             </h2>
           </div>
 
@@ -435,21 +402,19 @@ export default function ProjectsSection() {
               border: "1px solid rgba(255,255,255,0.12)",
               padding: "10px 22px", borderRadius: "8px",
               transition: "all 0.3s ease",
+              whiteSpace: "nowrap",
             }}
-            whileHover={{
-              color: "#00f2ff",
-              borderColor: "rgba(0,242,255,0.3)",
-            }}
+            whileHover={{ color: "#00f2ff", borderColor: "rgba(0,242,255,0.3)" }}
           >
             View All Projects →
           </motion.a>
         </motion.div>
 
-        {/* 4-column card grid */}
+        {/* Responsive card grid */}
         <div style={{
-          display: "flex",
-          gap: "20px",
-          alignItems: "stretch",
+          display: "grid",
+          gridTemplateColumns: `repeat(${gridCols}, 1fr)`,
+          gap: isMobile ? "20px" : "20px",
         }}>
           {featured.map((project, i) => (
             <ProjectCard key={project.id} project={project} index={i} />

@@ -1,18 +1,20 @@
 "use client";
 
 import { motion } from "framer-motion";
+import { useBreakpoint } from "../hooks/useBreakpoint";
 
 export default function Contact() {
+  const { isMobile } = useBreakpoint();
   return (
     <section
       id="contact"
       style={{
-        padding: "140px 0 100px",
+        padding: isMobile ? "80px 0 60px" : "140px 0 100px",
         background: "var(--bg)",
         position: "relative",
       }}
     >
-      <div style={{ maxWidth: "1100px", margin: "0 auto", padding: "0 32px" }}>
+      <div style={{ maxWidth: "1100px", margin: "0 auto", padding: isMobile ? "0 20px" : "0 32px" }}>
         <div style={{ display: "flex", flexDirection: "column", alignItems: "center", textAlign: "center" }}>
           <motion.div
             initial={{ opacity: 0, y: 24 }}
@@ -72,20 +74,21 @@ export default function Contact() {
               If you&apos;re building the future of intelligent systems, let&apos;s talk.
             </p>
 
-            <div style={{ display: "flex", gap: "20px", justifyContent: "center", flexWrap: "wrap" }}>
+            <div style={{ display: "flex", gap: "16px", justifyContent: "center", flexWrap: "wrap", width: "100%" }}>
               <a
                 href="mailto:komalsrinivas20@gmail.com"
                 style={{
-                  fontSize: "15px",
+                  fontSize: isMobile ? "13px" : "15px",
                   color: "black",
                   backgroundColor: "white",
-                  padding: "18px 48px",
+                  padding: isMobile ? "14px 24px" : "18px 48px",
                   borderRadius: "100px",
                   textDecoration: "none",
                   fontWeight: 600,
                   display: "inline-block",
                   transition: "transform 0.2s, box-shadow 0.2s",
-                  fontFamily: "var(--font-outfit)",
+                  wordBreak: "break-all",
+                  textAlign: "center",
                 }}
                 onMouseEnter={(e) => {
                   e.currentTarget.style.transform = "scale(1.05)";
@@ -101,16 +104,15 @@ export default function Contact() {
               <a
                 href="tel:2038684627"
                 style={{
-                  fontSize: "15px",
+                  fontSize: isMobile ? "13px" : "15px",
                   color: "white",
                   border: "1px solid rgba(255, 255, 255, 0.2)",
-                  padding: "18px 48px",
+                  padding: isMobile ? "14px 24px" : "18px 48px",
                   borderRadius: "100px",
                   textDecoration: "none",
                   fontWeight: 500,
                   display: "inline-block",
                   transition: "background 0.2s",
-                  fontFamily: "var(--font-outfit)",
                 }}
                 onMouseEnter={(e) => (e.currentTarget.style.background = "rgba(255, 255, 255, 0.05)")}
                 onMouseLeave={(e) => (e.currentTarget.style.background = "transparent")}

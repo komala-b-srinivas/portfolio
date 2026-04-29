@@ -2,7 +2,7 @@
 
 import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { MessageSquare, X, Send, Bot, User } from "lucide-react";
+import { useBreakpoint } from "../hooks/useBreakpoint";
 
 type Message = {
   id: string;
@@ -22,6 +22,7 @@ export default function ChatbotWidget() {
     }
   ]);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const { isMobile } = useBreakpoint();
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -53,8 +54,14 @@ export default function ChatbotWidget() {
     }
   };
 
+  const chatWidth = isMobile ? "calc(100vw - 32px)" : "420px";
+  const chatHeight = isMobile ? "70vh" : "600px";
+  const rightPos = isMobile ? "16px" : "40px";
+  const bottomPos = isMobile ? "16px" : "40px";
+  const btnSize = isMobile ? "56px" : "72px";
+
   return (
-    <div style={{ position: "fixed", bottom: "40px", right: "40px", zIndex: 2000 }}>
+    <div style={{ position: "fixed", bottom: bottomPos, right: rightPos, zIndex: 2000 }}>
       <AnimatePresence>
         {isOpen && (
           <motion.div
@@ -63,9 +70,9 @@ export default function ChatbotWidget() {
             exit={{ opacity: 0, y: 20, scale: 0.95 }}
             className="glass-card"
             style={{
-              width: "420px",
-              height: "600px",
-              marginBottom: "24px",
+              width: chatWidth,
+              height: chatHeight,
+              marginBottom: "12px",
               display: "flex",
               flexDirection: "column",
               border: "1px solid var(--border-glow)",
@@ -74,24 +81,38 @@ export default function ChatbotWidget() {
             }}
           >
             {/* Header */}
-            <div style={{ padding: "32px", borderBottom: "1px solid var(--border)", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-              <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>
-                <div style={{ width: "12px", height: "12px", borderRadius: "50%", background: "var(--accent-teal)", boxShadow: "0 0 15px var(--accent-teal)" }} />
-                <div>
-                  <h3 style={{ fontSize: "18px", fontWeight: 800, color: "white", margin: 0, letterSpacing: "-0.01em" }}>JARVIS</h3>
-                </div>
+            <div style={{
+              padding: isMobile ? "16px 20px" : "28px 28px",
+              borderBottom: "1px solid var(--border)",
+              display: "flex", justifyContent: "space-between", alignItems: "center",
+            }}>
+              <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+                <div style={{ width: "10px", height: "10px", borderRadius: "50%", background: "var(--accent-teal)", boxShadow: "0 0 15px var(--accent-teal)" }} />
+                <h3 style={{ fontSize: "16px", fontWeight: 800, color: "white", margin: 0, letterSpacing: "-0.01em" }}>JARVIS</h3>
               </div>
-              <button onClick={() => setIsOpen(false)} style={{ background: "none", border: "none", color: "var(--text-muted)", cursor: "pointer", fontSize: "24px" }}>×</button>
+              <button
+                onClick={() => setIsOpen(false)}
+                style={{ background: "none", border: "none", color: "var(--text-muted)", cursor: "pointer", fontSize: "22px", padding: "4px 8px", lineHeight: 1 }}
+              >
+                ×
+              </button>
             </div>
 
             {/* Messages */}
-            <div style={{ flex: 1, padding: "32px", overflowY: "auto", display: "flex", flexDirection: "column", gap: "24px" }}>
+            <div style={{
+              flex: 1,
+              padding: isMobile ? "16px" : "24px",
+              overflowY: "auto",
+              display: "flex",
+              flexDirection: "column",
+              gap: "16px",
+            }}>
               {messages.map((m) => (
                 <div key={m.id} style={{ alignSelf: m.role === "user" ? "flex-end" : "flex-start", maxWidth: "85%" }}>
                   <div style={{
-                    padding: "16px 20px",
+                    padding: "12px 16px",
                     borderRadius: "12px",
-                    fontSize: "15px",
+                    fontSize: "14px",
                     lineHeight: 1.6,
                     background: m.role === "user" ? "var(--accent-teal)" : "rgba(255, 255, 255, 0.03)",
                     color: m.role === "user" ? "black" : "white",
@@ -103,36 +124,70 @@ export default function ChatbotWidget() {
                 </div>
               ))}
               {isLoading && (
-                <div style={{ alignSelf: "flex-start", padding: "16px 20px", background: "rgba(255, 255, 255, 0.03)", borderRadius: "12px", border: "1px solid var(--border)" }}>
-                  <motion.div animate={{ opacity: [0.3, 1, 0.3] }} transition={{ duration: 1.5, repeat: Infinity }} style={{ fontSize: "10px", color: "var(--accent-teal)", fontWeight: 800, letterSpacing: "0.2em" }}>PROCESSING...</motion.div>
+                <div style={{ alignSelf: "flex-start", padding: "12px 16px", background: "rgba(255, 255, 255, 0.03)", borderRadius: "12px", border: "1px solid var(--border)" }}>
+                  <motion.div
+                    animate={{ opacity: [0.3, 1, 0.3] }}
+                    transition={{ duration: 1.5, repeat: Infinity }}
+                    style={{ fontSize: "10px", color: "var(--accent-teal)", fontWeight: 800, letterSpacing: "0.2em" }}
+                  >
+                    PROCESSING...
+                  </motion.div>
                 </div>
               )}
               <div ref={messagesEndRef} />
             </div>
 
             {/* Input */}
-            <div style={{ padding: "32px", borderTop: "1px solid var(--border)", background: "rgba(0, 0, 0, 0.2)" }}>
-              <form onSubmit={handleSend} style={{ display: "flex", gap: "16px" }}>
+            <div style={{
+              padding: isMobile ? "14px 16px" : "24px",
+              borderTop: "1px solid var(--border)",
+              background: "rgba(0, 0, 0, 0.2)",
+            }}>
+              <form onSubmit={handleSend} style={{ display: "flex", gap: "10px" }}>
                 <input
                   value={input}
                   onChange={(e) => setInput(e.target.value)}
                   placeholder="Ask me anything..."
-                  style={{ flex: 1, background: "rgba(255, 255, 255, 0.05)", border: "1px solid var(--border)", borderRadius: "8px", padding: "14px 20px", color: "white", fontSize: "15px", outline: "none" }}
+                  style={{
+                    flex: 1,
+                    background: "rgba(255, 255, 255, 0.05)",
+                    border: "1px solid var(--border)",
+                    borderRadius: "8px",
+                    padding: "11px 14px",
+                    color: "white",
+                    fontSize: "14px",
+                    outline: "none",
+                    minWidth: 0,
+                  }}
                 />
-                <button type="submit" style={{ width: "52px", height: "52px", borderRadius: "8px", background: "var(--accent-teal)", border: "none", color: "black", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "20px", fontWeight: 800 }}>→</button>
+                <button
+                  type="submit"
+                  style={{
+                    width: "44px", height: "44px", flexShrink: 0,
+                    borderRadius: "8px",
+                    background: "var(--accent-teal)",
+                    border: "none", color: "black",
+                    cursor: "pointer",
+                    display: "flex", alignItems: "center", justifyContent: "center",
+                    fontSize: "18px", fontWeight: 800,
+                  }}
+                >
+                  →
+                </button>
               </form>
             </div>
           </motion.div>
         )}
       </AnimatePresence>
 
+      {/* Toggle button */}
       <motion.button
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
         onClick={() => setIsOpen(!isOpen)}
         style={{
-          width: "72px",
-          height: "72px",
+          width: btnSize,
+          height: btnSize,
           borderRadius: "50%",
           background: "rgba(3, 3, 5, 0.8)",
           backdropFilter: "blur(20px)",
@@ -143,10 +198,15 @@ export default function ChatbotWidget() {
           alignItems: "center",
           justifyContent: "center",
           cursor: "pointer",
-          fontSize: "28px",
+          fontSize: isMobile ? "22px" : "28px",
         }}
       >
-        <motion.div animate={{ scale: [1, 1.1, 1], rotate: [0, 5, 0] }} transition={{ duration: 4, repeat: Infinity }}>◈</motion.div>
+        <motion.div
+          animate={{ scale: [1, 1.1, 1], rotate: [0, 5, 0] }}
+          transition={{ duration: 4, repeat: Infinity }}
+        >
+          ◈
+        </motion.div>
       </motion.button>
     </div>
   );
