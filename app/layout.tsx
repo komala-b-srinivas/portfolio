@@ -1,22 +1,16 @@
 import type { Metadata } from "next";
-import { Space_Grotesk, Inter, Outfit } from "next/font/google";
-import ChatbotWidget from "@/components/ChatbotWidget";
+import { Instrument_Serif, Barlow } from "next/font/google";
 import "./globals.css";
 
-const spaceGrotesk = Space_Grotesk({
-  variable: "--font-space-grotesk",
+const instrumentSerif = Instrument_Serif({
+  variable: "--font-serif",
   subsets: ["latin"],
-  weight: ["300", "400", "500", "600", "700"],
+  weight: ["400"],
+  style: ["normal", "italic"],
 });
 
-const inter = Inter({
-  variable: "--font-inter",
-  subsets: ["latin"],
-  weight: ["300", "400", "500", "600"],
-});
-
-const outfit = Outfit({
-  variable: "--font-outfit",
+const barlow = Barlow({
+  variable: "--font-sans",
   subsets: ["latin"],
   weight: ["300", "400", "500", "600", "700"],
 });
@@ -63,14 +57,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html
-      lang="en"
-      className={`${spaceGrotesk.variable} ${inter.variable} ${outfit.variable}`}
-    >
-      <body className="antialiased">
-        {children}
-        <ChatbotWidget />
-      </body>
+    <html lang="en" className={`${instrumentSerif.variable} ${barlow.variable}`}>
+      <body className="antialiased">{children}</body>
     </html>
   );
 }

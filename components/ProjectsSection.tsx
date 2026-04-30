@@ -2,18 +2,16 @@
 
 import { useRef, useEffect } from "react";
 import { motion } from "framer-motion";
-import { useBreakpoint } from "../hooks/useBreakpoint";
 
-// ── Static isometric cube canvas ──────────────────────────────────────────────
-function MiniCubeCanvas({ color1, color2 }: { color1: string; color2: string }) {
+// ── Mini canvas visual per card ───────────────────────────────────────────────
+function CardCanvas({ color }: { color: string }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
-    const ctx = canvas.getContext("2d") as CanvasRenderingContext2D;
+    const ctx = canvas.getContext("2d");
     if (!ctx) return;
-
     const dpr = Math.min(window.devicePixelRatio || 1, 2);
     const W = canvas.offsetWidth;
     const H = canvas.offsetHeight;
@@ -21,155 +19,53 @@ function MiniCubeCanvas({ color1, color2 }: { color1: string; color2: string }) 
     canvas.height = H * dpr;
     ctx.scale(dpr, dpr);
 
-    const cx = W / 2;
-    const cy = H * 0.55;
-    const TW = W * 0.14;
-    const TH = TW * 0.5;
-    const TZ = TW * 0.9;
-
-    function g2s(gx: number, gy: number, gz: number): [number, number] {
-      return [cx + (gx - gy) * TW, cy + (gx + gy) * TH - gz * TZ];
-    }
-
-    function face(pts: [number,number][], fill: string, stroke: string, sw: number, ga: number) {
-      ctx.save();
-      ctx.globalAlpha = ga;
-      ctx.beginPath();
-      ctx.moveTo(pts[0][0], pts[0][1]);
-      for (let i = 1; i < pts.length; i++) ctx.lineTo(pts[i][0], pts[i][1]);
-      ctx.closePath();
-      ctx.fillStyle = fill;
-      ctx.fill();
-      if (sw > 0) {
-        ctx.strokeStyle = stroke;
-        ctx.lineWidth = sw;
-        ctx.stroke();
-      }
-      ctx.restore();
-    }
-
-    function drawCube(gx: number, gy: number, gz: number, accent: string, bright: boolean) {
-      const TLt = g2s(gx,   gy,   gz+1);
-      const TRt = g2s(gx+1, gy,   gz+1);
-      const BRt = g2s(gx+1, gy+1, gz+1);
-      const BLt = g2s(gx,   gy+1, gz+1);
-      const TRb = g2s(gx+1, gy,   gz);
-      const BRb = g2s(gx+1, gy+1, gz);
-      const BLb = g2s(gx,   gy+1, gz);
-      const ew = bright ? 1.1 : 0.7;
-      const ea = bright ? 0.9 : 0.5;
-      face([TLt,TRt,BRt,BLt], "rgba(10,10,30,0.93)", accent, ew, ea);
-      face([TRt,BRt,BRb,TRb], "rgba(6,6,18,0.95)",   accent, ew*0.7, ea*0.65);
-      face([BRt,BLt,BLb,BRb], "rgba(4,4,14,0.97)",   accent, ew*0.4, ea*0.38);
-    }
-
-    const bg = ctx.createRadialGradient(cx, cy*0.7, 0, cx, H*0.5, H);
-    bg.addColorStop(0, "rgba(8,8,24,1)");
-    bg.addColorStop(1, "rgba(3,3,10,1)");
-    ctx.fillStyle = bg;
+    // Background
+    ctx.fillStyle = "oklch(0.06 0 0)";
     ctx.fillRect(0, 0, W, H);
 
-    const pg = ctx.createRadialGradient(cx, H*0.85, 0, cx, H*0.85, W*0.5);
-    pg.addColorStop(0, `${color1}28`);
-    pg.addColorStop(1, "transparent");
-    ctx.fillStyle = pg;
+    // Glow blob
+    const grd = ctx.createRadialGradient(W * 0.5, H * 0.6, 0, W * 0.5, H * 0.5, W * 0.7);
+    grd.addColorStop(0, color + "22");
+    grd.addColorStop(1, "transparent");
+    ctx.fillStyle = grd;
     ctx.fillRect(0, 0, W, H);
 
-    const cubes: [number,number,number,boolean][] = [
-      [-1,2,0,false],[0,2,0,false],
-      [-1,1,0,false],[0,1,0,false],[1,1,0,false],
-      [-1,0,0,false],[0,0,0,false],[1,0,0,false],
-      [-1,0,1,false],[0,0,1,false],
-      [-1,1,1,true], [0,1,1,false],
-      [-1,0,2,true],
-      [-1,1,2,true],
-      [-1,0,3,true],
-    ];
-    const sorted = [...cubes].sort((a,b) => (a[0]+a[1])-(b[0]+b[1]));
-    for (const [gx,gy,gz,bright] of sorted) {
-      drawCube(gx, gy, gz, bright ? color1 : color2, bright);
-    }
-
-    const seed = color1.charCodeAt(1);
-    const nNodes = 18;
-    const nodeData: [number,number][] = [];
-    for (let i = 0; i < nNodes; i++) {
+    // Nodes
+    const seed = color.charCodeAt(1);
+    const count = 14;
+    const nodes: [number, number][] = [];
+    for (let i = 0; i < count; i++) {
       const h = (seed * 37 + i * 73 + i * i * 13) % 10000;
-      nodeData.push([W * 0.08 + (h % 84) / 100 * W * 0.84,
-                     H * 0.08 + ((h * 17) % 84) / 100 * H * 0.84]);
+      nodes.push([W * 0.1 + (h % 80) / 100 * W * 0.8, H * 0.1 + ((h * 17) % 80) / 100 * H * 0.8]);
     }
 
-    ctx.save();
-    ctx.strokeStyle = color1;
-    ctx.lineWidth = 0.7;
-    for (let i = 0; i < nodeData.length; i++) {
-      for (let j = i+1; j < nodeData.length; j++) {
-        const dx = nodeData[i][0] - nodeData[j][0];
-        const dy = nodeData[i][1] - nodeData[j][1];
-        const d = Math.hypot(dx,dy);
-        if (d < W * 0.4) {
-          ctx.globalAlpha = (1 - d/(W*0.4)) * 0.3;
+    ctx.strokeStyle = color;
+    ctx.lineWidth = 0.6;
+    for (let i = 0; i < nodes.length; i++) {
+      for (let j = i + 1; j < nodes.length; j++) {
+        const d = Math.hypot(nodes[i][0] - nodes[j][0], nodes[i][1] - nodes[j][1]);
+        if (d < W * 0.5) {
+          ctx.globalAlpha = (1 - d / (W * 0.5)) * 0.25;
           ctx.beginPath();
-          ctx.moveTo(nodeData[i][0], nodeData[i][1]);
-          ctx.lineTo(nodeData[j][0], nodeData[j][1]);
+          ctx.moveTo(nodes[i][0], nodes[i][1]);
+          ctx.lineTo(nodes[j][0], nodes[j][1]);
           ctx.stroke();
         }
       }
     }
-    ctx.restore();
 
-    for (let i = 0; i < nodeData.length; i++) {
-      const [nx, ny] = nodeData[i];
-      const big = i < 5;
-      const r = big ? 2.8 : 1.6;
-      ctx.save();
-      ctx.globalAlpha = 0.12;
-      ctx.fillStyle = color1;
-      ctx.beginPath(); ctx.arc(nx, ny, r*4, 0, Math.PI*2); ctx.fill();
-      ctx.globalAlpha = big ? 0.95 : 0.7;
-      ctx.fillStyle = big ? color1 : (i%3===0 ? color2 : color1);
-      ctx.beginPath(); ctx.arc(nx, ny, r, 0, Math.PI*2); ctx.fill();
-      ctx.restore();
+    for (let i = 0; i < nodes.length; i++) {
+      const r = i < 4 ? 2.5 : 1.4;
+      ctx.globalAlpha = 0.08;
+      ctx.fillStyle = color;
+      ctx.beginPath(); ctx.arc(nodes[i][0], nodes[i][1], r * 4, 0, Math.PI * 2); ctx.fill();
+      ctx.globalAlpha = i < 4 ? 0.9 : 0.55;
+      ctx.fillStyle = color;
+      ctx.beginPath(); ctx.arc(nodes[i][0], nodes[i][1], r, 0, Math.PI * 2); ctx.fill();
     }
-  }, [color1, color2]);
+  }, [color]);
 
-  return (
-    <canvas
-      ref={canvasRef}
-      style={{ width: "100%", height: "100%", display: "block" }}
-    />
-  );
-}
-
-function PulseDots({ color }: { color: string }) {
-  const positions = [
-    { left: "15%", top: "20%", delay: "0s" },
-    { left: "72%", top: "35%", delay: "0.6s" },
-    { left: "40%", top: "65%", delay: "1.1s" },
-    { left: "80%", top: "70%", delay: "0.3s" },
-    { left: "25%", top: "78%", delay: "1.5s" },
-    { left: "60%", top: "15%", delay: "0.9s" },
-  ];
-  return (
-    <>
-      {positions.map((p, i) => (
-        <div
-          key={i}
-          style={{
-            position: "absolute",
-            left: p.left, top: p.top,
-            width: "5px", height: "5px",
-            borderRadius: "50%",
-            background: color,
-            boxShadow: `0 0 8px ${color}, 0 0 16px ${color}60`,
-            animation: `nodePulse 2.4s ease-in-out infinite`,
-            animationDelay: p.delay,
-            pointerEvents: "none",
-          }}
-        />
-      ))}
-    </>
-  );
+  return <canvas ref={canvasRef} style={{ width: "100%", height: "100%", display: "block" }} />;
 }
 
 const featured = [
@@ -179,8 +75,7 @@ const featured = [
     subtitle: "AI Report Writer",
     description: "End-to-end clinical AI system automating neuropsych evaluation reports, reducing 3-hour work to 30 min.",
     tags: ["LLaMA 3.3-70B", "Whisper", "HIPAA", "Streamlit"],
-    color1: "#00f2ff",
-    color2: "#0090a0",
+    color: "#a78bfa",
     status: "CURRENT",
     link: "https://github.com/komala-b-srinivas?tab=repositories",
     patent: null,
@@ -191,8 +86,7 @@ const featured = [
     subtitle: "Patented Detection System",
     description: "Autonomous rescue robot with multi-sensor fusion for detecting living humans in disaster zones. German utility patent DPMA.",
     tags: ["Raspberry Pi", "Doppler Radar", "Computer Vision"],
-    color1: "#f59e0b",
-    color2: "#92400e",
+    color: "#fbbf24",
     status: "PATENTED",
     link: "https://register.dpma.de/DPMAregister/pat/register?AKZ=2020251066211&CURSOR=0",
     patent: "DE 20 2025 106 621",
@@ -203,8 +97,7 @@ const featured = [
     subtitle: "Pain Detection System",
     description: "Stacked ensemble multimodal system detecting pain intensity in non-verbal patients. 65.3% acc, AUC-ROC 0.719.",
     tags: ["PyTorch", "MAML", "SHAP", "MediaPipe"],
-    color1: "#bc13fe",
-    color2: "#5b0f80",
+    color: "#60a5fa",
     status: "RESEARCH",
     link: "https://github.com/komala-b-srinivas?tab=repositories",
     patent: null,
@@ -215,209 +108,221 @@ const featured = [
     subtitle: "Clinical Decision Support",
     description: "Hybrid AI + rule-based triage system with near-100% recall for critical cases and human-in-the-loop design.",
     tags: ["XGBoost", "SHAP", "Clinical ML", "Safety AI"],
-    color1: "#00f2ff",
-    color2: "#004455",
+    color: "#34d399",
     status: "AUG 2025",
     link: "https://github.com/komala-b-srinivas?tab=repositories",
     patent: null,
   },
 ];
 
-function ProjectCard({
-  project,
-  index,
-}: {
-  project: (typeof featured)[0];
-  index: number;
-}) {
-  const isPatent = project.patent !== null;
-  const accentColor = isPatent ? "#f59e0b" : project.color1;
-
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 32 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ duration: 0.6, delay: index * 0.1 }}
-      whileHover={{ y: -6, transition: { duration: 0.3 } }}
-      style={{ cursor: "pointer" }}
-    >
-      <a
-        href={project.link}
-        target={project.link.startsWith("http") ? "_blank" : undefined}
-        rel="noopener noreferrer"
-        style={{ textDecoration: "none", display: "block", height: "100%" }}
-      >
-        <div
-          style={{
-            height: "100%",
-            background: "rgba(10,10,24,0.7)",
-            backdropFilter: "blur(20px)",
-            border: `1px solid rgba(255,255,255,0.08)`,
-            borderRadius: "16px",
-            overflow: "hidden",
-            transition: "border-color 0.35s ease, box-shadow 0.35s ease",
-            display: "flex",
-            flexDirection: "column",
-          }}
-          onMouseEnter={e => {
-            e.currentTarget.style.borderColor = `${accentColor}55`;
-            e.currentTarget.style.boxShadow = `0 0 32px ${accentColor}18, 0 20px 60px rgba(0,0,0,0.5)`;
-          }}
-          onMouseLeave={e => {
-            e.currentTarget.style.borderColor = "rgba(255,255,255,0.08)";
-            e.currentTarget.style.boxShadow = "none";
-          }}
-        >
-          <div style={{ height: "2px", background: `linear-gradient(90deg, ${project.color1}, ${project.color2})` }} />
-
-          <div style={{ height: "180px", position: "relative", overflow: "hidden" }}>
-            <MiniCubeCanvas color1={project.color1} color2={project.color2} />
-            <PulseDots color={accentColor} />
-
-            <div style={{
-              position: "absolute", top: "14px", left: "14px",
-              fontSize: "9px", letterSpacing: "0.18em",
-              color: accentColor,
-              border: `1px solid ${accentColor}60`,
-              padding: "3px 10px", borderRadius: "4px",
-              fontWeight: 800, background: "rgba(0,0,0,0.5)",
-              backdropFilter: "blur(6px)",
-            }}>
-              {project.status}
-            </div>
-
-            {project.patent && (
-              <div style={{
-                position: "absolute", bottom: "14px", right: "14px",
-                fontSize: "9px", color: "#f59e0b",
-                background: "rgba(245,158,11,0.1)",
-                border: "1px solid rgba(245,158,11,0.3)",
-                padding: "3px 10px", borderRadius: "4px",
-                fontWeight: 700, backdropFilter: "blur(6px)",
-              }}>
-                {project.patent}
-              </div>
-            )}
-          </div>
-
-          <div style={{ padding: "20px", flex: 1, display: "flex", flexDirection: "column" }}>
-            <div style={{
-              fontSize: "11px", color: accentColor,
-              textTransform: "uppercase", letterSpacing: "0.15em",
-              fontWeight: 700, marginBottom: "6px",
-            }}>
-              {project.subtitle}
-            </div>
-            <h3 style={{
-              fontSize: "18px", fontWeight: 800, color: "white",
-              marginBottom: "10px", letterSpacing: "-0.02em",
-            }}>
-              {project.title}
-            </h3>
-            <p style={{
-              fontSize: "13px", color: "rgba(255,255,255,0.55)",
-              lineHeight: 1.65, marginBottom: "16px", flex: 1,
-            }}>
-              {project.description}
-            </p>
-
-            <div style={{ display: "flex", flexWrap: "wrap", gap: "6px", marginBottom: "16px" }}>
-              {project.tags.map(tag => (
-                <span key={tag} style={{
-                  fontSize: "10px", color: "rgba(255,255,255,0.4)",
-                  background: "rgba(255,255,255,0.03)",
-                  border: "1px solid rgba(255,255,255,0.06)",
-                  padding: "3px 9px", borderRadius: "4px",
-                  fontWeight: 500,
-                }}>
-                  {tag}
-                </span>
-              ))}
-            </div>
-
-            <div style={{ display: "flex", justifyContent: "flex-end", color: accentColor, fontSize: "18px" }}>↗</div>
-          </div>
-        </div>
-      </a>
-    </motion.div>
-  );
-}
-
 export default function ProjectsSection() {
-  const { isMobile, isTablet } = useBreakpoint();
-
-  // Responsive grid: 1 col mobile, 2 col tablet, 4 col desktop
-  const gridCols = isMobile ? 1 : isTablet ? 2 : 4;
-
   return (
-    <section id="projects" style={{ padding: isMobile ? "80px 0 60px" : "120px 0 100px", position: "relative" }}>
-      <div style={{
-        position: "absolute", inset: 0,
-        background: "radial-gradient(ellipse at 50% 0%, rgba(0,242,255,0.025) 0%, transparent 60%)",
-        pointerEvents: "none",
-      }} />
+    <section id="projects" style={{ padding: "120px 0 100px", position: "relative" }}>
+      <div style={{ maxWidth: "1100px", margin: "0 auto", padding: "0 24px" }}>
 
-      <div style={{ maxWidth: "1600px", margin: "0 auto", padding: isMobile ? "0 20px" : "0 5%" }}>
-        {/* Header row */}
+        {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: 24 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.7 }}
-          style={{
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: isMobile ? "flex-start" : "flex-end",
-            flexDirection: isMobile ? "column" : "row",
-            marginBottom: isMobile ? "40px" : "60px",
-            gap: "20px",
-          }}
+          style={{ marginBottom: "64px" }}
         >
-          <div>
-            <div style={{ display: "flex", alignItems: "center", gap: "14px", marginBottom: "12px" }}>
-              <div style={{ width: "6px", height: "6px", borderRadius: "50%", background: "#bc13fe", boxShadow: "0 0 8px #bc13fe" }} />
-              <span style={{ fontSize: "11px", color: "#bc13fe", letterSpacing: "0.35em", textTransform: "uppercase", fontWeight: 700 }}>
-                Featured Projects
-              </span>
-            </div>
-            <h2 style={{
-              fontSize: isMobile ? "clamp(28px, 8vw, 40px)" : "clamp(32px, 4vw, 56px)",
-              fontWeight: 900, color: "white",
-              letterSpacing: "-0.04em", margin: 0, lineHeight: 1.1,
-            }}>
-              Some Things I&apos;ve{" "}
-              <span style={{ color: "#00f2ff", textShadow: "0 0 30px rgba(0,242,255,0.3)" }}>Built</span>
-            </h2>
+          <div className="section-badge" style={{ marginBottom: "20px" }}>
+            <span className="dot" />
+            Featured Projects
           </div>
-
-          <motion.a
-            href="https://github.com/komala-b-srinivas?tab=repositories"
-            target="_blank"
-            rel="noopener noreferrer"
-            style={{
-              display: "inline-flex", alignItems: "center", gap: "10px",
-              fontSize: "13px", color: "rgba(255,255,255,0.6)",
-              fontWeight: 600, textDecoration: "none",
-              border: "1px solid rgba(255,255,255,0.12)",
-              padding: "10px 22px", borderRadius: "8px",
-              transition: "all 0.3s ease",
-              whiteSpace: "nowrap",
-            }}
-            whileHover={{ color: "#00f2ff", borderColor: "rgba(0,242,255,0.3)" }}
-          >
-            View All Projects →
-          </motion.a>
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", flexWrap: "wrap", gap: "20px" }}>
+            <h2 className="text-glass" style={{
+              fontFamily: "var(--font-serif), Georgia, serif",
+              fontSize: "clamp(36px, 5vw, 56px)",
+              fontWeight: 400,
+              margin: 0,
+              letterSpacing: "-0.03em",
+              lineHeight: 1.1,
+            }}>
+              Some Things<br />
+              <span style={{ fontStyle: "italic" }}>I&apos;ve Built</span>
+            </h2>
+            <a
+              href="https://github.com/komala-b-srinivas?tab=repositories"
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{
+                display: "inline-flex",
+                alignItems: "center",
+                gap: "8px",
+                fontFamily: "var(--font-sans), sans-serif",
+                fontSize: "13px",
+                fontWeight: 500,
+                color: "oklch(1 0 0 / 55%)",
+                textDecoration: "none",
+                border: "1px solid oklch(1 0 0 / 14%)",
+                padding: "10px 20px",
+                borderRadius: "9999px",
+                transition: "all 0.2s ease",
+                backdropFilter: "blur(12px)",
+              }}
+              onMouseEnter={(e) => {
+                (e.currentTarget as HTMLElement).style.color = "oklch(1 0 0)";
+                (e.currentTarget as HTMLElement).style.borderColor = "oklch(1 0 0 / 30%)";
+              }}
+              onMouseLeave={(e) => {
+                (e.currentTarget as HTMLElement).style.color = "oklch(1 0 0 / 55%)";
+                (e.currentTarget as HTMLElement).style.borderColor = "oklch(1 0 0 / 14%)";
+              }}
+            >
+              View All →
+            </a>
+          </div>
         </motion.div>
 
-        {/* Responsive card grid */}
+        {/* Card grid */}
         <div style={{
           display: "grid",
-          gridTemplateColumns: `repeat(${gridCols}, 1fr)`,
-          gap: isMobile ? "20px" : "20px",
+          gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))",
+          gap: "16px",
         }}>
           {featured.map((project, i) => (
-            <ProjectCard key={project.id} project={project} index={i} />
+            <motion.div
+              key={project.id}
+              initial={{ opacity: 0, y: 28 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.55, delay: i * 0.08 }}
+              whileHover={{ y: -4, transition: { duration: 0.25 } }}
+            >
+              <a
+                href={project.link}
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{ textDecoration: "none", display: "block", height: "100%" }}
+              >
+                <div
+                  className="glass-card"
+                  style={{
+                    height: "100%",
+                    display: "flex",
+                    flexDirection: "column",
+                    overflow: "hidden",
+                    cursor: "pointer",
+                  }}
+                  onMouseEnter={(e) => {
+                    (e.currentTarget as HTMLElement).style.borderColor = "oklch(1 0 0 / 28%)";
+                  }}
+                  onMouseLeave={(e) => {
+                    (e.currentTarget as HTMLElement).style.borderColor = "oklch(1 0 0 / 14%)";
+                  }}
+                >
+                  {/* Top accent line */}
+                  <div style={{ height: "2px", background: project.color, opacity: 0.6 }} />
+
+                  {/* Canvas visual */}
+                  <div style={{ height: "160px", position: "relative", overflow: "hidden" }}>
+                    <CardCanvas color={project.color} />
+
+                    {/* Status badge */}
+                    <div style={{
+                      position: "absolute", top: "12px", left: "12px",
+                      fontSize: "9px", letterSpacing: "0.15em",
+                      fontFamily: "var(--font-sans), sans-serif",
+                      fontWeight: 700,
+                      color: project.color,
+                      border: `1px solid ${project.color}55`,
+                      padding: "3px 10px",
+                      borderRadius: "9999px",
+                      background: "oklch(0 0 0 / 60%)",
+                      backdropFilter: "blur(8px)",
+                    }}>
+                      {project.status}
+                    </div>
+
+                    {project.patent && (
+                      <div style={{
+                        position: "absolute", bottom: "12px", right: "12px",
+                        fontSize: "9px",
+                        fontFamily: "var(--font-sans), sans-serif",
+                        fontWeight: 600,
+                        color: "#fbbf24",
+                        background: "oklch(0 0 0 / 70%)",
+                        border: "1px solid #fbbf2444",
+                        padding: "3px 10px",
+                        borderRadius: "9999px",
+                        backdropFilter: "blur(8px)",
+                      }}>
+                        {project.patent}
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Text content */}
+                  <div style={{ padding: "20px", flex: 1, display: "flex", flexDirection: "column" }}>
+                    <div style={{
+                      fontFamily: "var(--font-sans), sans-serif",
+                      fontSize: "10px",
+                      fontWeight: 600,
+                      letterSpacing: "0.12em",
+                      textTransform: "uppercase",
+                      color: project.color,
+                      marginBottom: "6px",
+                      opacity: 0.85,
+                    }}>
+                      {project.subtitle}
+                    </div>
+
+                    <h3 style={{
+                      fontFamily: "var(--font-serif), Georgia, serif",
+                      fontSize: "20px",
+                      fontWeight: 400,
+                      color: "oklch(1 0 0)",
+                      margin: "0 0 10px",
+                      letterSpacing: "-0.02em",
+                    }}>
+                      {project.title}
+                    </h3>
+
+                    <p style={{
+                      fontFamily: "var(--font-sans), sans-serif",
+                      fontSize: "13px",
+                      color: "oklch(1 0 0 / 50%)",
+                      lineHeight: 1.65,
+                      marginBottom: "16px",
+                      flex: 1,
+                      fontWeight: 400,
+                    }}>
+                      {project.description}
+                    </p>
+
+                    <div style={{ display: "flex", flexWrap: "wrap", gap: "6px", marginBottom: "14px" }}>
+                      {project.tags.map((tag) => (
+                        <span key={tag} style={{
+                          fontFamily: "var(--font-sans), sans-serif",
+                          fontSize: "10px",
+                          color: "oklch(1 0 0 / 40%)",
+                          background: "oklch(1 0 0 / 4%)",
+                          border: "1px solid oklch(1 0 0 / 8%)",
+                          padding: "3px 9px",
+                          borderRadius: "9999px",
+                          fontWeight: 500,
+                        }}>
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
+
+                    <div style={{
+                      fontFamily: "var(--font-sans), sans-serif",
+                      display: "flex",
+                      justifyContent: "flex-end",
+                      color: "oklch(1 0 0 / 25%)",
+                      fontSize: "16px",
+                    }}>
+                      ↗
+                    </div>
+                  </div>
+                </div>
+              </a>
+            </motion.div>
           ))}
         </div>
       </div>

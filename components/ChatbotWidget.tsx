@@ -180,33 +180,59 @@ export default function ChatbotWidget() {
         )}
       </AnimatePresence>
 
-      {/* Toggle button */}
+      {/* Toggle button — chat bubble */}
       <motion.button
-        whileHover={{ scale: 1.05 }}
-        whileTap={{ scale: 0.95 }}
+        whileHover={{ scale: 1.06 }}
+        whileTap={{ scale: 0.94 }}
         onClick={() => setIsOpen(!isOpen)}
         style={{
           width: btnSize,
           height: btnSize,
           borderRadius: "50%",
-          background: "rgba(3, 3, 5, 0.8)",
+          background: isOpen ? "oklch(0.15 0 0)" : "oklch(1 0 0)",
           backdropFilter: "blur(20px)",
-          border: "1px solid var(--accent-teal)",
-          boxShadow: "0 0 30px rgba(0, 242, 255, 0.3)",
-          color: "var(--accent-teal)",
+          border: "none",
+          boxShadow: isOpen
+            ? "0 4px 24px oklch(0 0 0 / 50%)"
+            : "0 4px 24px oklch(0 0 0 / 35%), 0 0 0 1px oklch(1 0 0 / 10%)",
+          color: isOpen ? "oklch(1 0 0)" : "oklch(0 0 0)",
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
           cursor: "pointer",
-          fontSize: isMobile ? "22px" : "28px",
+          position: "relative",
+          transition: "background 0.25s ease, box-shadow 0.25s ease, color 0.25s ease",
         }}
       >
-        <motion.div
-          animate={{ scale: [1, 1.1, 1], rotate: [0, 5, 0] }}
-          transition={{ duration: 4, repeat: Infinity }}
-        >
-          ◈
-        </motion.div>
+        {/* Online indicator dot */}
+        {!isOpen && (
+          <motion.div
+            animate={{ scale: [1, 1.4, 1], opacity: [0.7, 1, 0.7] }}
+            transition={{ duration: 2, repeat: Infinity }}
+            style={{
+              position: "absolute",
+              top: "6px", right: "6px",
+              width: "10px", height: "10px",
+              borderRadius: "50%",
+              background: "#4ade80",
+              border: "2px solid oklch(1 0 0)",
+              zIndex: 1,
+            }}
+          />
+        )}
+
+        {isOpen ? (
+          /* X when open */
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
+            <line x1="18" y1="6" x2="6" y2="18"/>
+            <line x1="6" y1="6" x2="18" y2="18"/>
+          </svg>
+        ) : (
+          /* Chat bubble when closed */
+          <svg width={isMobile ? "22" : "26"} height={isMobile ? "22" : "26"} viewBox="0 0 24 24" fill="currentColor">
+            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+          </svg>
+        )}
       </motion.button>
     </div>
   );

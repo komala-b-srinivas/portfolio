@@ -2,214 +2,231 @@
 
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { useBreakpoint } from "../hooks/useBreakpoint";
 
 const NAV_LINKS = [
   { label: "Home",       href: "#home" },
   { label: "About",      href: "#about" },
   { label: "Projects",   href: "#projects" },
-  { label: "Skills",     href: "#about" },
+  { label: "Skills",     href: "#skills" },
   { label: "Experience", href: "#experience" },
 ];
 
 export default function Navbar() {
-  const [scrolled, setScrolled] = useState(false);
-  const [menuOpen, setMenuOpen] = useState(false);
-  const { isMobile } = useBreakpoint();
+  const [scrolled,  setScrolled]  = useState(false);
+  const [menuOpen,  setMenuOpen]  = useState(false);
+  const [active,    setActive]    = useState("Home");
+  const [isMobile,  setIsMobile]  = useState(false);
 
   useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 40);
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
+    const onScroll = () => setScrolled(window.scrollY > 20);
+    const onResize = () => {
+      setIsMobile(window.innerWidth < 768);
+      if (window.innerWidth >= 768) setMenuOpen(false);
+    };
+    onResize();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onResize, { passive: true });
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onResize);
+    };
   }, []);
 
-  // Close menu when resizing to desktop
-  useEffect(() => {
-    if (!isMobile) setMenuOpen(false);
-  }, [isMobile]);
+  const handleNav = (label: string) => {
+    setActive(label);
+    setMenuOpen(false);
+  };
 
+  /* ─── Desktop ─────────────────────────────────────────────────────────── */
+  if (!isMobile) return (
+    <motion.nav
+      initial={{ y: -80, opacity: 0 }}
+      animate={{ y: 0, opacity: 1 }}
+      transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+      style={{
+        position: "fixed",
+        top: "20px",
+        left: "50%",
+        transform: "translateX(-50%)",
+        zIndex: 1000,
+        display: "flex",
+        alignItems: "center",
+        gap: "4px",
+        padding: "6px 6px 6px 8px",
+        borderRadius: "9999px",
+        background: scrolled ? "oklch(1 0 0 / 10%)" : "oklch(1 0 0 / 6%)",
+        backdropFilter: "blur(32px) saturate(180%)",
+        WebkitBackdropFilter: "blur(32px) saturate(180%)",
+        border: "1px solid oklch(1 0 0 / 18%)",
+        transition: "background 0.3s ease",
+        whiteSpace: "nowrap",
+      }}
+    >
+
+      {/* Links */}
+      {NAV_LINKS.map((link) => (
+        <a
+          key={link.label}
+          href={link.href}
+          onClick={() => handleNav(link.label)}
+          style={{
+            fontFamily: "var(--font-sans), sans-serif",
+            fontSize: "13px",
+            fontWeight: active === link.label ? 600 : 400,
+            color: active === link.label ? "oklch(1 0 0)" : "oklch(1 0 0 / 50%)",
+            textDecoration: "none",
+            padding: "6px 13px",
+            borderRadius: "9999px",
+            background: active === link.label ? "oklch(1 0 0 / 12%)" : "transparent",
+            transition: "all 0.2s ease",
+          }}
+          onMouseEnter={(e) => {
+            if (active !== link.label)
+              (e.currentTarget as HTMLElement).style.color = "oklch(1 0 0 / 85%)";
+          }}
+          onMouseLeave={(e) => {
+            if (active !== link.label)
+              (e.currentTarget as HTMLElement).style.color = "oklch(1 0 0 / 50%)";
+          }}
+        >
+          {link.label}
+        </a>
+      ))}
+
+      {/* CTA */}
+      <a
+        href="mailto:kbelursrinivas1@pride.hofstra.edu"
+        style={{
+          marginLeft: "6px",
+          padding: "8px 20px",
+          borderRadius: "9999px",
+          background: "oklch(1 0 0)",
+          color: "oklch(0 0 0)",
+          fontFamily: "var(--font-sans), sans-serif",
+          fontSize: "13px",
+          fontWeight: 600,
+          textDecoration: "none",
+          transition: "background 0.2s ease",
+        }}
+        onMouseEnter={(e) => (e.currentTarget as HTMLElement).style.background = "oklch(0.88 0 0)"}
+        onMouseLeave={(e) => (e.currentTarget as HTMLElement).style.background = "oklch(1 0 0)"}
+      >
+        Get In Touch
+      </a>
+    </motion.nav>
+  );
+
+  /* ─── Mobile ──────────────────────────────────────────────────────────── */
   return (
     <>
       <motion.nav
-        initial={{ y: -100, opacity: 0 }}
+        initial={{ y: -60, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.6, ease: "easeOut" }}
         style={{
           position: "fixed",
-          top: 0, left: 0, right: 0,
+          top: "16px",
+          left: "16px",
+          right: "16px",
           zIndex: 1000,
-          padding: isMobile ? "16px 20px" : "20px 5%",
-          transition: "all 0.4s ease",
-          background: scrolled || menuOpen ? "rgba(3,3,10,0.95)" : "transparent",
-          backdropFilter: scrolled || menuOpen ? "blur(24px)" : "none",
-          borderBottom: scrolled ? "1px solid rgba(255,255,255,0.07)" : "none",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          padding: "10px 14px",
+          borderRadius: "16px",
+          background: "oklch(0.05 0 0 / 90%)",
+          backdropFilter: "blur(32px)",
+          WebkitBackdropFilter: "blur(32px)",
+          border: "1px solid oklch(1 0 0 / 15%)",
         }}
       >
-        <div style={{
-          maxWidth: "1700px",
-          margin: "0 auto",
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-        }}>
-          {/* Logo */}
-          <motion.a
-            href="#home"
-            onClick={() => setMenuOpen(false)}
-            style={{ display: "flex", alignItems: "center", textDecoration: "none" }}
-            whileHover={{ opacity: 0.8 }}
-          >
-            <div style={{
-              width: "36px", height: "36px",
-              clipPath: "polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%)",
-              background: "linear-gradient(135deg, #00f2ff, #bc13fe)",
-              display: "flex", alignItems: "center", justifyContent: "center",
-            }}>
-              <span style={{ fontSize: "13px", fontWeight: 900, color: "black" }}>K</span>
-            </div>
-          </motion.a>
+        <span style={{ fontFamily: "var(--font-serif), Georgia, serif", fontSize: "15px", color: "oklch(1 0 0)" }}>
+          Komala
+        </span>
 
-          {/* Desktop nav */}
-          {!isMobile && (
-            <div style={{ display: "flex", gap: "36px", alignItems: "center" }}>
-              {NAV_LINKS.map((item) => (
-                <motion.a
-                  key={item.label}
-                  href={item.href}
-                  style={{
-                    fontSize: "12px", fontWeight: 600,
-                    color: "rgba(255,255,255,0.5)",
-                    textDecoration: "none",
-                    letterSpacing: "0.04em",
-                    transition: "color 0.3s ease",
-                  }}
-                  whileHover={{ color: "white" }}
-                >
-                  {item.label}
-                </motion.a>
-              ))}
-              <a
-                href="#contact"
-                style={{
-                  padding: "10px 22px",
-                  background: "transparent",
-                  border: "1px solid rgba(0,242,255,0.5)",
-                  borderRadius: "6px",
-                  color: "#00f2ff",
-                  fontSize: "12px", fontWeight: 700,
-                  textDecoration: "none",
-                  letterSpacing: "0.08em",
-                  display: "inline-flex", alignItems: "center", gap: "8px",
-                  transition: "all 0.3s ease",
-                }}
-                onMouseEnter={e => {
-                  e.currentTarget.style.background = "rgba(0,242,255,0.1)";
-                  e.currentTarget.style.boxShadow = "0 0 20px rgba(0,242,255,0.2)";
-                }}
-                onMouseLeave={e => {
-                  e.currentTarget.style.background = "transparent";
-                  e.currentTarget.style.boxShadow = "none";
-                }}
-              >
-                Contact Me
-                <motion.div
-                  animate={{ scale: [1, 1.4, 1], opacity: [0.6, 1, 0.6] }}
-                  transition={{ duration: 2, repeat: Infinity }}
-                  style={{ width: "6px", height: "6px", borderRadius: "50%", background: "#00f2ff" }}
-                />
-              </a>
-            </div>
-          )}
-
-          {/* Hamburger button — mobile only */}
-          {isMobile && (
-            <button
-              onClick={() => setMenuOpen(!menuOpen)}
-              style={{
-                background: "none", border: "none", cursor: "pointer",
-                padding: "8px", display: "flex", flexDirection: "column",
-                gap: "5px", alignItems: "center", justifyContent: "center",
-              }}
-              aria-label="Toggle menu"
-            >
-              <motion.span
-                animate={menuOpen ? { rotate: 45, y: 7 } : { rotate: 0, y: 0 }}
-                transition={{ duration: 0.25 }}
-                style={{ display: "block", width: "22px", height: "2px", background: "#00f2ff", borderRadius: "2px" }}
-              />
-              <motion.span
-                animate={menuOpen ? { opacity: 0 } : { opacity: 1 }}
-                transition={{ duration: 0.2 }}
-                style={{ display: "block", width: "22px", height: "2px", background: "#00f2ff", borderRadius: "2px" }}
-              />
-              <motion.span
-                animate={menuOpen ? { rotate: -45, y: -7 } : { rotate: 0, y: 0 }}
-                transition={{ duration: 0.25 }}
-                style={{ display: "block", width: "22px", height: "2px", background: "#00f2ff", borderRadius: "2px" }}
-              />
-            </button>
-          )}
-        </div>
+        <button
+          onClick={() => setMenuOpen(!menuOpen)}
+          style={{ background: "none", border: "none", cursor: "pointer", padding: "4px", display: "flex", flexDirection: "column", gap: "5px" }}
+          aria-label="Toggle menu"
+        >
+          <motion.span
+            animate={menuOpen ? { rotate: 45, y: 7 } : { rotate: 0, y: 0 }}
+            style={{ display: "block", width: "22px", height: "1.5px", background: "oklch(1 0 0)", borderRadius: "2px" }}
+          />
+          <motion.span
+            animate={{ opacity: menuOpen ? 0 : 1 }}
+            style={{ display: "block", width: "22px", height: "1.5px", background: "oklch(1 0 0)", borderRadius: "2px" }}
+          />
+          <motion.span
+            animate={menuOpen ? { rotate: -45, y: -7 } : { rotate: 0, y: 0 }}
+            style={{ display: "block", width: "22px", height: "1.5px", background: "oklch(1 0 0)", borderRadius: "2px" }}
+          />
+        </button>
       </motion.nav>
 
-      {/* Mobile full-screen menu overlay */}
       <AnimatePresence>
-        {isMobile && menuOpen && (
+        {menuOpen && (
           <motion.div
-            initial={{ opacity: 0, y: -20 }}
+            initial={{ opacity: 0, y: -12 }}
             animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            transition={{ duration: 0.3 }}
+            exit={{ opacity: 0, y: -12 }}
+            transition={{ duration: 0.25 }}
             style={{
               position: "fixed",
-              top: "68px", left: 0, right: 0, bottom: 0,
+              top: "80px",
+              left: "16px",
+              right: "16px",
               zIndex: 999,
-              background: "rgba(3,3,10,0.97)",
-              backdropFilter: "blur(24px)",
+              borderRadius: "16px",
+              background: "oklch(0.06 0 0 / 97%)",
+              backdropFilter: "blur(32px)",
+              WebkitBackdropFilter: "blur(32px)",
+              border: "1px solid oklch(1 0 0 / 14%)",
+              padding: "12px",
               display: "flex",
               flexDirection: "column",
-              alignItems: "center",
-              justifyContent: "center",
-              gap: "40px",
+              gap: "2px",
             }}
           >
-            {NAV_LINKS.map((item, i) => (
+            {NAV_LINKS.map((link, i) => (
               <motion.a
-                key={item.label}
-                href={item.href}
-                onClick={() => setMenuOpen(false)}
-                initial={{ opacity: 0, x: -20 }}
+                key={link.label}
+                href={link.href}
+                onClick={() => handleNav(link.label)}
+                initial={{ opacity: 0, x: -12 }}
                 animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: i * 0.07 }}
+                transition={{ delay: i * 0.04 }}
                 style={{
-                  fontSize: "28px", fontWeight: 700,
-                  color: "rgba(255,255,255,0.7)",
+                  fontFamily: "var(--font-sans), sans-serif",
+                  fontSize: "15px",
+                  fontWeight: 500,
+                  color: "oklch(1 0 0 / 75%)",
                   textDecoration: "none",
-                  letterSpacing: "-0.02em",
+                  padding: "12px 16px",
+                  borderRadius: "10px",
                 }}
               >
-                {item.label}
+                {link.label}
               </motion.a>
             ))}
-            <motion.a
-              href="#contact"
+            <a
+              href="mailto:kbelursrinivas1@pride.hofstra.edu"
               onClick={() => setMenuOpen(false)}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.4 }}
               style={{
-                padding: "14px 36px",
-                border: "1px solid rgba(0,242,255,0.5)",
-                borderRadius: "8px",
-                color: "#00f2ff",
-                fontSize: "14px", fontWeight: 700,
+                marginTop: "6px",
+                padding: "12px",
+                borderRadius: "10px",
+                background: "oklch(1 0 0)",
+                color: "oklch(0 0 0)",
+                fontFamily: "var(--font-sans), sans-serif",
+                fontSize: "15px",
+                fontWeight: 600,
                 textDecoration: "none",
-                letterSpacing: "0.08em",
-                marginTop: "16px",
+                textAlign: "center",
               }}
             >
-              Contact Me
-            </motion.a>
+              Get In Touch
+            </a>
           </motion.div>
         )}
       </AnimatePresence>
