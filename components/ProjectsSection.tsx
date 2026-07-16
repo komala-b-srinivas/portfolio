@@ -117,7 +117,7 @@ const featured = [
 
 export default function ProjectsSection() {
   return (
-    <section id="projects" style={{ padding: "120px 0 100px", position: "relative" }}>
+    <section id="projects" style={{ padding: "72px 0 60px", position: "relative" }}>
       <div style={{ maxWidth: "1100px", margin: "0 auto", padding: "0 24px" }}>
 
         {/* Header */}

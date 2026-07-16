@@ -1,66 +1,23 @@
 "use client";
 
 import { motion } from "framer-motion";
-import HlsVideo from "./HlsVideo";
-
-const HLS_SRC = "https://stream.mux.com/8wrHPCX2dC3msyYU9ObwqNdm00u3ViXvOSHUMRYSEe5Q.m3u8";
 
 export default function Contact() {
   return (
     <section
       id="contact"
-      style={{ position: "relative", overflow: "hidden" }}
+      style={{ position: "relative" }}
     >
-      {/* ── HLS video background ── */}
-      <HlsVideo
-        src={HLS_SRC}
-        style={{
-          position: "absolute",
-          inset: 0,
-          width: "100%",
-          height: "100%",
-          objectFit: "cover",
-          zIndex: 0,
-        }}
-      />
-
-      {/* Top fade from black */}
-      <div style={{
-        position: "absolute", top: 0, left: 0, right: 0, zIndex: 1,
-        height: "220px",
-        background: "linear-gradient(to bottom, oklch(0 0 0), transparent)",
-        pointerEvents: "none",
-      }} />
-
-      {/* Bottom fade to black */}
-      <div style={{
-        position: "absolute", bottom: 0, left: 0, right: 0, zIndex: 1,
-        height: "220px",
-        background: "linear-gradient(to top, oklch(0 0 0), transparent)",
-        pointerEvents: "none",
-      }} />
-
-      {/* Slight darkening overlay for readability */}
-      <div style={{
-        position: "absolute", inset: 0, zIndex: 1,
-        background: "oklch(0 0 0 / 45%)",
-        pointerEvents: "none",
-      }} />
-
       {/* ── Content ── */}
-      <div style={{ position: "relative", zIndex: 2 }}>
+      <div>
         <div style={{
           maxWidth: "1100px",
           margin: "0 auto",
-          padding: "0 24px",
+          padding: "80px 24px 60px",
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
           textAlign: "center",
-          paddingTop: "160px",
-          paddingBottom: "80px",
-          minHeight: "600px",
-          justifyContent: "center",
         }}>
 
           <motion.div
@@ -197,7 +154,6 @@ export default function Contact() {
         }}>
           <div style={{
             paddingTop: "32px",
-            borderTop: "1px solid oklch(1 0 0 / 8%)",
             display: "flex",
             justifyContent: "space-between",
             alignItems: "center",

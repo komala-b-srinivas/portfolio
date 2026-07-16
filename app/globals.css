@@ -352,6 +352,7 @@ h1, h2, h3, h4 {
 /* ── Smooth section transitions ──────────────────────────────────────────────── */
 section { transition: opacity 0.3s ease; }
 
+
 /* Legacy compat — used in some components */
 :root {
   --accent-teal: oklch(0.65 0.32 280);

@@ -67,7 +67,7 @@ const jobs = [
 
 export default function Experience() {
   return (
-    <section id="experience" style={{ padding: "120px 0 100px", position: "relative" }}>
+    <section id="experience" style={{ padding: "72px 0 60px", position: "relative" }}>
       <div style={{ maxWidth: "1100px", margin: "0 auto", padding: "0 24px" }}>
 
         {/* Header */}

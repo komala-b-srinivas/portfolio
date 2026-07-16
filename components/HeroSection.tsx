@@ -1,10 +1,8 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-
-const NEURAL_IMG =
-  "https://d2xsxph8kpxj0f.cloudfront.net/310419663030385168/MC3Zr7iXaECD86HNQzfZgw/feature2-4FgghEdoj6YcAZAY4f7pAg.webp";
+import HeroVisual from "./HeroVisual";
 
 const stats = [
   { value: "10+", label: "Projects" },
@@ -61,30 +59,28 @@ export default function HeroSection() {
         paddingBottom: "60px",
       }}
     >
-      {/* Subtle ambient glow */}
+      {/* Flowing particle background */}
+      <HeroVisual />
+
+      {/* Subtle left-side vignette so text stays readable */}
       <div style={{
-        position: "absolute", top: "-10%", right: "5%",
-        width: "600px", height: "600px",
-        background: "radial-gradient(ellipse, oklch(0.65 0.1 270 / 8%) 0%, transparent 70%)",
+        position: "absolute", inset: 0,
+        background: "linear-gradient(to right, oklch(0 0 0 / 85%) 0%, oklch(0 0 0 / 55%) 40%, transparent 70%)",
         pointerEvents: "none", zIndex: 0,
       }} />
 
-      {/* ── Two-column layout ── */}
+      {/* ── Content ── */}
       <div style={{
         maxWidth: "1200px",
         margin: "0 auto",
         padding: isMobile ? "0 20px" : "0 48px",
         width: "100%",
-        display: "flex",
-        flexDirection: isMobile ? "column" : "row",
-        alignItems: "center",
-        gap: isMobile ? "48px" : "64px",
         position: "relative",
         zIndex: 1,
       }}>
 
-        {/* ── LEFT: Text ── */}
-        <div style={{ flex: "0 0 auto", width: isMobile ? "100%" : "480px", maxWidth: "100%" }}>
+        {/* ── Text ── */}
+        <div style={{ width: isMobile ? "100%" : "520px", maxWidth: "100%" }}>
 
           {/* Badge */}
           <motion.div
@@ -249,7 +245,7 @@ export default function HeroSection() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.8, delay: 1.2 }}
-            style={{ display: "flex", gap: "44px" }}
+            style={{ display: "flex", gap: isMobile ? "28px" : "44px", flexWrap: "wrap" }}
           >
             {stats.map((s, i) => (
               <div key={i}>
@@ -278,30 +274,6 @@ export default function HeroSection() {
           </motion.div>
         </div>
 
-        {/* ── RIGHT: Neural network image — borderless, floating ── */}
-        <motion.div
-          initial={{ opacity: 0, scale: 0.94, x: 20 }}
-          animate={{ opacity: 1, scale: 1, x: 0 }}
-          transition={{ duration: 1.1, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
-          style={{
-            flex: 1,
-            minWidth: 0,
-            position: "relative",
-          }}
-        >
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src={NEURAL_IMG}
-            alt="Neural network — glowing nodes connected by flowing lines"
-            style={{
-              width: "100%",
-              height: isMobile ? "340px" : "520px",
-              objectFit: "cover",
-              animation: "neuralFloat 7s ease-in-out infinite",
-              display: "block",
-            }}
-          />
-        </motion.div>
       </div>
 
       {/* Bottom gradient fade */}

@@ -1,9 +1,6 @@
 "use client";
 
 import { motion } from "framer-motion";
-import HlsVideo from "./HlsVideo";
-
-const SKILLS_HLS = "https://stream.mux.com/9JXDljEVWYwWu01PUkAemafDugK89o01BR6zqJ3aS9u00A.m3u8";
 
 const skills = [
   { name: "Python",     icon: "Py",  color: "#60a5fa" },
@@ -31,14 +28,9 @@ const EXTRA_TAGS = [
 /* ── Section 1: About Me ─────────────────────────────────────────────────── */
 function AboutSection() {
   return (
-    <section id="about" style={{ padding: "120px 0 100px", position: "relative" }}>
-      <div style={{
-        position: "absolute", top: 0, left: "5%", right: "5%",
-        height: "1px",
-        background: "linear-gradient(90deg, transparent, oklch(1 0 0 / 8%), transparent)",
-      }} />
+    <section id="about" style={{ padding: "72px 0 60px", position: "relative" }}>
 
-      <div style={{ maxWidth: "1100px", margin: "0 auto", padding: "0 24px" }}>
+<div style={{ maxWidth: "1100px", margin: "0 auto", padding: "0 24px" }}>
         <motion.div
           initial={{ opacity: 0, y: 24 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -135,48 +127,10 @@ function AboutSection() {
   );
 }
 
-/* ── Section 2: Tech Stack with HLS video ────────────────────────────────── */
+/* ── Section 2: Tech Stack ───────────────────────────────────────────────── */
 function SkillsSection() {
   return (
-    <section id="skills" style={{ position: "relative", overflow: "hidden" }}>
-      {/* HLS video background */}
-      <HlsVideo
-        src={SKILLS_HLS}
-        style={{
-          position: "absolute",
-          inset: 0,
-          width: "100%",
-          height: "100%",
-          objectFit: "cover",
-          zIndex: 0,
-        }}
-      />
-
-      {/* Top fade */}
-      <div style={{
-        position: "absolute", top: 0, left: 0, right: 0, zIndex: 1,
-        height: "200px",
-        background: "linear-gradient(to bottom, oklch(0 0 0), transparent)",
-        pointerEvents: "none",
-      }} />
-
-      {/* Bottom fade */}
-      <div style={{
-        position: "absolute", bottom: 0, left: 0, right: 0, zIndex: 1,
-        height: "200px",
-        background: "linear-gradient(to top, oklch(0 0 0), transparent)",
-        pointerEvents: "none",
-      }} />
-
-      {/* Overlay for readability */}
-      <div style={{
-        position: "absolute", inset: 0, zIndex: 1,
-        background: "oklch(0 0 0 / 55%)",
-        pointerEvents: "none",
-      }} />
-
-      {/* Content */}
-      <div style={{ position: "relative", zIndex: 2, padding: "120px 0 140px" }}>
+    <section id="skills" style={{ position: "relative", padding: "72px 0 80px" }}>
         <div style={{ maxWidth: "1100px", margin: "0 auto", padding: "0 24px" }}>
 
           {/* Header */}
@@ -318,7 +272,6 @@ function SkillsSection() {
             </div>
           </motion.div>
         </div>
-      </div>
     </section>
   );
 }
