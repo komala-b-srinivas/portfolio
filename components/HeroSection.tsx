@@ -148,8 +148,8 @@ export default function HeroSection() {
               maxWidth: "420px",
             }}
           >
-            AI Automation Engineer based in New York, building end-to-end AI
-            solutions for healthcare and clinical automation. Currently at Rimon Health.
+            AI Automation Engineer based in New York, integrating multi-API pipelines
+            that cut manual work by 80–90%. Currently at Rimon Health and Feldman Law.
           </motion.p>
 
           {/* CTAs */}

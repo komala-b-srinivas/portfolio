@@ -6,26 +6,26 @@ import HlsVideo from "./HlsVideo";
 const SKILLS_HLS = "https://stream.mux.com/9JXDljEVWYwWu01PUkAemafDugK89o01BR6zqJ3aS9u00A.m3u8";
 
 const skills = [
-  { name: "Python",     icon: "Py",  color: "#60a5fa" },
-  { name: "PyTorch",    icon: "PT",  color: "#fb923c" },
-  { name: "Scikit",     icon: "SK",  color: "#fbbf24" },
-  { name: "Groq API",   icon: "GQ",  color: "#a78bfa" },
-  { name: "Streamlit",  icon: "ST",  color: "#f87171" },
-  { name: "Whisper",    icon: "WH",  color: "#c084fc" },
-  { name: "LLMs",       icon: "LM",  color: "#34d399" },
-  { name: "SHAP / XAI", icon: "SH",  color: "#2dd4bf" },
-  { name: "SQL",        icon: "SQ",  color: "#60a5fa" },
-  { name: "Git",        icon: "Gt",  color: "#f87171" },
-  { name: "NumPy",      icon: "NP",  color: "#818cf8" },
-  { name: "Pandas",     icon: "PD",  color: "#a78bfa" },
+  { name: "Python",      icon: "Py",  color: "#60a5fa" },
+  { name: "PostgreSQL",  icon: "PG",  color: "#34d399" },
+  { name: "Supabase",    icon: "SB",  color: "#a78bfa" },
+  { name: "PyTorch",     icon: "PT",  color: "#fb923c" },
+  { name: "XGBoost",     icon: "XG",  color: "#fbbf24" },
+  { name: "Scikit",      icon: "SK",  color: "#f87171" },
+  { name: "SHAP / XAI",  icon: "SH",  color: "#2dd4bf" },
+  { name: "Streamlit",   icon: "ST",  color: "#c084fc" },
+  { name: "SQL",         icon: "SQ",  color: "#60a5fa" },
+  { name: "Git",         icon: "Gt",  color: "#f87171" },
+  { name: "NumPy",       icon: "NP",  color: "#818cf8" },
+  { name: "Pandas",      icon: "PD",  color: "#a78bfa" },
 ];
 
 const EXTRA_TAGS = [
-  "Prompt Engineering", "HIPAA Compliance", "PHI De-identification",
-  "Clinical NLP", "Multimodal Pipelines", "LLaMA / OpenAI APIs",
-  "Rule-Based NLP", "Walk-Forward Validation", "CNN-LSTM",
-  "Feature Engineering", "OCR / Vision AI", "REST APIs",
-  "fpdf2 / python-docx", "Power BI",
+  "LLM Integration", "Prompt Engineering", "Ollama", "Groq API",
+  "REST APIs", "API Authentication", "Multi-Provider LLM",
+  "HIPAA Compliance", "PHI De-identification", "OCR / Vision AI",
+  "Row-Level Security", "Schema Design", "Supabase Migrations",
+  "NLP", "Random Forest", "Feature Engineering", "Microsoft 365",
 ];
 
 /* ── Section 1: About Me ─────────────────────────────────────────────────── */
@@ -56,7 +56,7 @@ function AboutSection() {
             margin: "0 0 32px",
           }}>
             I&apos;m Komala,<br />
-            <span style={{ fontStyle: "italic" }}>AI engineer</span>
+            <span style={{ fontStyle: "italic" }}>AI Automation Engineer</span>
             {" "}based in NYC
           </h2>
 
@@ -68,9 +68,9 @@ function AboutSection() {
             marginBottom: "20px",
             fontWeight: 400,
           }}>
-            I build machine learning systems, and I&apos;m someone who genuinely loves
-            organizing chaos into something useful. Give me a messy clinical workflow
-            and a deadline, and I&apos;ll give you a production AI pipeline.
+            I build automation pipelines that integrate multiple third-party APIs into unified,
+            production systems. Give me a messy workflow and a deadline, and I&apos;ll give you
+            an end-to-end automated pipeline.
           </p>
 
           <p style={{
@@ -83,9 +83,9 @@ function AboutSection() {
             I specialize in{" "}
             <span style={{ color: "oklch(0.78 0.28 280)", fontWeight: 600 }}>AI automation</span>
             {" "}and{" "}
-            <span style={{ color: "oklch(0.78 0.28 280)", fontWeight: 600 }}>clinical AI</span>
-            , building LLM-powered pipelines that automate high-stakes clinical tasks
-            with HIPAA compliance, PHI de-identification, and human-in-the-loop safety baked in from day one.
+            <span style={{ color: "oklch(0.78 0.28 280)", fontWeight: 600 }}>systems integration</span>
+            , reducing manual workflows by 80–90% by connecting LLM, OCR, and transcription APIs
+            into production-grade pipelines with proper auth, data transformation, and output delivery.
           </p>
 
           <p style={{
@@ -95,8 +95,8 @@ function AboutSection() {
             lineHeight: 1.8,
             marginBottom: "40px",
           }}>
-            Currently at Rimon Health, cutting neuropsychological report writing from 3 hours to
-            30 minutes using multimodal LLMs.
+            Currently building legal AI systems at Feldman & Associates and clinical AI at Rimon Health.
+            M.S. Computer Science, Hofstra University. German utility patent holder (DPMA, 2026).
           </p>
 
           {/* Open to Work */}
