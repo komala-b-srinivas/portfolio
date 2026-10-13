@@ -18,14 +18,18 @@ const skills = [
   { name: "Git",         icon: "Gt",  color: "#f87171" },
   { name: "NumPy",       icon: "NP",  color: "#818cf8" },
   { name: "Pandas",      icon: "PD",  color: "#a78bfa" },
+  { name: "Docker",      icon: "Dk",  color: "#38bdf8" },
+  { name: "n8n / Zapier", icon: "n8", color: "#4ade80" },
 ];
 
 const EXTRA_TAGS = [
-  "LLM Integration", "Prompt Engineering", "Ollama", "Groq API",
-  "REST APIs", "API Authentication", "Multi-Provider LLM",
+  "LLMs", "RAG", "Prompt Engineering", "NLP", "Computer Vision",
+  "LLM Integration", "Groq API", "Ollama", "REST APIs",
   "HIPAA Compliance", "PHI De-identification", "OCR / Vision AI",
-  "Row-Level Security", "Schema Design", "Supabase Migrations",
-  "NLP", "Random Forest", "Feature Engineering", "Microsoft 365",
+  "Claude Code", "Cursor", "NotebookLM",
+  "Row-Level Security", "Schema Design",
+  "Random Forest", "Feature Engineering", "Excel / KPI Dashboards",
+  "User Discovery", "Stakeholder Communication", "Rollout & Training",
 ];
 
 /* ── Section 1: About Me ─────────────────────────────────────────────────── */
@@ -68,9 +72,8 @@ function AboutSection() {
             marginBottom: "20px",
             fontWeight: 400,
           }}>
-            I build automation pipelines that integrate multiple third-party APIs into unified,
-            production systems. Give me a messy workflow and a deadline, and I&apos;ll give you
-            an end-to-end automated pipeline.
+            I work where technology meets people: understanding how teams operate, delivering AI tools
+            that fit the workflow, and driving adoption until the tool actually sticks.
           </p>
 
           <p style={{
@@ -80,12 +83,12 @@ function AboutSection() {
             lineHeight: 1.8,
             marginBottom: "20px",
           }}>
-            I specialize in{" "}
-            <span style={{ color: "oklch(0.78 0.28 280)", fontWeight: 600 }}>AI automation</span>
-            {" "}and{" "}
-            <span style={{ color: "oklch(0.78 0.28 280)", fontWeight: 600 }}>systems integration</span>
-            , reducing manual workflows by 80–90% by connecting LLM, OCR, and transcription APIs
-            into production-grade pipelines with proper auth, data transformation, and output delivery.
+            I&apos;ve delivered AI workflows at a{" "}
+            <span style={{ color: "oklch(0.78 0.28 280)", fontWeight: 600 }}>law firm</span>
+            {" "}and a{" "}
+            <span style={{ color: "oklch(0.78 0.28 280)", fontWeight: 600 }}>healthcare practice</span>
+            {" "}that cut client intake from 15–20 minutes to under 1 minute and clinician report
+            time by 80%+, with privacy and human review built in from day one.
           </p>
 
           <p style={{
@@ -95,8 +98,8 @@ function AboutSection() {
             lineHeight: 1.8,
             marginBottom: "40px",
           }}>
-            Currently building legal AI systems at Feldman & Associates and clinical AI at Rimon Health.
-            M.S. Computer Science, Hofstra University. German utility patent holder (DPMA, 2026).
+            Strong in user discovery, ML concepts, data analysis, and clear communication.
+            M.S. Computer Science (AI), Hofstra University. German utility patent holder (DPMA, 2026).
           </p>
 
           {/* Open to Work */}
