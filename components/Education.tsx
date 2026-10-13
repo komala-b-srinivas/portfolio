@@ -4,21 +4,28 @@ import { motion } from "framer-motion";
 
 const education = [
   {
-    degree: "M.S. Computer Science",
-    focus: "AI Specialization",
+    degree: "M.S. Computer Science (AI)",
+    focus: "Artificial Intelligence",
     school: "Hofstra University",
-    location: "New York, USA",
-    period: "Expected May 2026",
-    current: true,
-  },
-  {
-    degree: "B.Tech Electronics & Communication",
-    focus: "Electronics and Communication Engineering",
-    school: "Nitte Meenakshi Institute of Technology",
-    location: "Bengaluru, India",
-    period: "August 2023",
+    location: "Hempstead, NY",
+    period: "Aug 2024 – May 2026",
     current: false,
   },
+  {
+    degree: "B.E. Electronics & Communication Engineering",
+    focus: "Electronics & Communication",
+    school: "Nitte Meenakshi Institute of Technology",
+    location: "Bengaluru, India",
+    period: "Aug 2019 – Nov 2023",
+    current: false,
+  },
+];
+
+const certifications = [
+  { title: "Foundations of GMP", issuer: "USP", year: "2026" },
+  { title: "Cyber Security Consulting", issuer: "PwC via Forage", year: "2026" },
+  { title: "Claude Code in Action", issuer: "Anthropic", year: "2026" },
+  { title: "GenAI Powered Data Analytics", issuer: "Tata via Forage", year: "2025" },
 ];
 
 export default function Education() {
@@ -67,14 +74,14 @@ export default function Education() {
                     fontSize: "9px",
                     letterSpacing: "0.18em",
                     textTransform: "uppercase",
-                    color: edu.current ? "#4ade80" : "oklch(1 0 0 / 25%)",
-                    border: `1px solid ${edu.current ? "#4ade8040" : "oklch(1 0 0 / 12%)"}`,
+                    color: "oklch(1 0 0 / 25%)",
+                    border: "1px solid oklch(1 0 0 / 12%)",
                     padding: "4px 12px",
                     borderRadius: "9999px",
                     fontWeight: 600,
-                    background: edu.current ? "#4ade8010" : "transparent",
+                    background: "transparent",
                   }}>
-                    {edu.current ? "Active" : "Completed"}
+                    Completed
                   </span>
                   <span style={{
                     fontFamily: "var(--font-sans), sans-serif",
@@ -124,6 +131,62 @@ export default function Education() {
             </motion.div>
           ))}
         </div>
+
+        {/* Certifications */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6, delay: 0.2 }}
+          style={{ marginTop: "60px" }}
+        >
+          <div className="section-badge" style={{ marginBottom: "24px" }}>
+            <span className="dot" style={{ background: "oklch(0.75 0.15 60)" }} />
+            Certifications
+          </div>
+          <div style={{ display: "flex", flexWrap: "wrap", gap: "12px" }}>
+            {certifications.map((cert, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, scale: 0.95 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.4, delay: i * 0.07 }}
+                className="glass-card"
+                style={{ padding: "16px 22px", display: "flex", flexDirection: "column", gap: "4px" }}
+              >
+                <span style={{
+                  fontFamily: "var(--font-sans), sans-serif",
+                  fontSize: "13px",
+                  color: "oklch(1 0 0 / 85%)",
+                  fontWeight: 500,
+                }}>
+                  {cert.title}
+                </span>
+                <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+                  <span style={{
+                    fontFamily: "var(--font-sans), sans-serif",
+                    fontSize: "11px",
+                    color: "oklch(1 0 0 / 40%)",
+                    fontWeight: 400,
+                  }}>
+                    {cert.issuer}
+                  </span>
+                  <span style={{ color: "oklch(1 0 0 / 15%)", fontSize: "10px" }}>·</span>
+                  <span style={{
+                    fontFamily: "var(--font-sans), sans-serif",
+                    fontSize: "11px",
+                    color: "oklch(0.78 0.15 60)",
+                    fontWeight: 600,
+                  }}>
+                    {cert.year}
+                  </span>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </motion.div>
+
       </div>
     </section>
   );

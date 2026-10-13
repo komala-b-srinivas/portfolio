@@ -3,6 +3,7 @@ import HeroSection from "@/components/HeroSection";
 import ProjectsSection from "@/components/ProjectsSection";
 import AboutSkills from "@/components/AboutSkills";
 import Experience from "@/components/Experience";
+import Education from "@/components/Education";
 import Contact from "@/components/Contact";
 import ChatbotWidget from "@/components/ChatbotWidget";
 
@@ -21,6 +22,7 @@ export default function Home() {
       <div id="skills" style={{ position: "relative", top: "-80px" }} />
 
       <Experience />
+      <Education />
       <Contact />
       <ChatbotWidget />
     </main>
