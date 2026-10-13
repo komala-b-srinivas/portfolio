@@ -26,6 +26,8 @@ const certifications = [
   { title: "Cyber Security Consulting", issuer: "PwC via Forage", year: "2026" },
   { title: "Claude Code in Action", issuer: "Anthropic", year: "2026" },
   { title: "GenAI Powered Data Analytics", issuer: "Tata via Forage", year: "2025" },
+  { title: "Data Analytics Job Simulation", issuer: "Deloitte Australia via Forage", year: "2025" },
+  { title: "Data Science Job Simulation", issuer: "British Airways via Forage", year: "2025" },
 ];
 
 export default function Education() {
