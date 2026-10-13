@@ -22,6 +22,22 @@ const projects = [
   },
   {
     id: "02",
+    title: "Career Ops AI",
+    subtitle: "AI Job-Search Automation System",
+    status: "DEPLOYED",
+    statusColor: "#4ade80",
+    period: null,
+    patent: null,
+    description:
+      "AI system that autonomously scans 13 companies' job boards, matches listings to a candidate profile, and delivers curated alerts via Gmail — built entirely on free-tier infrastructure.",
+    tags: ["React", "Google Sheets", "Gmail API", "Llama 3.3 70B", "Automation"],
+    highlights: [
+      "Deployed an AI agent scanning 13 companies' job boards via React, Google Sheets, Gmail, and Llama 3.3 70B at no cost",
+      "Automated end-to-end job discovery, relevance scoring, and email delivery with no recurring infrastructure cost",
+    ],
+  },
+  {
+    id: "03",
     title: "Alive Human Detection During Disasters",
     subtitle: "Autonomous Rescue Robot System",
     status: "PATENTED",
@@ -43,7 +59,7 @@ const projects = [
     ],
   },
   {
-    id: "03",
+    id: "04",
     title: "EmPath",
     subtitle: "Multimodal Pain Detection System",
     status: "ONGOING",
@@ -61,7 +77,7 @@ const projects = [
     ],
   },
   {
-    id: "04",
+    id: "05",
     title: "ER Triage AI",
     subtitle: "AI-Assisted Touchless Triage System",
     status: "AUG 2025",
@@ -79,7 +95,7 @@ const projects = [
     ],
   },
   {
-    id: "05",
+    id: "06",
     title: "TradingML",
     subtitle: "Production ML System for Systematic Trading",
     status: "OCT 2025",

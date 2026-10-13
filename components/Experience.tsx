@@ -10,10 +10,10 @@ const jobs = [
     period: "Jul 2026 – Present",
     current: true,
     bullets: [
-      "Administer and audit the firm's Supabase/Postgres database, including row-level-security (RLS) coverage across all schemas, diagnosing and remediating access, permissions, and migration-integrity issues",
-      "Designed and built \"Intelligent Intake,\" an LLM-based extraction and identity-resolution pipeline integrating multiple local and cloud LLM providers (Ollama, provider-agnostic client architecture) with a staged capture-then-human-approved-promotion workflow",
-      "Built and maintain a litigation deadline-tracking pilot that validates court orders against NYSCEF, detects superseded orders, and routes confirmed dates into Outlook Calendar and Microsoft Planner",
-      "Partner directly with the attorney to design the firm's data-identity model (matter/client resolution, per-field authority, and provenance tracking), liaising between attorney, IT, and paralegal staff on access and workflow design",
+      "Led discovery with the attorney, IT, and paralegals to map intake and case tracking and define AI requirements",
+      "Delivered \"Intelligent Intake,\" an AI workflow with attorney approval built in, cutting intake from 15–20 minutes to under 1 minute per client; leading rollout to 2 attorneys and 4 paralegals",
+      "Piloted a deadline tracker that validates 5–10 court orders a week against NYSCEF before they reach the calendar",
+      "Audited data-access controls across all database schemas, identifying and fixing permission gaps to protect client data",
     ],
   },
   {
@@ -36,7 +36,8 @@ const jobs = [
     period: "Jul 2025 – May 2026",
     current: false,
     bullets: [
-      "Structured and cleaned raw program data (improving accuracy 25%), then built dashboards to track outreach across 100+ entrepreneurs",
+      "Managed the Empire State Development (ESD) CRM for the Entrepreneurship Assistance Center, tracking 500+ entrepreneurs and building outreach dashboards that improved data accuracy by 25%",
+      "Coordinated 3 programs a month (100–150 attendees each) across stakeholders and analyzed feedback surveys in Excel to report results",
     ],
   },
   {

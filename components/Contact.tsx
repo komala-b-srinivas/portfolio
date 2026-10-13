@@ -107,7 +107,7 @@ export default function Contact() {
             {/* CTAs */}
             <div style={{ display: "flex", gap: "12px", justifyContent: "center", flexWrap: "wrap", marginBottom: "60px" }}>
               <a
-                href="mailto:komalsrinivas20@gmail.com"
+                href="mailto:komalabelursrinivas@gmail.com"
                 style={{
                   padding: "14px 32px",
                   borderRadius: "9999px",
@@ -124,7 +124,7 @@ export default function Contact() {
                 onMouseEnter={(e) => (e.currentTarget as HTMLElement).style.background = "oklch(0.88 0 0)"}
                 onMouseLeave={(e) => (e.currentTarget as HTMLElement).style.background = "oklch(1 0 0)"}
               >
-                komalsrinivas20@gmail.com
+                komalabelursrinivas@gmail.com
               </a>
 
               <a
